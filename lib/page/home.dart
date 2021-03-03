@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
         child: Column(
           children: [
             users.isEmpty
-                ? Text("Starting off")
+                ? Text("We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
                 : Stack(children: users.map(buildUser).toList()),
 
             Expanded(child: Container()),
