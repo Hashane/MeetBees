@@ -20,31 +20,30 @@ class UserCardWidget extends StatelessWidget {
     final swipingDirection = provider.swipingDirection;
     final size = MediaQuery.of(context).size;
 
-    return Container(
-      height: size.height * 0.7,
-      width: size.width * 0.95,
-      decoration: BoxDecoration(
+    return Card(
+      elevation: 8,
+      color: Colors.black87,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-          image: AssetImage(user.imgUrl),
-          fit: BoxFit.cover,
-        ),
       ),
       child: Container(
+        width: size.width * 0.90,
+        height: size.height * 0.55,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(color: Colors.black12, spreadRadius: 0.5),
-          ],
-          gradient: LinearGradient(
-            colors: [Colors.black12, Colors.black87],
-            begin: Alignment.center,
-            stops: [0.4, 1],
-            end: Alignment.bottomCenter,
+          image: DecorationImage(
+            image: AssetImage(user.imgUrl),
+            fit: BoxFit.cover,
           ),
         ),
         child: Stack(
           children: [
+            new Positioned.fill(
+                child: new Material(
+                    color: Colors.transparent,
+                    child: new InkWell(
+                      onTap: () => print("tapped"),
+                    ),),),
             Positioned(
               right: 10,
               left: 10,
