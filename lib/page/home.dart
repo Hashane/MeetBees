@@ -60,21 +60,23 @@ class _HomeState extends State<Home> {
         Provider.of<FeedbackPositionProvider>(context, listen: false);
         provider.updatePosition(pointerEvent.localDelta.dx);
       },
-      onPointerCancel: (_){
-        final provider = Provider.of<FeedbackPositionProvider>(context, listen: false);
+      onPointerCancel: (_) {
+        final provider =
+        Provider.of<FeedbackPositionProvider>(context, listen: false);
         provider.resetPosition();
       },
-      onPointerUp: (_){
-        final provider = Provider.of<FeedbackPositionProvider>(context, listen: false);
+      onPointerUp: (_) {
+        final provider =
+        Provider.of<FeedbackPositionProvider>(context, listen: false);
         provider.resetPosition();
       },
       child: Draggable(
+        child: UserCardWidget(user: user, isUserInFocus: isUserInFocus),
+        feedback: Material(
+          type: MaterialType.transparency,
           child: UserCardWidget(user: user, isUserInFocus: isUserInFocus),
-          feedback: Material(
-            type: MaterialType.transparency,
-            child: UserCardWidget(user: user, isUserInFocus: isUserInFocus),
-          ),
-        //childWhenDragging: Container(),
+        ),
+        childWhenDragging: Container(),
         onDragEnd: (details) => onDragEnd(details, user),
       ),
     );
