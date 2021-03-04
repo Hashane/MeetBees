@@ -4,15 +4,56 @@ import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
 
 
-class UserCardWidget extends StatelessWidget {
+class UserCardWidget extends StatefulWidget {
+  final List<String> photoAssetPaths;
+  final int visiblePhotoIndex;
   final User user;
   final bool isUserInFocus;
 
   const UserCardWidget({
+    @required this.photoAssetPaths,
+    @required this.visiblePhotoIndex,
     @required this.user,
     @required this.isUserInFocus,
     Key key,
   }) : super(key: key);
+
+  @override
+  _UserCardWidgetState createState() => _UserCardWidgetState();
+}
+
+class _UserCardWidgetState extends State<UserCardWidget> {
+  int visiblePhotoIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    visiblePhotoIndex = widget.visiblePhotoIndex;
+  }
+
+  @override
+  void didUpdateWidget(UserCardWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.visiblePhotoIndex != oldWidget.visiblePhotoIndex) {
+      setState(() {
+        visiblePhotoIndex = widget.visiblePhotoIndex;
+      });
+    }
+  }
+
+  void _prevImage() {
+    setState(() {
+      visiblePhotoIndex = visiblePhotoIndex > 0 ? visiblePhotoIndex - 1 : 0;
+    });
+  }
+
+  void _nextImage() {
+    setState(() {
+      visiblePhotoIndex = visiblePhotoIndex < widget.photoAssetPaths.length - 1
+          ? visiblePhotoIndex + 1
+          : visiblePhotoIndex;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +73,7 @@ class UserCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage(user.imgUrl),
+            image: NetworkImage(widget.photoAssetPaths[visiblePhotoIndex]),
             fit: BoxFit.cover,
           ),
         ),
@@ -42,7 +83,7 @@ class UserCardWidget extends StatelessWidget {
                 child: new Material(
                     color: Colors.transparent,
                     child: new InkWell(
-                      onTap: () => print("tapped"),
+                      onTap: () => _nextImage(),
                     ),),),
             Positioned(
               right: 10,
@@ -52,7 +93,7 @@ class UserCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildUserInfo(user: user),
+                  buildUserInfo(user: widget.user),
                   Padding(
                     padding: EdgeInsets.only(bottom: 16, right: 8),
                     child: Icon(Icons.info, color: Colors.white),
@@ -60,7 +101,7 @@ class UserCardWidget extends StatelessWidget {
                 ],
               ),
             ),
-            if (isUserInFocus) buildLikeBadge(swipingDirection)
+            if (widget.isUserInFocus) buildLikeBadge(swipingDirection)
           ],
         ),
       ),
