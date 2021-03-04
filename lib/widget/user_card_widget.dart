@@ -48,7 +48,8 @@ class _UserCardWidgetState extends State<UserCardWidget> {
   }
 
   void _nextImage() {
-    setState(() {
+     setState(() {
+       print("next");
       visiblePhotoIndex = visiblePhotoIndex < widget.photoAssetPaths.length - 1
           ? visiblePhotoIndex + 1
           : visiblePhotoIndex;
@@ -63,7 +64,7 @@ class _UserCardWidgetState extends State<UserCardWidget> {
 
     return Card(
       elevation: 8,
-      color: Colors.black87,
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -99,6 +100,15 @@ class _UserCardWidgetState extends State<UserCardWidget> {
                     child: Icon(Icons.info, color: Colors.white),
                   )
                 ],
+              ),
+            ),
+            Positioned(
+              top: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: SelectedPhotoIndicator(
+                photoCount: widget.photoAssetPaths.length,
+                visiblePhotoIndex: visiblePhotoIndex,
               ),
             ),
             if (widget.isUserInFocus) buildLikeBadge(swipingDirection)
@@ -168,4 +178,69 @@ class _UserCardWidgetState extends State<UserCardWidget> {
       ],
     ),
   );
+}
+
+
+class SelectedPhotoIndicator extends StatelessWidget {
+  final int photoCount;
+  final int visiblePhotoIndex;
+
+  SelectedPhotoIndicator({this.visiblePhotoIndex, this.photoCount});
+
+  Widget _buildInactiveIndicator() {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(left: 2.0, right: 2.0),
+        child: Container(
+          height: 3.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(2.5),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActiveIndicator() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 2.0, right: 2.0),
+        child: Container(
+          height: 3.0,
+          decoration: BoxDecoration(
+            color: Colors.orange,
+            borderRadius: BorderRadius.circular(2.5),
+            boxShadow: [
+              BoxShadow(
+                  color: const Color(0x22000000),
+                  blurRadius: 2.0,
+                  spreadRadius: 0.0,
+                  offset: const Offset(0.0, 1.0))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildIndicators() {
+    List<Widget> indicators = [];
+    for (int i = 0; i < photoCount; i++) {
+      indicators.add(i == visiblePhotoIndex
+          ? _buildActiveIndicator()
+          : _buildInactiveIndicator());
+    }
+    return indicators;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(0.0),
+      child: Row(
+        children: _buildIndicators(),
+      ),
+    );
+  }
 }
