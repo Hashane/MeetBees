@@ -71,10 +71,10 @@ class _HomeState extends State<Home> {
         provider.resetPosition();
       },
       child: Draggable(
-        child: UserCardWidget(user: user, isUserInFocus: isUserInFocus),
+        child: UserCardWidget(user: user, isUserInFocus: isUserInFocus, photoAssetPaths: user.photos, visiblePhotoIndex: 0,  ),
         feedback: Material(
           type: MaterialType.transparency,
-          child: UserCardWidget(user: user, isUserInFocus: isUserInFocus),
+          child: UserCardWidget(user: user, isUserInFocus: isUserInFocus , photoAssetPaths: user.photos, visiblePhotoIndex: 0, ),
         ),
         childWhenDragging: Container(),
         onDragEnd: (details) => onDragEnd(details, user),
@@ -90,9 +90,11 @@ class _HomeState extends State<Home> {
       user.isLiked = true;
     }
 
-    setState(() {
-      users.remove(user);
-    });
+    if(user.isSwipedOff == true || user.isLiked == true) {
+      setState(() {
+        users.remove(user);
+      });
+    }
  }
 
 }

@@ -9,6 +9,11 @@ final dummyUsers = [
       'Psychology, science, and art are what helps me to learn the outside world and myself.',
       age: 24,
       imgUrl: 'assets/images/1.png',
+      photos: [
+        "https://unsplash.com/photos/JVZTtdybC8s/download?force=true&w=640",
+        "https://unsplash.com/photos/0oRefidSNKc/download?force=true&w=640",
+        "https://unsplash.com/photos/MQ9U2GFnnDc/download?force=true&w=640",
+      ],
       location: 'North London'),
   User(
     name: 'Lori Perez',
@@ -19,6 +24,10 @@ final dummyUsers = [
     location: 'Leeds',
     age: 26,
     imgUrl: 'assets/images/2.png',
+    photos: [
+      "https://unsplash.com/photos/bYzllm-pD1k/download?force=true&w=640",
+      "https://unsplash.com/photos/UrYLlff6U60/download?force=true&w=640",
+    ],
   ),
   User(
     name: 'Christine Wallace',
@@ -29,35 +38,10 @@ final dummyUsers = [
     location: 'Liverpool',
     age: 23,
     imgUrl: 'assets/images/1.png',
-  ),
-  User(
-    name: 'Rachel Green',
-    designation: 'Architect',
-    mutualFriends: 8,
-    bio:
-    'Psychology, science, and art are what helps me to learn the outside world and myself.',
-    location: 'Nottingham',
-    age: 22,
-    imgUrl: 'assets/images/2.png',
-  ),
-  User(
-    name: 'Emma',
-    designation: 'Software Developer',
-    mutualFriends: 3,
-    bio:
-    'Psychology, science, and art are what helps me to learn the outside world and myself.',
-    location: 'Manchester',
-    age: 25,
-    imgUrl: 'assets/images/2.png',
-  ),
-  User(
-    name: 'Kim Wexler',
-    designation: 'Accountant',
-    mutualFriends: 5,
-    bio:
-    'Psychology, science, and art are what helps me to learn the outside world and myself.',
-    location: 'Birmingham',
-    age: 30,
-    imgUrl: 'assets/images/1.png',
+    photos: [
+      "https://unsplash.com/photos/JVZTtdybC8s/download?force=true&w=640",
+      "https://unsplash.com/photos/0oRefidSNKc/download?force=true&w=640",
+      "https://unsplash.com/photos/MQ9U2GFnnDc/download?force=true&w=640",
+    ],
   ),
 ];

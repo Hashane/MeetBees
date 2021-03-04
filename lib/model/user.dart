@@ -6,6 +6,7 @@ class User {
   final int mutualFriends;
   final int age;
   final String imgUrl;
+  final List<String> photos;
   final String location;
   final String bio;
   bool isLiked;
@@ -17,6 +18,7 @@ class User {
     @required this.name,
     @required this.age,
     @required this.imgUrl,
+    @required this.photos,
     @required this.location,
     @required this.bio,
     this.isLiked = false,
