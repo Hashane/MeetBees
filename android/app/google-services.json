@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1014257728135",
+    "project_id": "meet-ceylon",
+    "storage_bucket": "meet-ceylon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014257728135:android:2b48cf2aae719aa9911622",
+        "android_client_info": {
+          "package_name": "com.meet.meet_ceylon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014257728135-f2vd5v3mslcogk42eao1meq0u5dcsha5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meet.meet_ceylon",
+            "certificate_hash": "2f7ae1248acba2e027f34e90eaa3876dd8fcd3f5"
+          }
+        },
+        {
+          "client_id": "1014257728135-dbjcofbk9inkj8c4pv118sbev2fufah6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyOJ9IpSRzODGT6ulbLFleXJM1F4V1JHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014257728135-dbjcofbk9inkj8c4pv118sbev2fufah6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
