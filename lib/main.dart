@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/widget/sign_up.dart';
 import 'package:provider/provider.dart';
 import 'package:meet_ceylon/page/home.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
