@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/widget/sign_up.dart';
-import 'package:provider/provider.dart';
-import 'package:meet_ceylon/page/home.dart';
-import 'package:meet_ceylon/provider/position_feedback_provider.dart';
+
+// Import the firebase_core plugin
+import 'package:firebase_core/firebase_core.dart';
+import 'package:meet_ceylon/page/wrapper.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
+  // Create the initialization Future outside of `build`:
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-    create: (context) => FeedbackPositionProvider(),
-    child: MaterialApp(
-      title: 'Tinder Swiping',
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Home(),
-    ),
-  );
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return const Scaffold(body: Center(child: Text("Error"),),);
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Wrapper();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return const Scaffold(body: Center(child: Text("Loading"),),);
+      },
+    );
+  }
 }
-
-

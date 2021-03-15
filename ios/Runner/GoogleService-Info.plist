@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1014257728135-sdkfjjuqg0au6grpvte3ol6oqqbmvi1n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1014257728135-sdkfjjuqg0au6grpvte3ol6oqqbmvi1n</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1014257728135-f2vd5v3mslcogk42eao1meq0u5dcsha5.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDyGlcIHeWkbVcvskrY31TBzbDuCVO5Fag</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1014257728135</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.meet.meetCeylon</string>
+	<key>PROJECT_ID</key>
+	<string>meet-ceylon</string>
+	<key>STORAGE_BUCKET</key>
+	<string>meet-ceylon.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1014257728135:ios:e8af002c6dd7b406911622</string>
+</dict>
+</plist>
