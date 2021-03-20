@@ -33,7 +33,14 @@ Widget build(BuildContext context) {
       body: Container(
         child: Column(
           children: [
-            ElevatedButton(onPressed: () {  }, child: Text("Sign in with Facebook")),
+            ElevatedButton(onPressed: () async {
+                dynamic result = await Auth(widget.auth).signInWithFacebook();
+                if(result == null){
+                  print("Error");
+                }else{
+                  print(result);
+                }
+              }, child: Text("Sign in with Facebook")),
             ElevatedButton(onPressed: () async {
               dynamic result = await Auth(widget.auth).signInWithGoogle();
               if(result == null){
