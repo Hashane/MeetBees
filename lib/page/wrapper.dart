@@ -23,6 +23,7 @@ class _WrapperState extends State<Wrapper> {
     return StreamBuilder(stream: Auth(_auth).user,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
+            print(snapshot.data?.displayName);
             if(snapshot.data?.uid == null){
               //not logged in
               return Login(auth: _auth,firestore: _firestore,);

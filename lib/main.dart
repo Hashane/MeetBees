@@ -21,7 +21,9 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return const Scaffold(body: Center(child: Text("Error"),),);
+          return const MaterialApp(
+           home : Scaffold(body: Center(child: Text("Error"),),),
+        );
         }
 
         // Once complete, show your application
@@ -30,7 +32,10 @@ class App extends StatelessWidget {
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return const Scaffold(body: Center(child: Text("Loading"),),);
+        return const MaterialApp(
+            home : Scaffold(body: Center(child: Text("Loading"),),),
+        );
+
       },
     );
   }

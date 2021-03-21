@@ -5,6 +5,7 @@ import 'package:meet_ceylon/widget/bottom_nav_widget.dart';
 import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/widget/user_card_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 
 class Home extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   final List<User> users = dummyUsers;
+  final firebaseAuth.FirebaseAuth _firebaseAuth = firebaseAuth.FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,11 @@ class _HomeState extends State<Home> {
                 ? Text("We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
                 : Stack(children: users.map(buildUser).toList()),
 
-            Expanded(child: Container()),
+            Expanded(child: Container(
+              child: ElevatedButton( onPressed: _signOut,
+                child: Text("Log out"),
+              ),
+            )),
             BottomNavWidget()
           ],
         ),
@@ -35,6 +41,9 @@ class _HomeState extends State<Home> {
     );
   }
 
+  _signOut() async {
+    await _firebaseAuth.signOut();
+  }
 
   Widget buildAppBar() =>
       AppBar(
