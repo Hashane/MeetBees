@@ -41,8 +41,9 @@ class _WrapperState extends State<Wrapper> {
                ),),
              );
             }
-        }else{
-          return LoadingWidget();
+        }else if(snapshot.connectionState == ConnectionState.waiting){ return loading();}
+        else{
+          return loading();
         }
       },); //user stream
 

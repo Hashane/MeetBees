@@ -1,58 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-/// This is the stateful widget that the main application instantiates.
-class LoadingWidget extends StatefulWidget {
-
+class loading extends StatefulWidget {
   @override
-  _LoadingWidgetState createState() => _LoadingWidgetState();
+  _loadingState createState() => _loadingState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
-/// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
-class _LoadingWidgetState extends State<LoadingWidget>
-    with TickerProviderStateMixin {
-  AnimationController controller;
-
-  @override
-  void initState() {
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    )..addListener(() {
-      setState(() {});
-    });
-    controller.repeat(reverse: true);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+class _loadingState extends State<loading> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home:Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text(
-              'Meet Ceylon',
-              style: Theme.of(context).textTheme.headline6,
+      home: Scaffold(
+        body: Container(
+          decoration: new BoxDecoration(
+            gradient: LinearGradient(
+              stops: [0.0, 1.0],
+              begin: FractionalOffset.topCenter,
+              end: FractionalOffset.bottomCenter,
+              colors: <Color>[
+                Colors.orangeAccent,
+                Colors.deepOrange,
+              ],
             ),
-            CircularProgressIndicator(
-              backgroundColor: Colors.black,
-              value: controller.value,
-              semanticsLabel: 'Linear progress indicator',
-            ),
-          ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 150.0, //10 for example
+                child: Image.asset(
+                  "assets/images/logo.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
+              SpinKitFadingCircle(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
+            ],
+          ),
         ),
       ),
-        ),
     );
   }
 }

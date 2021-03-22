@@ -7,45 +7,51 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:meet_ceylon/provider/size_confiogurations.dart';
 import 'dart:io' show Platform;
 
-class Login extends StatefulWidget {
+import 'package:meet_ceylon/widget/loading_widget.dart';
+
+
+class Login extends StatelessWidget {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
-
-  @override
-  _LoginState createState() => _LoginState();
 
   const Login({
     Key key,
     @required this.auth,
     @required this.firestore,
   }) : super(key: key);
-}
 
-class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     return MaterialApp(
-      home: loginScreen(this.widget.auth, this.widget.firestore),
+      home: loginScreen(this.auth, this.firestore),
     );
   }
 }
 
-class loginScreen extends StatelessWidget {
+
+class loginScreen extends StatefulWidget {
   FirebaseAuth auth;
   FirebaseFirestore firestore;
 
-  //constructor used for passing variables from loginScreen
   loginScreen(FirebaseAuth auth, FirebaseFirestore firestore){
       this.auth = auth;
       this.firestore = firestore;
   }
+
+  @override
+  _loginScreenState createState() => _loginScreenState();
+}
+
+class _loginScreenState extends State<loginScreen> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
+    return isLoading ? loading() : Scaffold(
       backgroundColor: Colors.white,
       body:
       Container(
@@ -136,11 +142,20 @@ class loginScreen extends StatelessWidget {
                   child: ElevatedButton(
                     child: Text("Log in with Google"),
                     onPressed: () async {
+                       setState(() {
+                        isLoading = true;
+                      });
                       dynamic result =
-                      await Auth(auth).signInWithGoogle();
+                      await Auth(widget.auth).signInWithGoogle();
                       if (result == null) {
+                        setState(() {
+                          isLoading = false;
+                        });
                         print("Error");
                       } else {
+                        setState(() {
+                          isLoading = false;
+                        });
                         print(result);
                       }
                     },
@@ -176,7 +191,7 @@ class loginScreen extends StatelessWidget {
                     child: Text("Log in with Facebook"),
                     onPressed: () async {
                       dynamic result =
-                      await Auth(auth).signInWithFacebook();
+                      await Auth(widget.auth).signInWithFacebook();
                       if (result == null) {
                         print("Error");
                       } else {
@@ -215,7 +230,7 @@ class loginScreen extends StatelessWidget {
                     child: Text("Log in with Apple Email"),
                     onPressed: () async {
                       dynamic result =
-                      await Auth(auth).signInWithGoogle();
+                      await Auth(widget.auth).signInWithGoogle();
                       if (result == null) {
                         print("Error");
                       } else {

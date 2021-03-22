@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:meet_ceylon/page/wrapper.dart';
+import 'package:meet_ceylon/widget/loading_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,9 +33,7 @@ class App extends StatelessWidget {
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return const MaterialApp(
-            home : Scaffold(body: Center(child: Text("Loading"),),),
-        );
+        return loading();
 
       },
     );
