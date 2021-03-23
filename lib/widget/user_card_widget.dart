@@ -3,7 +3,6 @@ import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class UserCardWidget extends StatefulWidget {
   final List<String> photoAssetPaths;
   final int visiblePhotoIndex;
@@ -48,8 +47,8 @@ class _UserCardWidgetState extends State<UserCardWidget> {
   }
 
   void _nextImage() {
-     setState(() {
-       print("next");
+    setState(() {
+      print("next");
       visiblePhotoIndex = visiblePhotoIndex < widget.photoAssetPaths.length - 1
           ? visiblePhotoIndex + 1
           : visiblePhotoIndex;
@@ -81,11 +80,23 @@ class _UserCardWidgetState extends State<UserCardWidget> {
         child: Stack(
           children: [
             new Positioned.fill(
-                child: new Material(
-                    color: Colors.transparent,
-                    child: new InkWell(
-                      onTap: () => _nextImage(),
-                    ),),),
+              left: size.width / 2,
+              child: new Material(
+                color: Colors.transparent,
+                child: new InkWell(
+                  onTap: () => _nextImage(),
+                ),
+              ),
+            ),
+            new Positioned.fill(
+              right: size.width / 2,
+              child: new Material(
+                color: Colors.transparent,
+                child: new InkWell(
+                  onTap: () => _prevImage(),
+                ),
+              ),
+            ),
             Positioned(
               right: 10,
               left: 10,
@@ -152,34 +163,33 @@ class _UserCardWidgetState extends State<UserCardWidget> {
   }
 
   Widget buildUserInfo({@required User user}) => Padding(
-    padding: const EdgeInsets.all(8),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          '${user.name}, ${user.age}',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${user.name}, ${user.age}',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              user.designation,
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(height: 4),
+            Text(
+              '${user.mutualFriends} Mutual Friends',
+              style: TextStyle(color: Colors.white),
+            )
+          ],
         ),
-        SizedBox(height: 8),
-        Text(
-          user.designation,
-          style: TextStyle(color: Colors.white),
-        ),
-        SizedBox(height: 4),
-        Text(
-          '${user.mutualFriends} Mutual Friends',
-          style: TextStyle(color: Colors.white),
-        )
-      ],
-    ),
-  );
+      );
 }
-
 
 class SelectedPhotoIndicator extends StatelessWidget {
   final int photoCount;
