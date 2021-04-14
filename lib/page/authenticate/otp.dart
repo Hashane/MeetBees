@@ -60,10 +60,15 @@ class _OTPScreenState extends State<OTPScreen> {
                     child: PinPut(
                       fieldsCount: 6,
                       onSubmit: (String pin) async {
-                        // Create a PhoneAuthCredential with the code
-                        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin);
-                        // Sign the user in (or link) with the credential
-                        await FirebaseAuth.instance.signInWithCredential(credential);
+                       try{
+                         // Create a PhoneAuthCredential with the code
+                         PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin);
+                         // Sign the user in (or link) with the credential
+                         await FirebaseAuth.instance.signInWithCredential(credential);
+                       }catch(e){
+                          FocusScope.of(context).unfocus();
+                          _showSnackBar(pin, context);
+                        }
                       },
                       focusNode: _pinPutFocusNode,
                       controller: _pinPutController,
@@ -104,23 +109,15 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  void _showSnackBar(String pin, BuildContext context) {
-    final snackBar = SnackBar(
-      duration: const Duration(seconds: 3),
-      content: Container(
-        height: 80.0,
-        child: Center(
-          child: Text(
-            'Pin Submitted. Value: $pin',
-            style: const TextStyle(fontSize: 25.0),
-          ),
-        ),
-      ),
-      backgroundColor: Colors.deepPurpleAccent,
-    );
-    Scaffold.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(snackBar);
+ void _showSnackBar(String pin, BuildContext context) {
+   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+     content: const Text('Invalid OTP'),
+     duration: const Duration(seconds: 1),
+     // action: SnackBarAction(
+     //   label: 'ACTION',
+     //   onPressed: () { },
+     // ),
+   ));
   }
 
   void _verifyOTP () async {
