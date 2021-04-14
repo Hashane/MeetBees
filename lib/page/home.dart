@@ -26,9 +26,10 @@ class _HomeState extends State<Home> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: buildAppBar(),
-      body: Stack(
-        children: [
-       Column(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Column(
               children: [
                 SizedBox(
                   height: SizeConfig.safeBlockVertical * 2,
@@ -51,8 +52,9 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-          buildInfoCard(),
-        ],
+            buildInfoCard(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavWidget(),
     );
@@ -141,26 +143,26 @@ class _HomeState extends State<Home> {
     //for the button i create another column
     return Visibility(
       child: Container(
-          child: Column(
-            children: <Widget>[
-              //first element in column is the transparent offset
-              Container(
-                height: SizeConfig.safeBlockHorizontal * 105,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: new Container(
-                  height: SizeConfig.safeBlockVertical * 15,
-                  width: SizeConfig.safeBlockHorizontal * 80,
-                  child: new Card(
-                    color: Colors.white,
-                    elevation: 4.0,
-                  ),
+        child: Column(
+          children: <Widget>[
+            //first element in column is the transparent offset
+            Container(
+              height: SizeConfig.safeBlockHorizontal * 105,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: new Container(
+                height: SizeConfig.safeBlockVertical * 15,
+                width: SizeConfig.safeBlockHorizontal * 80,
+                child: new Card(
+                  color: Colors.white,
+                  elevation: 4.0,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
       visible: _visible,
     );
   }
