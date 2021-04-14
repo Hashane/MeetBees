@@ -28,30 +28,29 @@ class _HomeState extends State<Home> {
       appBar: buildAppBar(),
       body: Stack(
         children: [
-          Column(
-            children: [
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 2,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    users.isEmpty
-                        ? Text(
-                            "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
-                        : Stack(children: users.map(buildUser).toList()),
-
-                    SizedBox(
-                      height: SizeConfig.safeBlockVertical * 10,
-                    ),
-                    buildButtonSection()
-                  ],
+       Column(
+              children: [
+                SizedBox(
+                  height: SizeConfig.safeBlockVertical * 2,
                 ),
-              ),
-            ],
-          ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      users.isEmpty
+                          ? Text(
+                              "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
+                          : Stack(children: users.map(buildUser).toList()),
+                      SizedBox(
+                        height: SizeConfig.safeBlockVertical * 10,
+                      ),
+                      buildButtonSection()
+                    ],
+                  ),
+                ),
+              ],
+            ),
           buildInfoCard(),
         ],
       ),
@@ -69,9 +68,8 @@ class _HomeState extends State<Home> {
         elevation: 0,
         actions: [
           IconButton(
-          icon: const Icon(Icons.person, color: Colors.grey),
-          onPressed: _signOut
-          ),
+              icon: const Icon(Icons.person, color: Colors.grey),
+              onPressed: _signOut),
           //Icon(Icons.person, color: Colors.grey),
           SizedBox(width: 16),
         ],
@@ -143,26 +141,26 @@ class _HomeState extends State<Home> {
     //for the button i create another column
     return Visibility(
       child: Container(
-        child: Column(
-          children: <Widget>[
-            //first element in column is the transparent offset
-            Container(
-              height: SizeConfig.safeBlockHorizontal * 105,
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: new Container(
-                height: SizeConfig.safeBlockVertical * 15,
-                width: SizeConfig.safeBlockHorizontal * 80,
-                child: new Card(
-                  color: Colors.white,
-                  elevation: 4.0,
+          child: Column(
+            children: <Widget>[
+              //first element in column is the transparent offset
+              Container(
+                height: SizeConfig.safeBlockHorizontal * 105,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: new Container(
+                  height: SizeConfig.safeBlockVertical * 15,
+                  width: SizeConfig.safeBlockHorizontal * 80,
+                  child: new Card(
+                    color: Colors.white,
+                    elevation: 4.0,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       visible: _visible,
     );
   }
@@ -173,28 +171,23 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
-             IconButton(
-                icon: Icon(Icons.arrow_back_rounded),
-                highlightColor: Colors.deepOrange,
-                onPressed: () {}),
-
-
-            IconButton(
-                icon: Icon(Icons.info_outline_rounded),
-                highlightColor: Colors.deepOrange,
-                onPressed: () {
-                  setState(() {
-                    _visible = !_visible;
-                  });
-                  _userBottomSheetModal(context);
-                }),
-
           IconButton(
-                icon: Icon(Icons.arrow_forward_rounded),
-                highlightColor: Colors.deepOrange,
-                onPressed: () {}),
-
+              icon: Icon(Icons.arrow_back_rounded),
+              highlightColor: Colors.deepOrange,
+              onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.info_outline_rounded),
+              highlightColor: Colors.deepOrange,
+              onPressed: () {
+                setState(() {
+                  _visible = !_visible;
+                });
+                _userBottomSheetModal(context);
+              }),
+          IconButton(
+              icon: Icon(Icons.arrow_forward_rounded),
+              highlightColor: Colors.deepOrange,
+              onPressed: () {}),
         ],
       ),
     );
