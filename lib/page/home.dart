@@ -7,6 +7,7 @@ import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/widget/user_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
+import 'dart:developer' as developer;
 
 class Home extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _HomeState extends State<Home> {
   final firebaseAuth.FirebaseAuth _firebaseAuth =
       firebaseAuth.FirebaseAuth.instance;
   bool _visible = true;
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +36,17 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     users.isEmpty
                         ? Text(
                             "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
                         : Stack(children: users.map(buildUser).toList()),
+
                     SizedBox(
                       height: SizeConfig.safeBlockVertical * 10,
                     ),
-                    buildButtonSection(),
+                    buildButtonSection()
                   ],
                 ),
               ),
@@ -64,7 +68,11 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          Icon(Icons.person, color: Colors.grey),
+          IconButton(
+          icon: const Icon(Icons.person, color: Colors.grey),
+          onPressed: _signOut
+          ),
+          //Icon(Icons.person, color: Colors.grey),
           SizedBox(width: 16),
         ],
         leading: Icon(
@@ -133,27 +141,28 @@ class _HomeState extends State<Home> {
 
   Widget buildInfoCard() {
     //for the button i create another column
-    return Visibility(child: Container(
-      child: Column(
-        children: <Widget>[
-          //first element in column is the transparent offset
-          Container(
-            height: SizeConfig.safeBlockHorizontal * 100,
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: new Container(
-              height: SizeConfig.safeBlockVertical * 15,
-              width: SizeConfig.safeBlockHorizontal * 80,
-              child: new Card(
-                color: Colors.white,
-                elevation: 4.0,
+    return Visibility(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            //first element in column is the transparent offset
+            Container(
+              height: SizeConfig.safeBlockHorizontal * 105,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: new Container(
+                height: SizeConfig.safeBlockVertical * 15,
+                width: SizeConfig.safeBlockHorizontal * 80,
+                child: new Card(
+                  color: Colors.white,
+                  elevation: 4.0,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
       visible: _visible,
     );
   }
@@ -164,73 +173,124 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.arrow_back_rounded, color: Colors.deepOrange),
-            ),
-          ),
-          Expanded(
-            child:
-             IconButton(icon: Icon(Icons.info_outline_rounded),highlightColor: Colors.deepOrange,
-                  onPressed: (){
 
-                    setState(() {
-                      _visible = !_visible;
-                    });
-               _userBottomSheetModal(context); }),
+             IconButton(
+                icon: Icon(Icons.arrow_back_rounded),
+                highlightColor: Colors.deepOrange,
+                onPressed: () {}),
 
-          ),
-          Expanded(
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.arrow_forward_rounded, color: Colors.deepOrange),
-            ),
-          ),
+
+            IconButton(
+                icon: Icon(Icons.info_outline_rounded),
+                highlightColor: Colors.deepOrange,
+                onPressed: () {
+                  setState(() {
+                    _visible = !_visible;
+                  });
+                  _userBottomSheetModal(context);
+                }),
+
+          IconButton(
+                icon: Icon(Icons.arrow_forward_rounded),
+                highlightColor: Colors.deepOrange,
+                onPressed: () {}),
+
         ],
       ),
     );
   }
 
-Widget _userBottomSheetModal(context){
-  Future<void> future = showModalBottomSheet(context: context, builder: (BuildContext bc)
-      {
-        return Container(
-          height: SizeConfig.safeBlockVertical * 200,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Jude Hashane, 26',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 38,
-                        ),
-                      ),
-                      SizedBox(height: 18),
-                      Text(
-                        "Software Engineer",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Mutual Friends',
-                        style: TextStyle(color: Colors.white),
-                      )
-            ],
-          ),
-        );
-      });
-      future.then((void value) => _onCloseModal(value));
+  Widget _userBottomSheetModal(context) {
+    Future<void> future = showModalBottomSheet(
+        isDismissible: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            height: SizeConfig.safeBlockVertical * 60,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                child: ListView(
+                  // controller: , // set this too
+                  children: [
+                    userInfo(),
+                    Text(
+                      'Here is a little trick for you. If you add an intriguing phrase like “better looking in person”, more women will go on a date with you. Females are curious by nature, so they will want to see how you actually look like.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    userInfo(),
+                    userInfo(),
+                    userPassions(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+    future.then((void value) => _onCloseModal(value));
   }
+
   //onClose we set infoard visible
   void _onCloseModal(void value) {
     setState(() {
       _visible = true;
     });
   }
+
+  Widget userInfo() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: 5),
+        Text(
+          'Hashane, 26',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 38,
+          ),
+        ),
+        Text(
+          "Software Engineer",
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 18),
+        Text(
+          'Here is a little trick for you. If you add an intriguing phrase like “better looking in person”, more women will go on a date with you. Females are curious by nature, so they will want to see how you actually look like.',
+          style: TextStyle(color: Colors.white),
+        )
+      ],
+    );
+  }
+
+  Widget userPassions() {
+    return Center(
+      child: SizedBox(
+        height: 200, // card height
+        child: PageView.builder(
+          itemCount: 10,
+          controller: PageController(viewportFraction: 0.7),
+          onPageChanged: (int index) => setState(() => _index = index),
+          itemBuilder: (_, i) {
+            return Transform.scale(
+              scale: i == _index ? 1 : 0.95,
+              child: Card(
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                  child: Text(
+                    "Card ${i + 1}",
+                    style: TextStyle(fontSize: 32),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
-
-

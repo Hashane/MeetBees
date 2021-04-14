@@ -8,6 +8,7 @@ import 'package:meet_ceylon/provider/size_confiogurations.dart';
 import 'dart:io' show Platform;
 
 import 'package:meet_ceylon/widget/loading_widget.dart';
+import 'phone_authenticate.dart';
 
 
 class Login extends StatelessWidget {
@@ -110,7 +111,12 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                   child: ElevatedButton(
                     child: Text("Log in with Phone Number"),
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => new PhoneAuthenticate()),
+                      );
+                    },
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
                             Colors.black54),

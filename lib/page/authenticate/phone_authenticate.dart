@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/authenticate/otp.dart';
 import 'package:meet_ceylon/provider/size_confiogurations.dart';
 
 
@@ -13,7 +14,7 @@ class _PhoneAuthenticateState extends State<PhoneAuthenticate> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      appBar: AppBar(),
+
       body: Stack(
         children: [
           Container(
@@ -54,15 +55,19 @@ class _PhoneAuthenticateState extends State<PhoneAuthenticate> {
                         ),
                       ),
                       maxLength: 10,
-                      keyboardType: TextInputType.phone,
-                      controller: _controller,
+                      keyboardType: TextInputType.number, controller: _controller,
                       style: TextStyle(color: Colors.white, fontSize: 28),
                     ),
                   ),
                   Container(
                     child: ElevatedButton(
                       child: Text("Continue"),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => new OTPScreen(_controller.text)),
+                        );
+                      },
                       style: ButtonStyle(
                           foregroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
