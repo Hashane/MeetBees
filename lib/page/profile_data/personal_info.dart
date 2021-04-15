@@ -134,7 +134,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
 
               SizedBox(
-                height: SizeConfig.safeBlockVertical * 7,
+                height: SizeConfig.safeBlockVertical * 10,
               ),
               SizedBox(
                 height: SizeConfig.safeBlockVertical*7, //10 for example
@@ -168,6 +168,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                 ),
               ),
+              Expanded(child: Container(),),
             ],
           ),
         ),

@@ -31,7 +31,7 @@ class _WrapperState extends State<Wrapper> {
               return Login(auth: _auth,firestore: _firestore,);
               return MaterialApp(home: PersonalInfo());
             }
-            else if(identical(_auth.currentUser.metadata.creationTime,_auth.currentUser.metadata.lastSignInTime)){
+            else if(identical(_auth.currentUser.metadata.creationTime, _auth.currentUser.metadata.lastSignInTime)){
               //lastSignInTime is only updated if signout/signin interval is more than 2 minutes
               //Todo Design userinfo pages and redirect.
               return MaterialApp(home: PersonalInfo());
