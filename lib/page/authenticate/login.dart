@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meet_ceylon/provider/auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:meet_ceylon/provider/size_confiogurations.dart';
+import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'dart:io' show Platform;
 
 import 'package:meet_ceylon/widget/loading_widget.dart';

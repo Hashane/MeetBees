@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/authenticate/otp.dart';
-import 'package:meet_ceylon/provider/size_confiogurations.dart';
+import 'package:meet_ceylon/provider/size_configurations.dart';
 
 
 class PhoneAuthenticate extends StatefulWidget {
@@ -18,6 +18,10 @@ class _PhoneAuthenticateState extends State<PhoneAuthenticate> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(6.0),
+          child: LinearProgressIndicator(backgroundColor: Colors.red.withOpacity(0.3),valueColor:new AlwaysStoppedAnimation<Color>(Colors.red),value: 0.25,),
+        ),
       ),
       body: Stack(
         children: [

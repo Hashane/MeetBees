@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/users.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
-import 'package:meet_ceylon/provider/size_confiogurations.dart';
+import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/bottom_nav_widget.dart';
 import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/widget/user_card_widget.dart';
