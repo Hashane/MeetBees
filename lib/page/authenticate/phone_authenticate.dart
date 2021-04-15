@@ -14,7 +14,11 @@ class _PhoneAuthenticateState extends State<PhoneAuthenticate> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Stack(
         children: [
           Container(

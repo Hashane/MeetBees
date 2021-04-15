@@ -26,6 +26,13 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        // backgroundColor: Color(0x44000000),
+        elevation: 0,
+        title: Text("Phone Number Authentication"),
+      ),
       body: Stack(
         children: [
           Container(

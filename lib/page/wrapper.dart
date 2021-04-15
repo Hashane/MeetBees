@@ -8,6 +8,7 @@ import 'package:meet_ceylon/widget/loading_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'authenticate/login.dart';
+import 'authenticate/phone_authenticate.dart';
 
 class Wrapper extends StatefulWidget {
   @override
@@ -27,7 +28,13 @@ class _WrapperState extends State<Wrapper> {
             if(snapshot.data?.uid == null){
               //not logged in
               return Login(auth: _auth,firestore: _firestore,);
-            }else{
+            }
+            else if(_auth.currentUser.metadata.creationTime == _auth.currentUser.metadata.lastSignInTime){
+              //lastSignInTime is only updated if signout/signin interval is more than 2 minutes
+              //Todo Design userinfo pages and redirect.
+              return MaterialApp(home: PhoneAuthenticate());
+            }
+            else{
              return Builder(
                 builder: (BuildContext context)=> ChangeNotifierProvider(
                 create: (context) => FeedbackPositionProvider(),
