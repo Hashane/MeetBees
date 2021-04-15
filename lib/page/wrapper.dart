@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/profile_data/personal_info.dart';
 import 'package:meet_ceylon/provider/auth.dart';
 import 'package:meet_ceylon/page/home.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
@@ -28,11 +29,12 @@ class _WrapperState extends State<Wrapper> {
             if(snapshot.data?.uid == null){
               //not logged in
               return Login(auth: _auth,firestore: _firestore,);
+              return MaterialApp(home: PersonalInfo());
             }
-            else if(_auth.currentUser.metadata.creationTime == _auth.currentUser.metadata.lastSignInTime){
+            else if(identical(_auth.currentUser.metadata.creationTime,_auth.currentUser.metadata.lastSignInTime)){
               //lastSignInTime is only updated if signout/signin interval is more than 2 minutes
               //Todo Design userinfo pages and redirect.
-              return MaterialApp(home: PhoneAuthenticate());
+              return MaterialApp(home: PersonalInfo());
             }
             else{
              return Builder(
