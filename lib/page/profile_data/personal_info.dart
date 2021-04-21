@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/profile_data/photo_selection.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 
 class PersonalInfo extends StatefulWidget {
@@ -62,6 +63,21 @@ class _PersonalInfoState extends State<PersonalInfo> {
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 5,
               ),
+              Container(
+                child: Center(
+                  child: Text(
+                    'We only show your age to potential matches',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w200,
+                        color: Colors.black,
+                        fontSize: 15),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: SizeConfig.safeBlockVertical * 5,
+              ),
               Material(
                 elevation: 20.0,
                 shadowColor: Colors.blue,
@@ -112,9 +128,18 @@ class _PersonalInfoState extends State<PersonalInfo> {
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 5,
               ),
+          Container(
+            padding: EdgeInsets.zero,
+            decoration: BoxDecoration(
+              color: Colors.white30,
+              border: Border.all(color: Colors.transparent, width: 0.0),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child:
               ToggleButtons(
-                color: Colors.white,
-                selectedColor: Colors.orangeAccent,
+                color: Colors.black,
+                selectedColor: Colors.red,
+                fillColor: Colors.deepOrange,
                 children: <Widget>[
                   Container(width: (SizeConfig.screenWidth)/3, child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[new Icon(Icons.person,size: 16.0,color: Colors.white,),new SizedBox(width: 4.0,), new Text("Male",style: TextStyle(color: Colors.white),)],)),
                   Container(width: (SizeConfig.screenWidth)/3, child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[new Icon(Icons.whatshot,size: 16.0,color: Colors.white,),new SizedBox(width: 4.0,), new Text("Female",style: TextStyle(color: Colors.white),)],)),
@@ -132,7 +157,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 },
                 isSelected: _selection,
               ),
-
+          ),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 10,
               ),
@@ -143,20 +168,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   decoration: new BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.black.withOpacity(0.3),
                         blurRadius: 25.0, // soften the shadow
                         spreadRadius: 2.0, //extend the shadow
                         offset: Offset(
                           0.0, // Move to right 10  horizontally
                           10.0, // Move to bottom 10 Vertically
                         ),
-                      )
+                      ),
                     ],
                   ),
                   child: ElevatedButton(
                     child: Text("Continue"),
                     onPressed: () async {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => new PhotoSelection()),
+                      );
                     },
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(

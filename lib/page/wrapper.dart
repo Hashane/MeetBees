@@ -28,7 +28,7 @@ class _WrapperState extends State<Wrapper> {
             print(snapshot.data?.displayName);
             if(snapshot.data?.uid == null){
               //not logged in
-              return Login(auth: _auth,firestore: _firestore,);
+              //return Login(auth: _auth,firestore: _firestore,);
               return MaterialApp(home: PersonalInfo());
             }
             else if(identical(_auth.currentUser.metadata.creationTime, _auth.currentUser.metadata.lastSignInTime)){
