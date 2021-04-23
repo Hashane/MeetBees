@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/profile_data/photo_selection.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:meet_ceylon/widget/alert_dialog_widget.dart';
 
 class EnableLocation extends StatefulWidget {
   @override
@@ -9,13 +11,93 @@ class EnableLocation extends StatefulWidget {
 
 class _EnableLocationState extends State<EnableLocation> {
   final dateController = TextEditingController();
+  String latitude = "";
+  String longtitude = "";
 
-  List<bool> _selection = List.generate(2, (index) => false);
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _getLocation() async {
+    try {
+      final position = await _determinePosition();
+      setState(() {
+        latitude = '${position.latitude}';
+        longtitude = '${position.longitude}';
+      });
+    }catch(e){
+      print(e.toString());
+      _showDialog(context);
+      // final snackBar = SnackBar(content: Text(e.toString()));
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+  }
+
+  _showDialog(BuildContext context)
+  {
+
+    VoidCallback continueCallBack = () async => {
+      Navigator.of(context).pop(),
+      // code on continue comes here
+      //await Geolocator.openLocationSettings(),
+      await Geolocator.openAppSettings(),
+    };
+    BlurryDialog  alert = BlurryDialog("Abort","Are you sure you want to abort this operation?",continueCallBack);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  /// Determine the current position of the device.
+  ///
+  /// When the location services are not enabled or permissions
+  /// are denied the `Future` will return an error.
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is removed
-    dateController.dispose();
     super.dispose();
   }
 
@@ -83,7 +165,7 @@ class _EnableLocationState extends State<EnableLocation> {
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () { _getLocation(); latitude != null ? print(' $latitude , $longtitude') : print("no location");   },
                       child: Container(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20.0),

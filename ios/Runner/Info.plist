@@ -79,5 +79,11 @@
 	<string>This app needs camera access for generating vocabulary</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app needs access to save your photos in the gallery</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when in the background.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open and in the background.</string>
 </dict>
 </plist>
