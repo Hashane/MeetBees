@@ -43,6 +43,7 @@ class _WrapperState extends State<Wrapper> {
                  child: MaterialApp(
                    title: 'Tinder Swiping',
                    theme: ThemeData(
+                      // scaffoldBackgroundColor: const Color(0x1F000000),
                      bottomSheetTheme: BottomSheetThemeData(
                          shape: RoundedRectangleBorder(
                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),

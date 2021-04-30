@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/profile_data/photo_selection.dart';
+import 'package:meet_ceylon/page/profile_data/user_preferences.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meet_ceylon/widget/alert_dialog_widget.dart';
@@ -206,10 +207,16 @@ class _EnableLocationState extends State<EnableLocation> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => new PhotoSelection()),
+                                  builder: (context) => new UserPreferences()),
                             );
                           },
                           style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(color: Colors.red)
+                                  )
+                              ),
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Colors.black54),
                               backgroundColor: MaterialStateProperty.all<Color>(

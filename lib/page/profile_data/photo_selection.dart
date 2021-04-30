@@ -265,6 +265,12 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                           );
                         },
                         style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    side: BorderSide(color: Colors.red)
+                                )
+                            ),
                             foregroundColor: MaterialStateProperty.all<Color>(
                                 Colors.black54),
                             backgroundColor:

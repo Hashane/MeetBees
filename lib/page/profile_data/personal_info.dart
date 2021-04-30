@@ -87,6 +87,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 Material(
                   elevation: 20.0,
                   shadowColor: Colors.blue,
+                  borderRadius: BorderRadius.circular(10.0),
                   child: TextFormField(
                     autofocus: false,
                     keyboardType: TextInputType.name,
@@ -108,6 +109,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 Material(
                   elevation: 20.0,
                   shadowColor: Colors.blue,
+                  borderRadius: BorderRadius.circular(10.0),
                   child: TextFormField(
                     keyboardType: TextInputType.datetime,
                     autofocus: false,
@@ -140,10 +142,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   padding: EdgeInsets.zero,
                   decoration: BoxDecoration(
                     color: Colors.white30,
-                    border: Border.all(color: Colors.transparent, width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    // border: Border.all(color: Colors.white30, width: 0.0),
+                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   child: ToggleButtons(
+                    borderColor: Colors.black12,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     color: Colors.black,
                     selectedColor: Colors.red,
                     fillColor: Colors.black12,
@@ -235,6 +239,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           );
                         },
                         style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    side: BorderSide(color: Colors.red)
+                                )
+                            ),
                             foregroundColor: MaterialStateProperty.all<Color>(
                                 Colors.black54),
                             backgroundColor:
