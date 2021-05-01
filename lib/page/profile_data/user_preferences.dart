@@ -3,6 +3,7 @@ import 'package:meet_ceylon/page/home.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:provider/provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class UserPreferences extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class UserPreferences extends StatefulWidget {
 }
 
 class _UserPreferencesState extends State<UserPreferences> {
+  bool _value = false;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -89,7 +91,91 @@ class _UserPreferencesState extends State<UserPreferences> {
                               print("clicked me");
                             },
                             child: SizedBox(
-                              width: SizeConfig.safeBlockHorizontal * 30,
+                              // width: SizeConfig.safeBlockHorizontal * 30,
+                              height: SizeConfig.safeBlockVertical * 20,
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10)),
+                                  //side: BorderSide(width: 5, color: Colors.green)
+                                ),
+                                child: ListTile(),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if(_value) _value = false;
+                                else _value = true;
+                              });
+                            },
+                            child: SizedBox(
+                              //width: SizeConfig.safeBlockHorizontal * 30,
+                              height: SizeConfig.safeBlockVertical * 20,
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10)),
+                                  //side: BorderSide(width: 5, color: Colors.green)
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10)),
+                                          image: DecorationImage(
+                                            image: new AssetImage(
+                                                'assets/images/sports.jpg'),
+                                            fit: BoxFit.cover,
+                                            colorFilter: ColorFilter.mode(
+                                                Colors.black.withOpacity(0.5),
+                                                BlendMode.softLight),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment(0.9, -0.9),
+                                      child: _value ?   Container(
+                                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Icon(
+                                            Icons.check,
+                                            size: 10.0,
+                                            color: Colors.black,
+                                          ) ,
+                                        ),
+                                      ) : SizedBox.shrink(),
+                                    ),
+                                    Align(
+                                      alignment: Alignment(-0.9, 0.9),
+                                      child: Text(
+                                        'Sports',
+                                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white70),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _value = true;
+                              });
+                            },
+                            child: SizedBox(
+                              //width: SizeConfig.safeBlockHorizontal * 30,
                               height: SizeConfig.safeBlockVertical * 20,
                               child: Card(
                                 elevation: 5,
@@ -108,7 +194,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                               print("clicked me");
                             },
                             child: SizedBox(
-                              width: SizeConfig.safeBlockHorizontal * 30,
+                              // width: SizeConfig.safeBlockHorizontal * 30,
                               height: SizeConfig.safeBlockVertical * 20,
                               child: Card(
                                 elevation: 5,
@@ -127,7 +213,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                               print("clicked me");
                             },
                             child: SizedBox(
-                              width: SizeConfig.safeBlockHorizontal * 30,
+                              //width: SizeConfig.safeBlockHorizontal * 30,
                               height: SizeConfig.safeBlockVertical * 20,
                               child: Card(
                                 elevation: 5,
@@ -146,25 +232,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                               print("clicked me");
                             },
                             child: SizedBox(
-                              width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),GestureDetector(
-                            onTap: () {
-                              print("clicked me");
-                            },
-                            child: SizedBox(
-                              width: SizeConfig.safeBlockHorizontal * 30,
+                              //width: SizeConfig.safeBlockHorizontal * 30,
                               height: SizeConfig.safeBlockVertical * 20,
                               child: Card(
                                 elevation: 5,
@@ -178,26 +246,6 @@ class _UserPreferencesState extends State<UserPreferences> {
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              print("clicked me");
-                            },
-                            child: SizedBox(
-                              width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),
-
                         ],
                       ),
                     ],
