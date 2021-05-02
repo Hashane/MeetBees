@@ -13,16 +13,10 @@ class UserPreferences extends StatefulWidget {
 }
 
 class _UserPreferencesState extends State<UserPreferences> {
-
   //carousel
   int _currentIndex = 0;
-  List cardList = [
-    preferenceBox(),
-    preferencesSecondPage(),
-    preferencesThirdPage(),
-    preferencesFourthPage(),
-    preferencesFifthPage(),
-  ];
+
+  //map function is used by the carousel
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
@@ -31,9 +25,51 @@ class _UserPreferencesState extends State<UserPreferences> {
     return result;
   }
 
+  //choices updater
+  int choicesCount;
+
+  //used to store user selections in a common list
+  List<int> choices = [];
+
+  //removing the items from the choices list decrementing the count by 1
+  _removeChoice(int id) {
+    setState(() {
+      choices.remove(id);
+      choicesCount -= 1;
+    });
+  }
+
+  //adding items to choices list, counting the length of the list and updating the state
+  _updateChoices(int id) {
+    setState(() {
+      choices.add(id);
+      choicesCount = choices.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    //Card list of Preference screens
+    List cardList = [
+      ///passing methods(_updateChoices, _removeChoice) as callbacks from Parent Widget(UserPreferences) to each Child Widget.
+      ///these callback methods will be used to update the parentwidget from bottom to top (child to parent).
+      ///Any updates to the choices lists will be sent back to the parent from each child widget.
+      preferenceBox(
+          parentAction: _updateChoices,
+          parentActionRemove: _removeChoice,
+          count: choicesCount),
+      preferencesSecondPage(
+          parentAction: _updateChoices,
+          parentActionRemove: _removeChoice,
+          count: choicesCount),
+      preferencesThirdPage(),
+      preferencesFourthPage(),
+      preferencesFifthPage(),
+    ];
+
+    //for determining screen sizes
     SizeConfig().init(context);
+
     return Scaffold(
       body: Container(
         decoration: new BoxDecoration(
@@ -64,7 +100,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                 Container(
                   child: Center(
                     child: Text(
-                      'Let us know your passions',
+                      "Let us know about your passions",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -212,7 +248,6 @@ class _UserPreferencesState extends State<UserPreferences> {
   }
 }
 
-
 class preferencesFifthPage extends StatefulWidget {
   @override
   _preferencesFifthPageState createState() => _preferencesFifthPageState();
@@ -237,339 +272,10 @@ class _preferencesFifthPageState extends State<preferencesFifthPage> {
                 (MediaQuery.of(context).size.height / 1.5),
             children: List.generate(
               6,
-                  (index) {
-                itemCount:
-                _preferences.length;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (_preferences[index].isSelected) {
-                        _preferences[index].isSelected = false;
-                      } else {
-                        _preferences[index].isSelected = true;
-                      }
-                    });
-                  },
-                  child: SizedBox(
-                    //width: SizeConfig.safeBlockHorizontal * 30,
-                    height: SizeConfig.safeBlockVertical * 20,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        //side: BorderSide(width: 5, color: Colors.green)
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                                image: DecorationImage(
-                                  image: new AssetImage(
-                                      _preferences[index].imgUrl.toString()),
-                                  fit: BoxFit.cover,
-                                  colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment(0.9, -0.9),
-                            child: _preferences[index].isSelected
-                                ? Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Icon(
-                                  Icons.check,
-                                  size: 10.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            )
-                                : SizedBox.shrink(),
-                          ),
-                          Align(
-                            alignment: Alignment(-0.9, 0.9),
-                            child: Text(
-                              _preferences[index].title.toString(),
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class preferencesFourthPage extends StatefulWidget {
-  @override
-  _preferencesFourthPageState createState() => _preferencesFourthPageState();
-}
-
-class _preferencesFourthPageState extends State<preferencesFourthPage> {
-  final List<Preference> _preferences = preferencesList4;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          GridView.count(
-            shrinkWrap: true,
-            primary: false,
-            padding: const EdgeInsets.all(5),
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-            crossAxisCount: 3,
-            childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.5),
-            children: List.generate(
-              6,
-                  (index) {
-                itemCount:
-                _preferences.length;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (_preferences[index].isSelected) {
-                        _preferences[index].isSelected = false;
-                      } else {
-                        _preferences[index].isSelected = true;
-                      }
-                    });
-                  },
-                  child: SizedBox(
-                    //width: SizeConfig.safeBlockHorizontal * 30,
-                    height: SizeConfig.safeBlockVertical * 20,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        //side: BorderSide(width: 5, color: Colors.green)
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                                image: DecorationImage(
-                                  image: new AssetImage(
-                                      _preferences[index].imgUrl.toString()),
-                                  fit: BoxFit.cover,
-                                  colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment(0.9, -0.9),
-                            child: _preferences[index].isSelected
-                                ? Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Icon(
-                                  Icons.check,
-                                  size: 10.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            )
-                                : SizedBox.shrink(),
-                          ),
-                          Align(
-                            alignment: Alignment(-0.9, 0.9),
-                            child: Text(
-                              _preferences[index].title.toString(),
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class preferencesThirdPage extends StatefulWidget {
-  @override
-  _preferencesThirdPageState createState() => _preferencesThirdPageState();
-}
-
-class _preferencesThirdPageState extends State<preferencesThirdPage> {
-  final List<Preference> _preferences = preferencesList3;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          GridView.count(
-            shrinkWrap: true,
-            primary: false,
-            padding: const EdgeInsets.all(5),
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-            crossAxisCount: 3,
-            childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.5),
-            children: List.generate(
-              6,
-                  (index) {
-                itemCount:
-                _preferences.length;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (_preferences[index].isSelected) {
-                        _preferences[index].isSelected = false;
-                      } else {
-                        _preferences[index].isSelected = true;
-                      }
-                    });
-                  },
-                  child: SizedBox(
-                    //width: SizeConfig.safeBlockHorizontal * 30,
-                    height: SizeConfig.safeBlockVertical * 20,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        //side: BorderSide(width: 5, color: Colors.green)
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                                image: DecorationImage(
-                                  image: new AssetImage(
-                                      _preferences[index].imgUrl.toString()),
-                                  fit: BoxFit.cover,
-                                  colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment(0.9, -0.9),
-                            child: _preferences[index].isSelected
-                                ? Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Icon(
-                                  Icons.check,
-                                  size: 10.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            )
-                                : SizedBox.shrink(),
-                          ),
-                          Align(
-                            alignment: Alignment(-0.9, 0.9),
-                            child: Text(
-                              _preferences[index].title.toString(),
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-class preferencesSecondPage extends StatefulWidget {
-  @override
-  _preferencesSecondPageState createState() => _preferencesSecondPageState();
-}
-
-class _preferencesSecondPageState extends State<preferencesSecondPage> {
-  final List<Preference> _preferences = preferencesList2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          GridView.count(
-            shrinkWrap: true,
-            primary: false,
-            padding: const EdgeInsets.all(5),
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-            crossAxisCount: 3,
-            childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.5),
-            children: List.generate(
-              6,
               (index) {
                 itemCount:
                 _preferences.length;
-               return  GestureDetector(
+                return GestureDetector(
                   onTap: () {
                     setState(() {
                       if (_preferences[index].isSelected) {
@@ -603,7 +309,8 @@ class _preferencesSecondPageState extends State<preferencesSecondPage> {
                                       _preferences[index].imgUrl.toString()),
                                   fit: BoxFit.cover,
                                   colorFilter: ColorFilter.mode(
-                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                                      Colors.black.withOpacity(0.8),
+                                      BlendMode.dstATop),
                                 ),
                               ),
                             ),
@@ -650,12 +357,372 @@ class _preferencesSecondPageState extends State<preferencesSecondPage> {
   }
 }
 
+class preferencesFourthPage extends StatefulWidget {
+  @override
+  _preferencesFourthPageState createState() => _preferencesFourthPageState();
+}
+
+class _preferencesFourthPageState extends State<preferencesFourthPage> {
+  final List<Preference> _preferences = preferencesList4;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+              (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else {
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8),
+                                      BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 10.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class preferencesThirdPage extends StatefulWidget {
+  @override
+  _preferencesThirdPageState createState() => _preferencesThirdPageState();
+}
+
+class _preferencesThirdPageState extends State<preferencesThirdPage> {
+  final List<Preference> _preferences = preferencesList3;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+              (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else {
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8),
+                                      BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 10.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class preferencesSecondPage extends StatefulWidget {
+  final int count;
+  final ValueChanged<int> parentAction;
+  final ValueChanged<int> parentActionRemove;
+
+  @override
+  _preferencesSecondPageState createState() => _preferencesSecondPageState();
+
+  const preferencesSecondPage(
+      {Key key, this.parentAction, this.parentActionRemove, this.count})
+      : super(key: key);
+}
+
+class _preferencesSecondPageState extends State<preferencesSecondPage> {
+  final List<Preference> _preferences = preferencesList2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+              (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                        widget.parentActionRemove(_preferences[index].pid);
+                      } else {
+                        //if the selection count goes above the limit give a warning
+                        if (widget.count != null && widget.count > 5) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Reached the Limit")));
+                        } else {
+                          widget.parentAction(_preferences[index].pid);
+                          _preferences[index].isSelected = true;
+                        }
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8),
+                                      BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 10.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+///Using CallBacks data is passed on from child widget(this) to the parent(UserPreferences).
+///Parent widget shares a the common list among all the child widgets to capture user selections.
 class preferenceBox extends StatefulWidget {
+  //local variable to catch the count value passed on from the parent widget
+  final int count;
+
+  //Creating Callback param in Child Widget(preferenceBox)
+  final ValueChanged<int> parentAction;
+  final ValueChanged<int> parentActionRemove;
 
   @override
   _preferenceBoxState createState() => _preferenceBoxState();
+
+  //constructor
+  const preferenceBox(
+      {Key key, this.parentAction, this.parentActionRemove, this.count})
+      : super(key: key);
 }
 
+/// GridView.Count generates gridviews using preferences data listed.
+/// Each grid contains a card which is wrapped around with a gesture detector to determine the user selection.
 class _preferenceBoxState extends State<preferenceBox> {
   final List<Preference> _preferences = preferencesList;
 
@@ -684,8 +751,19 @@ class _preferenceBoxState extends State<preferenceBox> {
                     setState(() {
                       if (_preferences[index].isSelected) {
                         _preferences[index].isSelected = false;
-                      } else{
-                        _preferences[index].isSelected = true;
+
+                        //Execute the callback(parentActionRemove) from the Child Widget.
+                        widget.parentActionRemove(_preferences[index].pid);
+                      } else {
+                        //if the selection count goes above the limit give a warning
+                        if (widget.count != null && widget.count > 5) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Reached the Limit")));
+                        } else {
+                          //Execute the callback(parentAction) from the Child Widget.
+                          widget.parentAction(_preferences[index].pid);
+                          _preferences[index].isSelected = true;
+                        }
                       }
                     });
                   },
