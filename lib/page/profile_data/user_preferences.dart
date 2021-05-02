@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/page/home.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:meet_ceylon/model/preference.dart';
 
 class UserPreferences extends StatefulWidget {
   @override
@@ -11,7 +13,24 @@ class UserPreferences extends StatefulWidget {
 }
 
 class _UserPreferencesState extends State<UserPreferences> {
-  bool _value = false;
+
+  //carousel
+  int _currentIndex = 0;
+  List cardList = [
+    preferenceBox(),
+    preferencesSecondPage(),
+    preferencesThirdPage(),
+    preferencesFourthPage(),
+    preferencesFifthPage(),
+  ];
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -45,7 +64,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                 Container(
                   child: Center(
                     child: Text(
-                      'Fill your personal information',
+                      'Let us know your passions',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -60,7 +79,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                 Container(
                   child: Center(
                     child: Text(
-                      'Add atleast 3 photos to continue. You can change these later.',
+                      'Let others know a little bit about you',
                       style: TextStyle(
                           fontWeight: FontWeight.w200,
                           color: Colors.black,
@@ -72,184 +91,40 @@ class _UserPreferencesState extends State<UserPreferences> {
                 SizedBox(
                   height: SizeConfig.safeBlockVertical * 5,
                 ),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      GridView.count(
-                        shrinkWrap: true,
-                        primary: false,
-                        padding: const EdgeInsets.all(5),
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5,
-                        crossAxisCount: 3,
-                        childAspectRatio: MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height / 1.5),
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("clicked me");
-                            },
-                            child: SizedBox(
-                              // width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if(_value) _value = false;
-                                else _value = true;
-                              });
-                            },
-                            child: SizedBox(
-                              //width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
-                                          image: DecorationImage(
-                                            image: new AssetImage(
-                                                'assets/images/sports.jpg'),
-                                            fit: BoxFit.cover,
-                                            colorFilter: ColorFilter.mode(
-                                                Colors.black.withOpacity(0.5),
-                                                BlendMode.softLight),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment(0.9, -0.9),
-                                      child: _value ?   Container(
-                                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Icon(
-                                            Icons.check,
-                                            size: 10.0,
-                                            color: Colors.black,
-                                          ) ,
-                                        ),
-                                      ) : SizedBox.shrink(),
-                                    ),
-                                    Align(
-                                      alignment: Alignment(-0.9, 0.9),
-                                      child: Text(
-                                        'Sports',
-                                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white70),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _value = true;
-                              });
-                            },
-                            child: SizedBox(
-                              //width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              print("clicked me");
-                            },
-                            child: SizedBox(
-                              // width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              print("clicked me");
-                            },
-                            child: SizedBox(
-                              //width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              print("clicked me");
-                            },
-                            child: SizedBox(
-                              //width: SizeConfig.safeBlockHorizontal * 30,
-                              height: SizeConfig.safeBlockVertical * 20,
-                              child: Card(
-                                elevation: 5,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)),
-                                  //side: BorderSide(width: 5, color: Colors.green)
-                                ),
-                                child: ListTile(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 1.0,
+                    viewportFraction: 1.0,
+                    enlargeCenterPage: false,
+                    // autoPlay: false,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
                   ),
+                  items: cardList.map((card) {
+                    return Builder(builder: (BuildContext context) {
+                      return card;
+                    });
+                  }).toList(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: map<Widget>(cardList, (index, url) {
+                    return Container(
+                      width: 10.0,
+                      height: 10.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentIndex == index
+                            ? Colors.blueAccent
+                            : Colors.grey,
+                      ),
+                    );
+                  }),
                 ),
                 SizedBox(
                   height: SizeConfig.safeBlockVertical * 5,
@@ -332,6 +207,555 @@ class _UserPreferencesState extends State<UserPreferences> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+
+class preferencesFifthPage extends StatefulWidget {
+  @override
+  _preferencesFifthPageState createState() => _preferencesFifthPageState();
+}
+
+class _preferencesFifthPageState extends State<preferencesFifthPage> {
+  final List<Preference> _preferences = preferencesList5;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+                  (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else {
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 10.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class preferencesFourthPage extends StatefulWidget {
+  @override
+  _preferencesFourthPageState createState() => _preferencesFourthPageState();
+}
+
+class _preferencesFourthPageState extends State<preferencesFourthPage> {
+  final List<Preference> _preferences = preferencesList4;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+                  (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else {
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 10.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class preferencesThirdPage extends StatefulWidget {
+  @override
+  _preferencesThirdPageState createState() => _preferencesThirdPageState();
+}
+
+class _preferencesThirdPageState extends State<preferencesThirdPage> {
+  final List<Preference> _preferences = preferencesList3;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+                  (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else {
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 10.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class preferencesSecondPage extends StatefulWidget {
+  @override
+  _preferencesSecondPageState createState() => _preferencesSecondPageState();
+}
+
+class _preferencesSecondPageState extends State<preferencesSecondPage> {
+  final List<Preference> _preferences = preferencesList2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+              (index) {
+                itemCount:
+                _preferences.length;
+               return  GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else {
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 10.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class preferenceBox extends StatefulWidget {
+
+  @override
+  _preferenceBoxState createState() => _preferenceBoxState();
+}
+
+class _preferenceBoxState extends State<preferenceBox> {
+  final List<Preference> _preferences = preferencesList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            primary: false,
+            padding: const EdgeInsets.all(5),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / 1.5),
+            children: List.generate(
+              6,
+              (index) {
+                itemCount:
+                _preferences.length;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_preferences[index].isSelected) {
+                        _preferences[index].isSelected = false;
+                      } else{
+                        _preferences[index].isSelected = true;
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    //width: SizeConfig.safeBlockHorizontal * 30,
+                    height: SizeConfig.safeBlockVertical * 20,
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        //side: BorderSide(width: 5, color: Colors.green)
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                image: DecorationImage(
+                                  image: new AssetImage(
+                                      _preferences[index].imgUrl.toString()),
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.4),
+                                      BlendMode.softLight),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment(0.9, -0.9),
+                            child: _preferences[index].isSelected
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 10.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, 0.9),
+                            child: Text(
+                              _preferences[index].title.toString(),
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
