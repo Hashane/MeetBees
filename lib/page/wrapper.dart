@@ -41,7 +41,7 @@ class _WrapperState extends State<Wrapper> {
                 builder: (BuildContext context)=> ChangeNotifierProvider(
                 create: (context) => FeedbackPositionProvider(),
                  child: MaterialApp(
-                   title: 'Tinder Swiping',
+                   title: 'Meet Ceylon',
                    theme: ThemeData(
                       // scaffoldBackgroundColor: const Color(0x1F000000),
                      bottomSheetTheme: BottomSheetThemeData(

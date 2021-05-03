@@ -62,9 +62,18 @@ class _UserPreferencesState extends State<UserPreferences> {
           parentAction: _updateChoices,
           parentActionRemove: _removeChoice,
           count: choicesCount),
-      preferencesThirdPage(),
-      preferencesFourthPage(),
-      preferencesFifthPage(),
+      preferencesThirdPage(
+          parentAction: _updateChoices,
+          parentActionRemove: _removeChoice,
+          count: choicesCount),
+      preferencesFourthPage(
+          parentAction: _updateChoices,
+          parentActionRemove: _removeChoice,
+          count: choicesCount),
+      preferencesFifthPage(
+          parentAction: _updateChoices,
+          parentActionRemove: _removeChoice,
+          count: choicesCount),
     ];
 
     //for determining screen sizes
@@ -249,8 +258,20 @@ class _UserPreferencesState extends State<UserPreferences> {
 }
 
 class preferencesFifthPage extends StatefulWidget {
+  //local variable to catch the count value passed on from the parent widget
+  final int count;
+
+  //Creating Callback param in Child Widget(preferenceBox)
+  final ValueChanged<int> parentAction;
+  final ValueChanged<int> parentActionRemove;
+
   @override
   _preferencesFifthPageState createState() => _preferencesFifthPageState();
+
+  //constructor
+  const preferencesFifthPage(
+      {Key key, this.parentAction, this.parentActionRemove, this.count})
+      : super(key: key);
 }
 
 class _preferencesFifthPageState extends State<preferencesFifthPage> {
@@ -280,8 +301,19 @@ class _preferencesFifthPageState extends State<preferencesFifthPage> {
                     setState(() {
                       if (_preferences[index].isSelected) {
                         _preferences[index].isSelected = false;
+
+                        //Execute the callback(parentActionRemove) from the Child Widget.
+                        widget.parentActionRemove(_preferences[index].pid);
                       } else {
-                        _preferences[index].isSelected = true;
+                        //if the selection count goes above the limit give a warning
+                        if (widget.count != null && widget.count > 5) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Reached the Limit")));
+                        } else {
+                          //Execute the callback(parentAction) from the Child Widget.
+                          widget.parentAction(_preferences[index].pid);
+                          _preferences[index].isSelected = true;
+                        }
                       }
                     });
                   },
@@ -358,8 +390,20 @@ class _preferencesFifthPageState extends State<preferencesFifthPage> {
 }
 
 class preferencesFourthPage extends StatefulWidget {
+  //local variable to catch the count value passed on from the parent widget
+  final int count;
+
+  //Creating Callback param in Child Widget(preferenceBox)
+  final ValueChanged<int> parentAction;
+  final ValueChanged<int> parentActionRemove;
+
   @override
   _preferencesFourthPageState createState() => _preferencesFourthPageState();
+
+  //constructor
+  const preferencesFourthPage(
+      {Key key, this.parentAction, this.parentActionRemove, this.count})
+      : super(key: key);
 }
 
 class _preferencesFourthPageState extends State<preferencesFourthPage> {
@@ -389,8 +433,19 @@ class _preferencesFourthPageState extends State<preferencesFourthPage> {
                     setState(() {
                       if (_preferences[index].isSelected) {
                         _preferences[index].isSelected = false;
+
+                        //Execute the callback(parentActionRemove) from the Child Widget.
+                        widget.parentActionRemove(_preferences[index].pid);
                       } else {
-                        _preferences[index].isSelected = true;
+                        //if the selection count goes above the limit give a warning
+                        if (widget.count != null && widget.count > 5) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Reached the Limit")));
+                        } else {
+                          //Execute the callback(parentAction) from the Child Widget.
+                          widget.parentAction(_preferences[index].pid);
+                          _preferences[index].isSelected = true;
+                        }
                       }
                     });
                   },
@@ -467,8 +522,20 @@ class _preferencesFourthPageState extends State<preferencesFourthPage> {
 }
 
 class preferencesThirdPage extends StatefulWidget {
+  //local variable to catch the count value passed on from the parent widget
+  final int count;
+
+  //Creating Callback param in Child Widget(preferenceBox)
+  final ValueChanged<int> parentAction;
+  final ValueChanged<int> parentActionRemove;
+
   @override
   _preferencesThirdPageState createState() => _preferencesThirdPageState();
+
+  //constructor
+  const preferencesThirdPage(
+      {Key key, this.parentAction, this.parentActionRemove, this.count})
+      : super(key: key);
 }
 
 class _preferencesThirdPageState extends State<preferencesThirdPage> {
@@ -499,8 +566,19 @@ class _preferencesThirdPageState extends State<preferencesThirdPage> {
                     setState(() {
                       if (_preferences[index].isSelected) {
                         _preferences[index].isSelected = false;
+
+                        //Execute the callback(parentActionRemove) from the Child Widget.
+                        widget.parentActionRemove(_preferences[index].pid);
                       } else {
-                        _preferences[index].isSelected = true;
+                        //if the selection count goes above the limit give a warning
+                        if (widget.count != null && widget.count > 5) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Reached the Limit")));
+                        } else {
+                          //Execute the callback(parentAction) from the Child Widget.
+                          widget.parentAction(_preferences[index].pid);
+                          _preferences[index].isSelected = true;
+                        }
                       }
                     });
                   },
@@ -577,7 +655,10 @@ class _preferencesThirdPageState extends State<preferencesThirdPage> {
 }
 
 class preferencesSecondPage extends StatefulWidget {
+  //local variable to catch the count value passed on from the parent widget
   final int count;
+
+  //Creating Callback param in Child Widget(preferenceBox)
   final ValueChanged<int> parentAction;
   final ValueChanged<int> parentActionRemove;
 
@@ -617,6 +698,8 @@ class _preferencesSecondPageState extends State<preferencesSecondPage> {
                     setState(() {
                       if (_preferences[index].isSelected) {
                         _preferences[index].isSelected = false;
+
+                        //Execute the callback(parentActionRemove) from the Child Widget.
                         widget.parentActionRemove(_preferences[index].pid);
                       } else {
                         //if the selection count goes above the limit give a warning
@@ -624,6 +707,7 @@ class _preferencesSecondPageState extends State<preferencesSecondPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("Reached the Limit")));
                         } else {
+                          //Execute the callback(parentAction) from the Child Widget.
                           widget.parentAction(_preferences[index].pid);
                           _preferences[index].isSelected = true;
                         }
