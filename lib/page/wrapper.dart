@@ -19,6 +19,7 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool isFirstTime = false;
   
   @override
   Widget build(BuildContext context) {
@@ -26,36 +27,48 @@ class _WrapperState extends State<Wrapper> {
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
             print(snapshot.data?.displayName);
+
+            //Check if the user authenticated for the first time.
+            _firestore.collection('users').doc(snapshot.data?.uid)
+                .get().then((DocumentSnapshot ds){
+                  if(ds.exists){
+                    isFirstTime = ds.data()["isFirstTime"];
+                    print(isFirstTime);
+                  }
+            });
+
             if(snapshot.data?.uid == null){
               //not logged in
-              //return Login(auth: _auth,firestore: _firestore,);
+              return Login(auth: _auth,firestore: _firestore,);
               return MaterialApp(home: PersonalInfo());
             }
-            else if(identical(_auth.currentUser.metadata.creationTime, _auth.currentUser.metadata.lastSignInTime)){
-              //lastSignInTime is only updated if signout/signin interval is more than 2 minutes
-              //Todo Design userinfo pages and redirect.
-              return MaterialApp(home: PersonalInfo());
-            }
-            else{
-             return Builder(
-                builder: (BuildContext context)=> ChangeNotifierProvider(
-                create: (context) => FeedbackPositionProvider(),
-                 child: MaterialApp(
-                   title: 'Meet Ceylon',
-                   theme: ThemeData(
-                      // scaffoldBackgroundColor: const Color(0x1F000000),
-                     bottomSheetTheme: BottomSheetThemeData(
-                         shape: RoundedRectangleBorder(
-                           borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                         ),
-                         backgroundColor: Colors.black.withOpacity(0.5)),
+            else {
+                if (isFirstTime == true) { return MaterialApp(home: PersonalInfo());}
+                else {
+                return Builder(
+                  builder: (BuildContext context) =>
+                      ChangeNotifierProvider(
+                        create: (context) => FeedbackPositionProvider(),
+                        child: MaterialApp(
+                          title: 'Meet Ceylon',
+                          theme: ThemeData(
+                            // scaffoldBackgroundColor: const Color(0x1F000000),
+                            bottomSheetTheme: BottomSheetThemeData(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      topRight: Radius.circular(20.0)),
+                                ),
+                                backgroundColor: Colors.black.withOpacity(0.5)),
 
-                     primarySwatch: Colors.deepOrange,
-                     visualDensity: VisualDensity.adaptivePlatformDensity,
-                   ),
-                   home: Home(),
-               ),),
-             );
+                            primarySwatch: Colors.deepOrange,
+                            visualDensity: VisualDensity
+                                .adaptivePlatformDensity,
+                          ),
+                          home: Home(),
+                        ),),
+                );
+              }
             }
         }else if(snapshot.connectionState == ConnectionState.waiting){ return loading();}
         else{
