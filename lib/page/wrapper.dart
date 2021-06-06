@@ -19,62 +19,67 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool isFirstTime = false;
-  
+  bool _isFirstTime = false;
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream: Auth(_auth).user,
+    return StreamBuilder(
+      stream: Auth(_auth).user,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-        if(snapshot.connectionState == ConnectionState.active){
-            print(snapshot.data?.displayName);
+        if (snapshot.connectionState == ConnectionState.active) {
+          print(snapshot.data?.displayName);
 
-            //Check if the user authenticated for the first time.
-            _firestore.collection('users').doc(snapshot.data?.uid)
-                .get().then((DocumentSnapshot ds){
-                  if(ds.exists){
-                    isFirstTime = ds.data()["isFirstTime"];
-                    print(isFirstTime);
-                  }
-            });
+          //Check if the user authenticated for the first time.
+          _firestore
+              .collection('users')
+              .doc(snapshot.data?.uid)
+              .get()
+              .then((DocumentSnapshot ds) {
+            if (ds.exists) {
+              _isFirstTime = ds.data()["isFirstTime"];
+            }
+          });
 
-            if(snapshot.data?.uid == null){
-              //not logged in
-              return Login(auth: _auth,firestore: _firestore,);
+          if (snapshot.data?.uid == null) {
+            //not logged in
+            return Login(
+              auth: _auth,
+              firestore: _firestore,
+            );
+          } else {
+            if (_isFirstTime) {
               return MaterialApp(home: PersonalInfo());
-            }
-            else {
-                if (isFirstTime == true) { return MaterialApp(home: PersonalInfo());}
-                else {
-                return Builder(
-                  builder: (BuildContext context) =>
-                      ChangeNotifierProvider(
-                        create: (context) => FeedbackPositionProvider(),
-                        child: MaterialApp(
-                          title: 'Meet Ceylon',
-                          theme: ThemeData(
-                            // scaffoldBackgroundColor: const Color(0x1F000000),
-                            bottomSheetTheme: BottomSheetThemeData(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0)),
-                                ),
-                                backgroundColor: Colors.black.withOpacity(0.5)),
-
-                            primarySwatch: Colors.deepOrange,
-                            visualDensity: VisualDensity
-                                .adaptivePlatformDensity,
+            } else {
+              return Builder(
+                builder: (BuildContext context) => ChangeNotifierProvider(
+                  create: (context) => FeedbackPositionProvider(),
+                  child: MaterialApp(
+                    title: 'Meet Ceylon',
+                    theme: ThemeData(
+                      // scaffoldBackgroundColor: const Color(0x1F000000),
+                      bottomSheetTheme: BottomSheetThemeData(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0)),
                           ),
-                          home: Home(),
-                        ),),
-                );
-              }
+                          backgroundColor: Colors.black.withOpacity(0.5)),
+
+                      primarySwatch: Colors.deepOrange,
+                      visualDensity: VisualDensity.adaptivePlatformDensity,
+                    ),
+                    home: Home(),
+                  ),
+                ),
+              );
             }
-        }else if(snapshot.connectionState == ConnectionState.waiting){ return loading();}
-        else{
+          }
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return loading();
+        } else {
           return loading();
         }
-      },); //user stream
-
+      },
+    ); //user stream
   }
 }

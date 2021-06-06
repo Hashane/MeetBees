@@ -5,10 +5,17 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'enable_location.dart';
+import 'dart:developer' as developer;
 
 class PhotoSelection extends StatefulWidget {
+
+  // Declare a field that holds user information
+  final Map<String, String> userInfoMap;
+
   @override
   _PhotoSelectionState createState() => _PhotoSelectionState();
+
+  PhotoSelection({Key key, @required this.userInfoMap}) : super(key: key);
 }
 
 class _PhotoSelectionState extends State<PhotoSelection> {
@@ -20,6 +27,8 @@ class _PhotoSelectionState extends State<PhotoSelection> {
   PickedFile _imageFile6;
   final ImagePicker _picker = ImagePicker();
   int _gestureIndex = 0;
+  List<String> _photoList = [];
+
 
   Future _getImage(int index) async {
     try {
@@ -38,6 +47,10 @@ class _PhotoSelectionState extends State<PhotoSelection> {
         } else if (_gestureIndex == 6) {
           _imageFile6 = pickedImage;
         }
+
+        if(pickedImage != null){
+          _photoList.add(pickedImage.path.toString());
+        }
       });
     } catch (e) {
       print(e.toString());
@@ -47,6 +60,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    developer.log(widget.userInfoMap.toString(), name: 'my.app.category');
     return Scaffold(
       body: Container(
         decoration: new BoxDecoration(
@@ -258,10 +272,13 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                       child: ElevatedButton(
                         child: Text("Continue"),
                         onPressed: () async {
+                          _photoList.length  < 3 ?
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Add at least 3 images"))) :
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => new EnableLocation()),
+                                builder: (context) => new EnableLocation(photoList: _photoList, userInfoMap: widget.userInfoMap,)),
                           );
                         },
                         style: ButtonStyle(

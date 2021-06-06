@@ -6,8 +6,15 @@ import 'package:geolocator/geolocator.dart';
 import 'package:meet_ceylon/widget/alert_dialog_widget.dart';
 
 class EnableLocation extends StatefulWidget {
+
+  // Declare a field that holds photoList user selected
+  final List<String> photoList;
+  final Map<String, String> userInfoMap;
+
   @override
   _EnableLocationState createState() => _EnableLocationState();
+
+  EnableLocation({Key key, @required this.photoList, @required this.userInfoMap}) : super(key: key);
 }
 
 class _EnableLocationState extends State<EnableLocation> {
@@ -207,7 +214,7 @@ class _EnableLocationState extends State<EnableLocation> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => new UserPreferences()),
+                                  builder: (context) => new UserPreferences(photoList: widget.photoList ,userInfoMap: widget.userInfoMap)),
                             );
                           },
                           style: ButtonStyle(

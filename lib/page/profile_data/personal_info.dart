@@ -10,7 +10,11 @@ class PersonalInfo extends StatefulWidget {
 class _PersonalInfoState extends State<PersonalInfo> {
   final dateController = TextEditingController();
 
-  List<bool> _selection = List.generate(2, (index) => false);
+  //by default true ('male') selected
+  List<bool> _selection = List.generate(2, (index) => true);
+
+  //textformfield controller to extract value
+  final nameController = TextEditingController();
 
   @override
   void dispose() {
@@ -89,6 +93,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   shadowColor: Colors.blue,
                   borderRadius: BorderRadius.circular(10.0),
                   child: TextFormField(
+                    controller: nameController,
                     autofocus: false,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
@@ -232,11 +237,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       child: ElevatedButton(
                         child: Text("Continue"),
                         onPressed: () async {
+
+                          //forming a map to be passed to next screen
+                          final Map<String, String> userInfoMap = {
+                            "name":  nameController.text.trim(),
+                            "birthday": dateController.text.trim(),
+                            "gender": _selection[0] ==  true ?  "male" : "female", //determine gender according to the selection array values
+                          };
+
+                          //show error or navigate
+                          userInfoMap["name"].isEmpty ||  userInfoMap["birthday"].isEmpty ? ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Please fill in all the information."))) :
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => new PhotoSelection()),
+                                builder: (context) => new PhotoSelection(userInfoMap : userInfoMap)),
                           );
+
                         },
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(

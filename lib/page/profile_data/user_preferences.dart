@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/page/home.dart';
@@ -8,11 +10,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:meet_ceylon/model/preference.dart';
 
 class UserPreferences extends StatefulWidget {
+
+  // Declare a field that holds photoList user selected
+  final List<String> photoList;
+  final Map<String, String> userInfoMap;
+
   @override
   _UserPreferencesState createState() => _UserPreferencesState();
+
+  UserPreferences({Key key, @required this.photoList, @required this.userInfoMap}) : super(key: key);
 }
 
 class _UserPreferencesState extends State<UserPreferences> {
+  FirebaseFirestore firebaseFirestore;
+
   //carousel
   int _currentIndex = 0;
 
@@ -198,6 +209,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                         child: ElevatedButton(
                           child: Text("Continue"),
                           onPressed: () async {
+
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
                               //returning builder for Home()
