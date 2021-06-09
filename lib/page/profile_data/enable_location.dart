@@ -4,6 +4,8 @@ import 'package:meet_ceylon/page/profile_data/user_preferences.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meet_ceylon/widget/alert_dialog_widget.dart';
+import 'dart:developer' as developer;
+import 'package:geocoder/geocoder.dart';
 
 class EnableLocation extends StatefulWidget {
 
@@ -19,8 +21,12 @@ class EnableLocation extends StatefulWidget {
 
 class _EnableLocationState extends State<EnableLocation> {
   final dateController = TextEditingController();
+
+  //location
   String latitude = "";
   String longtitude = "";
+  String _country = "";
+
 
   @override
   void initState() {
@@ -29,11 +35,21 @@ class _EnableLocationState extends State<EnableLocation> {
 
   void _getLocation() async {
     try {
+
       final position = await _determinePosition();
+      print(position.toString());
       setState(() {
         latitude = '${position.latitude}';
         longtitude = '${position.longitude}';
       });
+
+      // From coordinates
+      final coordinates = new Coordinates(position.latitude, position.longitude);
+      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      _country = first.countryName;
+      print("${first.featureName} : ${first.addressLine} : ${first.countryName} ");
+
     }catch(e){
       print(e.toString());
       _showDialog(context);
@@ -173,7 +189,10 @@ class _EnableLocationState extends State<EnableLocation> {
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: InkWell(
-                      onTap: () { _getLocation(); latitude != null ? print(' $latitude , $longtitude') : print("no location");   },
+                      onTap: () {
+                        _getLocation(); latitude != null ? print(' $latitude , $longtitude') : print("no location");
+                        developer.log(latitude.toString(), name: 'my.app.category');
+                      },
                       child: Container(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20.0),
@@ -211,10 +230,17 @@ class _EnableLocationState extends State<EnableLocation> {
                         child: ElevatedButton(
                           child: Text("Continue"),
                           onPressed: () async {
+
+                            final Map<String, String> latLong = {
+                              "lat":  latitude,
+                              "long": longtitude,
+                              "country": _country,
+                            };
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => new UserPreferences(photoList: widget.photoList ,userInfoMap: widget.userInfoMap)),
+                                  builder: (context) => new UserPreferences(photoList: widget.photoList ,userInfoMap: widget.userInfoMap, latLong: latLong)),
                             );
                           },
                           style: ButtonStyle(

@@ -10,15 +10,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:meet_ceylon/model/preference.dart';
 
 class UserPreferences extends StatefulWidget {
-
   // Declare a field that holds photoList user selected
   final List<String> photoList;
   final Map<String, String> userInfoMap;
+  final Map<String, String> latLong;
 
   @override
   _UserPreferencesState createState() => _UserPreferencesState();
 
-  UserPreferences({Key key, @required this.photoList, @required this.userInfoMap}) : super(key: key);
+  UserPreferences(
+      {Key key,
+      @required this.photoList,
+      @required this.userInfoMap,
+      @required this.latLong})
+      : super(key: key);
 }
 
 class _UserPreferencesState extends State<UserPreferences> {
@@ -209,6 +214,43 @@ class _UserPreferencesState extends State<UserPreferences> {
                         child: ElevatedButton(
                           child: Text("Continue"),
                           onPressed: () async {
+
+                            //user info
+                            DateTime dateTimeCreatedAt = DateTime.parse(widget.userInfoMap['birthday']);
+                            DateTime dateTimeNow = DateTime.now();
+                            final age = (dateTimeNow.difference(dateTimeCreatedAt).inDays/365).floor().toString();
+
+                            //position related data
+                            final country = widget.latLong['country'];
+                            final latitude =  double.parse(widget.latLong['lat']);
+                            final longtitude =  double.parse(widget.latLong['long']);
+
+                            print('$country');
+
+                            //get current user
+                            var firebaseUser =  FirebaseAuth.instance.currentUser;
+
+                            //Saving in new collection
+                            firebaseFirestore.collection(country).doc(firebaseUser.uid).set(
+                                {
+                                  "name" : firebaseUser.displayName,
+                                  "age" : age,
+                                  "email" : firebaseUser.email,
+                                  "phone" : firebaseUser.phoneNumber,
+                                  "lastSignInTime:" :  DateTime.now(),
+                                  "geo_location" : GeoPoint(latitude,longtitude),
+                                  "address" : {
+                                    "street" : "street 24",
+                                    "city" : "new york"
+                                  },
+                                  "image_uris" : {
+                                    "0" : "street 24",
+                                    "1" : "new york",
+                                  }
+
+                                }).then((_){
+                              print("success!");
+                            });
 
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {

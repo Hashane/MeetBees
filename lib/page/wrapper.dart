@@ -35,8 +35,9 @@ class _WrapperState extends State<Wrapper> {
               .doc(snapshot.data?.uid)
               .get()
               .then((DocumentSnapshot ds) {
-            if (ds.exists) {
-              _isFirstTime = ds.data()["isFirstTime"];
+            if (!ds.exists) {
+              print("tst");
+              _isFirstTime = true;
             }
           });
 
@@ -46,34 +47,58 @@ class _WrapperState extends State<Wrapper> {
               auth: _auth,
               firestore: _firestore,
             );
-          } else {
-            if (_isFirstTime) {
+          } else  if (snapshot.data?.uid != null && _isFirstTime) {
               return MaterialApp(home: PersonalInfo());
-            } else {
-              return Builder(
-                builder: (BuildContext context) => ChangeNotifierProvider(
-                  create: (context) => FeedbackPositionProvider(),
-                  child: MaterialApp(
-                    title: 'Meet Ceylon',
-                    theme: ThemeData(
-                      // scaffoldBackgroundColor: const Color(0x1F000000),
-                      bottomSheetTheme: BottomSheetThemeData(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20.0),
-                                topRight: Radius.circular(20.0)),
-                          ),
-                          backgroundColor: Colors.black.withOpacity(0.5)),
-
-                      primarySwatch: Colors.deepOrange,
-                      visualDensity: VisualDensity.adaptivePlatformDensity,
-                    ),
-                    home: Home(),
-                  ),
-                ),
-              );
-            }
           }
+          else  if (snapshot.data?.uid != null && _isFirstTime == false) {
+            return Builder(
+              builder: (BuildContext context) => ChangeNotifierProvider(
+                create: (context) => FeedbackPositionProvider(),
+                child: MaterialApp(
+                  title: 'Meet Ceylon',
+                  theme: ThemeData(
+                    // scaffoldBackgroundColor: const Color(0x1F000000),
+                    bottomSheetTheme: BottomSheetThemeData(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0)),
+                        ),
+                        backgroundColor: Colors.black.withOpacity(0.5)),
+
+                    primarySwatch: Colors.deepOrange,
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                  ),
+                  home: Home(),
+                ),
+              ),
+            );
+          }
+          else {
+            return Builder(
+              builder: (BuildContext context) => ChangeNotifierProvider(
+                create: (context) => FeedbackPositionProvider(),
+                child: MaterialApp(
+                  title: 'Meet Ceylon',
+                  theme: ThemeData(
+                    // scaffoldBackgroundColor: const Color(0x1F000000),
+                    bottomSheetTheme: BottomSheetThemeData(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0)),
+                        ),
+                        backgroundColor: Colors.black.withOpacity(0.5)),
+
+                    primarySwatch: Colors.deepOrange,
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                  ),
+                  home: Home(),
+                ),
+              ),
+            );
+          }
+
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return loading();
         } else {

@@ -272,13 +272,13 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                       child: ElevatedButton(
                         child: Text("Continue"),
                         onPressed: () async {
-                          _photoList.length  < 3 ?
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Add at least 3 images"))) :
+                          // _photoList.length  < 3 ?
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackBar(content: Text("Add at least 3 images"))) :
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => new EnableLocation(photoList: _photoList, userInfoMap: widget.userInfoMap,)),
+                                builder: (context) => new EnableLocation(photoList: _photoList, userInfoMap: widget.userInfoMap)),
                           );
                         },
                         style: ButtonStyle(

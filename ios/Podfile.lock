@@ -302,6 +302,8 @@ PODS:
     - FBSDKCoreKit (~> 9.1.0)
     - FBSDKLoginKit (~> 9.1.0)
     - Flutter
+  - geocoder (0.0.1):
+    - Flutter
   - geolocator (6.2.0):
     - Flutter
   - google_sign_in (0.0.1):
@@ -389,6 +391,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
+  - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -431,6 +434,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_facebook_auth:
     :path: ".symlinks/plugins/flutter_facebook_auth/ios"
+  geocoder:
+    :path: ".symlinks/plugins/geocoder/ios"
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
   google_sign_in:
@@ -458,6 +463,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 7f7ed0e7e27fb51f57291e1876e2ddb1524126c1
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_facebook_auth: 24b6e255a5b2336963da48d0d3eeee4df824c0ed
+  geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleAppMeasurement: 8d3c0aeede16ab7764144b5a4ca8e1d4323841b7
