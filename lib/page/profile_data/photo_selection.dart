@@ -11,7 +11,6 @@ import 'enable_location.dart';
 import 'dart:developer' as developer;
 
 class PhotoSelection extends StatefulWidget {
-
   // Declare a field that holds user information
   final Map<String, String> userInfoMap;
 
@@ -28,11 +27,11 @@ class _PhotoSelectionState extends State<PhotoSelection> {
   PickedFile _imageFile4;
   PickedFile _imageFile5;
   PickedFile _imageFile6;
+
   final ImagePicker _picker = ImagePicker();
   int _gestureIndex = 0;
   List<String> _photoList = [];
   List<String> _urlList = [];
-
 
   //firebase storage
   firebase_storage.Reference ref;
@@ -55,7 +54,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
           _imageFile6 = pickedImage;
         }
 
-        if(pickedImage != null){
+        if (pickedImage != null) {
           _photoList.add(pickedImage.path.toString());
         }
       });
@@ -67,7 +66,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    developer.log(widget.userInfoMap.toString(), name: 'my.app.category');
+    developer.log(_photoList.toString(), name: 'my.meet_ceylon.photo');
     return Scaffold(
       body: Container(
         decoration: new BoxDecoration(
@@ -83,256 +82,306 @@ class _PhotoSelectionState extends State<PhotoSelection> {
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(50.0, 0, 50.0, 50),
-          child: SafeArea(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               SizedBox(
-                    height:
-                        SizeConfig.safeBlockVertical * 20.0, //10 for example
-                    child: Image.asset(
-                      "assets/images/logo.png",
-                      fit: BoxFit.contain,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: SizeConfig.safeBlockVertical * 20.0, //10 for example
+                  child: Image.asset(
+                    "assets/images/logo.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                Container(
+                  child: Center(
+                    child: Text(
+                      'Fill your personal information',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 25),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-              Container(
-                child: Center(
-                  child: Text(
-                    'Fill your personal information',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 25),
-                    textAlign: TextAlign.center,
-                  ),
                 ),
-              ),
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 5,
-              ),
-              Container(
-                child: Center(
-                  child: Text(
-                    'Add atleast 3 photos to continue. You can change these later.',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black,
-                        fontSize: 15),
-                    textAlign: TextAlign.center,
-                  ),
+                SizedBox(
+                  height: SizeConfig.safeBlockVertical * 5,
                 ),
-              ),
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 5,
-              ),
-              Container(
-                padding: EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    GridView.count(
-                      shrinkWrap: true,
-                      primary: false,
-                      padding: const EdgeInsets.all(5),
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                      crossAxisCount: 3,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          (MediaQuery.of(context).size.height / 1.5),
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _gestureIndex = 1;
-                            });
-                            _getImage(_gestureIndex);
-                          },
-                          child: Container(
-                            color: Colors.black12,
-                            child: _imageFile1 == null
-                                ? new Icon(Icons.add,
-                                    size: 16.0, color: Colors.white)
-                                : Image.file(
-                                    File(_imageFile1.path),
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _gestureIndex = 2;
-                            });
-                            _getImage(_gestureIndex);
-                          },
-                          child: Container(
-                            color: Colors.black12,
-                            child: _imageFile2 == null
-                                ? new Icon(Icons.add,
-                                    size: 16.0, color: Colors.white)
-                                : Image.file(
-                                    File(_imageFile2.path),
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _gestureIndex = 3;
-                            });
-                            _getImage(_gestureIndex);
-                          },
-                          child: Container(
-                            color: Colors.black12,
-                            child: _imageFile3 == null
-                                ? new Icon(Icons.add,
-                                    size: 16.0, color: Colors.white)
-                                : Image.file(
-                                    File(_imageFile3.path),
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _gestureIndex = 4;
-                            });
-                            _getImage(_gestureIndex);
-                          },
-                          child: Container(
-                            color: Colors.black12,
-                            child: _imageFile4 == null
-                                ? new Icon(Icons.add,
-                                    size: 16.0, color: Colors.white)
-                                : Image.file(
-                                    File(_imageFile4.path),
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _gestureIndex = 5;
-                            });
-                            _getImage(_gestureIndex);
-                          },
-                          child: Container(
-                            color: Colors.black12,
-                            child: _imageFile5 == null
-                                ? new Icon(Icons.add,
-                                    size: 16.0, color: Colors.white)
-                                : Image.file(
-                                    File(_imageFile5.path),
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _gestureIndex = 6;
-                            });
-                            _getImage(_gestureIndex);
-                          },
-                          child: Container(
-                            color: Colors.black12,
-                            child: _imageFile6 == null
-                                ? new Icon(Icons.add,
-                                    size: 16.0, color: Colors.white)
-                                : Image.file(
-                                    File(_imageFile6.path),
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
-                        ),
-                      ],
+                Container(
+                  child: Center(
+                    child: Text(
+                      'Add atleast 3 photos to continue. You can change these later.',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          color: Colors.black,
+                          fontSize: 15),
+                      textAlign: TextAlign.center,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 5,
-              ),
-              Expanded(
-                child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: SizedBox(
-                    height: SizeConfig.safeBlockVertical * 7, //10 for example
-                    width:
-                        SizeConfig.safeBlockHorizontal * 100, //10 for example
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 25.0, // soften the shadow
-                            spreadRadius: 2.0, //extend the shadow
-                            offset: Offset(
-                              0.0, // Move to right 10  horizontally
-                              10.0, // Move to bottom 10 Vertically
+                SizedBox(
+                  height: SizeConfig.safeBlockVertical * 5,
+                ),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      GridView.count(
+                        shrinkWrap: true,
+                        primary: false,
+                        padding: const EdgeInsets.all(5),
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                        crossAxisCount: 3,
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.5),
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _gestureIndex = 1;
+                              });
+                              //Invokes _getImage function only if the _imageFile is null.
+                              if( _imageFile1 == null ) _getImage(_gestureIndex);
+                            },
+                            child: Container(
+                              color: Colors.black12,
+                              //Parses int value to detect which image to remove when tapped on remove icon
+                              child: _imageFile1 != null ? imageArea(_imageFile1,1) : plusIcon(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _gestureIndex = 2;
+                              });
+                              //Invokes _getImage function only if the _imageFile is null.
+                              //Disallow image selection until previous placeholder is filled.
+                              if(_imageFile1 != null && _imageFile2 == null ) _getImage(_gestureIndex);
+                            },
+                            child: Container(
+                              color: Colors.black12,
+                              //Parses int value to detect which image to remove when tapped on remove icon
+                              child: _imageFile2 != null ? imageArea(_imageFile2,2) : plusIcon(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _gestureIndex = 3;
+                              });
+                              //Invokes _getImage function only if the _imageFile is null.
+                              //Disallow image selection until previous placeholder is filled.
+                              if(_imageFile1 != null && _imageFile2 != null && _imageFile3 == null ) _getImage(_gestureIndex);
+                            },
+                            child: Container(
+                              color: Colors.black12,
+                              //Parses int value to detect which image to remove when tapped on remove icon
+                              child: _imageFile3 != null ? imageArea(_imageFile3,3) : plusIcon(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _gestureIndex = 4;
+                              });
+                              //Invokes _getImage function only if the _imageFile is null.
+                              //Disallow image selection until previous placeholder is filled.
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null ) _getImage(_gestureIndex);
+                            },
+                            child: Container(
+                              color: Colors.black12,
+                              //Parses int value to detect which image to remove when tapped on remove icon
+                              child: _imageFile4 != null ? imageArea(_imageFile4,4) : plusIcon(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _gestureIndex = 5;
+                              });
+                              //Invokes _getImage function only if the _imageFile is null.
+                              //Disallow image selection until previous placeholder is filled.
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null  && _imageFile5 == null ) _getImage(_gestureIndex);
+                            },
+                            child: Container(
+                              color: Colors.black12,
+                              //Parses int value to detect which image to remove when tapped on remove icon
+                              child: _imageFile5 != null ? imageArea(_imageFile5,5) : plusIcon(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _gestureIndex = 6;
+                              });
+                              //Invokes _getImage function only if the _imageFile is null.
+                              //Disallow image selection until previous placeholder is filled.
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null  && _imageFile5 == null && _imageFile6 == null) _getImage(_gestureIndex);
+                            },
+                            child: Container(
+                              color: Colors.black12,
+                              //Parses int value to detect which image to remove when tapped on remove icon
+                              child: _imageFile6 != null ? imageArea(_imageFile6,6) : plusIcon(),
                             ),
                           ),
                         ],
                       ),
-                      child: ElevatedButton(
-                        child: Text("Continue"),
-                        onPressed: () async {
-                          if(_photoList.length < 3 ){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Add at least 3 images")));
-                          }else{
-
-                            //Invoking upload function and displaying completion message.
-                            uploadImages().whenComplete(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(milliseconds : 1000),
-                            content: Text("Images upload Completed!"),
-                            behavior: SnackBarBehavior.floating, // Add this line
-                            )));
-
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                            builder: (context) => new EnableLocation(photoList: _urlList, userInfoMap: widget.userInfoMap)),
-                            );
-                          }
-                        },
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    side: BorderSide(color: Colors.red)
-                                )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: SizeConfig.safeBlockVertical * 5,
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: SizedBox(
+                      height: SizeConfig.safeBlockVertical * 7, //10 for example
+                      width:
+                          SizeConfig.safeBlockHorizontal * 100, //10 for example
+                      child: Container(
+                        decoration: new BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 25.0, // soften the shadow
+                              spreadRadius: 2.0, //extend the shadow
+                              offset: Offset(
+                                0.0, // Move to right 10  horizontally
+                                10.0, // Move to bottom 10 Vertically
+                              ),
                             ),
-                            foregroundColor: MaterialStateProperty.all<Color>(
-                                Colors.black54),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                            shadowColor:
-                                MaterialStateProperty.all<Color>(Colors.grey)),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          child: Text("Continue"),
+                          onPressed: () async {
+                            if (_photoList.length < 3) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Add at least 3 images")));
+                            } else {
+                              //Invoking upload function and displaying completion message.
+                              uploadImages().whenComplete(() =>
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    duration: Duration(milliseconds: 1000),
+                                    content: Text("Images upload Completed!"),
+                                    behavior: SnackBarBehavior
+                                        .floating, // Add this line
+                                  )));
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => new EnableLocation(
+                                        photoList: _urlList,
+                                        userInfoMap: widget.userInfoMap)),
+                              );
+                            }
+                          },
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(color: Colors.red))),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.black54),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                              shadowColor: MaterialStateProperty.all<Color>(
+                                  Colors.grey)),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              // Expanded(child: Container(),),
-            ],
+                // Expanded(child: Container(),),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }
 
-  Future uploadImages() async{
-    for(var img in _photoList){
-      ref = firebase_storage.FirebaseStorage.instance.ref().child('images/${p.basename(img)}');
+  /// Bulk upload images in the _photoList
+  ///
+  /// * Loops through _photoList
+  /// * Provides a unique reference to each image in the list
+  /// * Asynchronously each image will be uploaded and the download url is taken.
+  /// * Each download url is stored in _urlList
+  Future uploadImages() async {
+    for (var img in _photoList) {
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${p.basename(img)}');
       await ref.putFile(File(img)).whenComplete(() async => {
-        await ref.getDownloadURL().then((value){
-          _urlList.add(value);
-        }),
-      });
+            await ref.getDownloadURL().then((value) {
+              _urlList.add(value);
+            }),
+          });
     }
   }
+
+
+  /// Parses the _imageFile and gestureIndex values.
+  ///
+  /// * It displays image and the remove icon.
+  /// * onTap on remove icon, it first removes the exact item from the _photoList
+  /// * then using _gestureIndex it determines which "Image" value to be set as null
+  Widget imageArea(PickedFile _imageFile, int _removeAtIndex) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child:
+          Image.file(
+            File(_imageFile.path),
+            fit: BoxFit.fill,
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                print("Removed: ${_imageFile.path.toString()}");
+                _photoList.remove(_imageFile.path.toString());
+                if (_removeAtIndex == 1) {
+                  _imageFile1 = null;
+                } else if (_removeAtIndex == 2) {
+                  _imageFile2 = null;
+                } else if (_removeAtIndex == 3) {
+                  _imageFile3 = null;
+                } else if (_removeAtIndex == 4) {
+                  _imageFile4 = null;
+                } else if (_removeAtIndex == 5) {
+                  _imageFile5 = null;
+                } else if (_removeAtIndex  == 6) {
+                  _imageFile6 = null;
+                }
+              });
+            },
+            child: Icon(
+              Icons.highlight_remove_sharp,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Simply displays the plus icon in the middle of the empty image area
+  Widget plusIcon() {
+    return Align(
+        alignment: Alignment.center,
+        child: new Icon(Icons.add, size: 16.0, color: Colors.white));
+  }
+
 }
