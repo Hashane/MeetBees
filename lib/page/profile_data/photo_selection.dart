@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as p;
 
 import 'enable_location.dart';
 import 'dart:developer' as developer;
@@ -28,7 +31,11 @@ class _PhotoSelectionState extends State<PhotoSelection> {
   final ImagePicker _picker = ImagePicker();
   int _gestureIndex = 0;
   List<String> _photoList = [];
+  List<String> _urlList = [];
 
+
+  //firebase storage
+  firebase_storage.Reference ref;
 
   Future _getImage(int index) async {
     try {
@@ -272,14 +279,24 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                       child: ElevatedButton(
                         child: Text("Continue"),
                         onPressed: () async {
-                          // _photoList.length  < 3 ?
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //     SnackBar(content: Text("Add at least 3 images"))) :
-                          Navigator.push(
+                          if(_photoList.length < 3 ){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Add at least 3 images")));
+                          }else{
+
+                            //Invoking upload function and displaying completion message.
+                            uploadImages().whenComplete(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(milliseconds : 1000),
+                            content: Text("Images upload Completed!"),
+                            behavior: SnackBarBehavior.floating, // Add this line
+                            )));
+
+                            Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => new EnableLocation(photoList: _photoList, userInfoMap: widget.userInfoMap)),
-                          );
+                            builder: (context) => new EnableLocation(photoList: _urlList, userInfoMap: widget.userInfoMap)),
+                            );
+                          }
                         },
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -306,5 +323,16 @@ class _PhotoSelectionState extends State<PhotoSelection> {
       ),
       ),
     );
+  }
+
+  Future uploadImages() async{
+    for(var img in _photoList){
+      ref = firebase_storage.FirebaseStorage.instance.ref().child('images/${p.basename(img)}');
+      await ref.putFile(File(img)).whenComplete(() async => {
+        await ref.getDownloadURL().then((value){
+          _urlList.add(value);
+        }),
+      });
+    }
   }
 }
