@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -174,7 +173,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                               });
                               //Invokes _getImage function only if the _imageFile is null.
                               //Disallow image selection until previous placeholder is filled.
-                              if(_imageFile1 != null && _imageFile2 != null && _imageFile3 == null ) _getImage(_gestureIndex);
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  == null ) _getImage(_gestureIndex);
                             },
                             child: Container(
                               color: Colors.black12,
@@ -189,7 +188,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                               });
                               //Invokes _getImage function only if the _imageFile is null.
                               //Disallow image selection until previous placeholder is filled.
-                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null ) _getImage(_gestureIndex);
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null) _getImage(_gestureIndex);
                             },
                             child: Container(
                               color: Colors.black12,
@@ -204,7 +203,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                               });
                               //Invokes _getImage function only if the _imageFile is null.
                               //Disallow image selection until previous placeholder is filled.
-                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null  && _imageFile5 == null ) _getImage(_gestureIndex);
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 != null  && _imageFile5 == null ) _getImage(_gestureIndex);
                             },
                             child: Container(
                               color: Colors.black12,
@@ -219,7 +218,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                               });
                               //Invokes _getImage function only if the _imageFile is null.
                               //Disallow image selection until previous placeholder is filled.
-                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 == null  && _imageFile5 == null && _imageFile6 == null) _getImage(_gestureIndex);
+                              if(_imageFile1 != null && _imageFile2  != null && _imageFile3  != null  && _imageFile4 != null  && _imageFile5 != null && _imageFile6 == null) _getImage(_gestureIndex);
                             },
                             child: Container(
                               color: Colors.black12,
