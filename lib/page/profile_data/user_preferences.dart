@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/page/home.dart';
+import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:provider/provider.dart';
@@ -221,7 +222,8 @@ class _UserPreferencesState extends State<UserPreferences> {
                             final age = (dateTimeNow.difference(dateTimeCreatedAt).inDays/365).floor().toString();
 
                             //position related data
-                            final country = widget.latLong['country'];
+                            final country = widget.latLong['country'].trim().toLowerCase();
+                            final city = widget.latLong['city'].trim().toLowerCase();
                             final latitude =  double.parse(widget.latLong['lat']);
                             final longtitude =  double.parse(widget.latLong['long']);
 
@@ -231,26 +233,27 @@ class _UserPreferencesState extends State<UserPreferences> {
                             var firebaseUser =  FirebaseAuth.instance.currentUser;
 
                             //Saving in new collection
-                            firebaseFirestore.collection(country).doc(firebaseUser.uid).set(
-                                {
-                                  "name" : firebaseUser.displayName,
-                                  "age" : age,
-                                  "email" : firebaseUser.email,
-                                  "phone" : firebaseUser.phoneNumber,
-                                  "lastSignInTime:" :  DateTime.now(),
-                                  "geo_location" : GeoPoint(latitude,longtitude),
-                                  "address" : {
-                                    "street" : "street 24",
-                                    "city" : "new york"
-                                  },
-                                  "image_uris" : {
-                                    "0" : "street 24",
-                                    "1" : "new york",
-                                  }
-
-                                }).then((_){
-                              print("success!");
-                            });
+                            await Database.addItem(
+                              uid: firebaseUser.uid,
+                              name: firebaseUser.displayName,
+                              age: age,
+                              birthday: widget.userInfoMap['birthday'],
+                              gender: widget.userInfoMap['gender'],
+                              preferredGender: widget.userInfoMap['gender'] == 'male' ? 'female': 'male',
+                              interests: choices,
+                              email: firebaseUser.email,
+                              phone : firebaseUser.phoneNumber,
+                              imageUris : widget.photoList,
+                              lat: latitude,
+                              long: longtitude,
+                              country: country,
+                              city: city,
+                              boosts: 2,
+                              isProUser: false,
+                              boosted: false,
+                              lastSignIn: DateTime.now(),
+                              signUpDate: DateTime.now(),
+                            );
 
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {

@@ -299,7 +299,7 @@ class _PhotoSelectionState extends State<PhotoSelection> {
                           child: ElevatedButton(
                             child: Text("Continue"),
                             onPressed: () async {
-                              if (_photoList.length < 1) {
+                              if (_photoList.length < 3) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:

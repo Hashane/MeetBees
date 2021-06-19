@@ -26,6 +26,7 @@ class _EnableLocationState extends State<EnableLocation> {
   String latitude = "";
   String longtitude = "";
   String _country = "";
+  String _city = "";
 
 
   @override
@@ -48,6 +49,7 @@ class _EnableLocationState extends State<EnableLocation> {
       var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
       var first = addresses.first;
       _country = first.countryName;
+      _city = first.adminArea;
       print("${first.featureName} : ${first.addressLine} : ${first.countryName} ");
 
     }catch(e){
@@ -235,6 +237,7 @@ class _EnableLocationState extends State<EnableLocation> {
                               "lat":  latitude,
                               "long": longtitude,
                               "country": _country,
+                              "city": _city,
                             };
 
                             Navigator.push(

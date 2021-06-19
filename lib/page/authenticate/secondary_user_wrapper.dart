@@ -25,7 +25,10 @@ class _SecondaryWrapperState extends State<SecondaryWrapper> {
     try {
       // Get reference to Firestore collection
       DocumentSnapshot ds =
-          await _firestore.collection("users").doc(_auth.currentUser.uid).get();
+          await _firestore.collection("SL").doc(_auth.currentUser.uid).get();
+      if(ds.exists == false) {
+        ds = await _firestore.collection("AUS").doc(_auth.currentUser.uid).get();
+      }
       return ds.exists;
     } catch (e) {
       throw e;

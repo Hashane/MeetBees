@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meet_ceylon/model/user.dart' as lUser;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 
