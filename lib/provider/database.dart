@@ -9,7 +9,7 @@ class Database {
   static Future<void> addItem({
     String uid,
     String name,
-    String age,
+    int age,
     String birthday,
     String gender,
     String preferredGender,

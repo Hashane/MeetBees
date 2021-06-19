@@ -50,18 +50,26 @@ class _UserPreferencesState extends State<UserPreferences> {
 
   //removing the items from the choices list decrementing the count by 1
   _removeChoice(int id) {
-    setState(() {
-      choices.remove(id);
-      choicesCount -= 1;
-    });
+    try {
+      setState(() {
+        choices.remove(id);
+        choicesCount -= 1;
+      });
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   //adding items to choices list, counting the length of the list and updating the state
   _updateChoices(int id) {
-    setState(() {
-      choices.add(id);
-      choicesCount = choices.length;
-    });
+    try {
+      setState(() {
+        choices.add(id);
+        choicesCount = choices.length;
+      });
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   @override
@@ -219,13 +227,13 @@ class _UserPreferencesState extends State<UserPreferences> {
                             //user info
                             DateTime dateTimeCreatedAt = DateTime.parse(widget.userInfoMap['birthday']);
                             DateTime dateTimeNow = DateTime.now();
-                            final age = (dateTimeNow.difference(dateTimeCreatedAt).inDays/365).floor().toString();
+                            final age = (dateTimeNow.difference(dateTimeCreatedAt).inDays/365).floor();
 
                             //position related data
                             final country = widget.latLong['country'].trim().toLowerCase();
                             final city = widget.latLong['city'].trim().toLowerCase();
                             final latitude =  double.parse(widget.latLong['lat']);
-                            final longtitude =  double.parse(widget.latLong['long']);
+                            final longitude =  double.parse(widget.latLong['long']);
 
                             print('$country');
 
@@ -245,7 +253,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                               phone : firebaseUser.phoneNumber,
                               imageUris : widget.photoList,
                               lat: latitude,
-                              long: longtitude,
+                              long: longitude,
                               country: country,
                               city: city,
                               boosts: 2,
