@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/data/users.dart';
+import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/bottom_nav_widget.dart';
@@ -15,7 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<User> users = dummyUsers;
+  final List<User> users = [];
   final firebaseAuth.FirebaseAuth _firebaseAuth =
       firebaseAuth.FirebaseAuth.instance;
   bool _visible = true;
@@ -36,19 +37,28 @@ class _HomeState extends State<Home> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      users.isEmpty
-                          ? Text(
-                              "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
-                          : Stack(children: users.map(buildUser).toList()),
-                      SizedBox(
-                        height: SizeConfig.safeBlockVertical * 10,
-                      ),
-                      buildButtonSection()
-                    ],
-                  ),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: Database.readItems(),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData && users.isEmpty)
+                           snapshot.data.docs.forEach((element) {
+                             Map<String, dynamic> obj = element.data();
+                             users.add(User.fromJson(obj));
+                          });
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            users == null
+                            ? Text(
+                                "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
+                            : SizedBox(height: 600, child: Stack(children: users.map(buildUser).toList())),
+                            SizedBox(
+                              height: SizeConfig.safeBlockVertical * 10,
+                            ),
+                            buildButtonSection()
+                          ],
+                        );
+                      }),
                 ),
               ],
             ),
@@ -58,6 +68,22 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: BottomNavWidget(),
     );
+  }
+
+  Stream<List<User>> getUserList() async* {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final CollectionReference _mainCollection = _firestore.collection("SL");
+
+    List<User> userList = [];
+    QuerySnapshot snapshot = await _mainCollection.get();
+    snapshot.docs.length;
+    snapshot.docs.forEach((doc) {
+      Map<String, dynamic> obj = doc.data();
+      userList.add(User.fromJson(obj));
+      // usersList = usersList.map((User) => User.fromJson(obj)).toList();
+      // Map<String, dynamic> toJson() => _employeeToJson(this);
+      return userList;
+    });
   }
 
   _signOut() async {
@@ -106,7 +132,7 @@ class _HomeState extends State<Home> {
         child: UserCardWidget(
           user: user,
           isUserInFocus: isUserInFocus,
-          photoAssetPaths: user.photos,
+          photoAssetPaths: user.imageUris,
           visiblePhotoIndex: 0,
         ),
         feedback: Material(
@@ -114,7 +140,7 @@ class _HomeState extends State<Home> {
           child: UserCardWidget(
             user: user,
             isUserInFocus: isUserInFocus,
-            photoAssetPaths: user.photos,
+            photoAssetPaths: user.imageUris,
             visiblePhotoIndex: 0,
           ),
         ),
@@ -133,6 +159,7 @@ class _HomeState extends State<Home> {
     }
 
     if (user.isSwipedOff == true || user.isLiked == true) {
+      print(users.length.toString());
       setState(() {
         users.remove(user);
       });

@@ -37,7 +37,7 @@ class Database {
       "birthday" : birthday,
       "gender": gender,
       "preferred_gender": preferredGender,
-      "interests": interests,
+
       "email": email,
       "phone": phone,
       "image_uris": imageUris,
@@ -77,10 +77,9 @@ class Database {
   }
 
   static Stream<QuerySnapshot> readItems() {
-    CollectionReference notesItemCollection =
-    _mainCollection.doc(userUid).collection('items');
+    CollectionReference usersCollection = _mainCollection;
 
-    return notesItemCollection.snapshots();
+    return usersCollection.snapshots();
   }
 
   static Future<void> deleteItem({
