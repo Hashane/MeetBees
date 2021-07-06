@@ -25,48 +25,55 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: SizeConfig.safeBlockVertical * 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: Database.fetchUsers(),
-                      builder: (context, snapshot) {
-                        if(snapshot.hasData && users.isEmpty)
-                           snapshot.data.docs.forEach((element) {
-                             Map<String, dynamic> obj = element.data();
-                             users.add(User.fromJson(obj));
-                          });
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            users == null
-                            ? Text(
-                                "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
-                            : SizedBox(height: 600, child: Stack(children: users.map(buildUser).toList())),
-                            SizedBox(
-                              height: SizeConfig.safeBlockVertical * 10,
-                            ),
-                            buildButtonSection()
-                          ],
-                        );
-                      }),
-                ),
-              ],
-            ),
-            buildInfoCard(),
-          ],
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        appBar: buildAppBar(),
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  SizedBox(
+                    height: SizeConfig.safeBlockVertical * 2,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: Database.fetchUsers(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && users.isEmpty)
+                            snapshot.data.docs.forEach((element) {
+                              Map<String, dynamic> obj = element.data();
+                              users.add(User.fromJson(obj));
+                            });
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              users == null
+                                  ? Text(
+                                      "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
+                                  : SizedBox(
+                                      height: 600,
+                                      child: Stack(
+                                          children:
+                                              users.map(buildUser).toList())),
+                              SizedBox(
+                                height: SizeConfig.safeBlockVertical * 1,
+                              ),
+                              buildButtonSection()
+                            ],
+                          );
+                        }),
+                  ),
+                ],
+              ),
+              buildInfoCard(),
+            ],
+          ),
         ),
+        bottomNavigationBar: BottomNavWidget(),
       ),
-      bottomNavigationBar: BottomNavWidget(),
     );
   }
 
@@ -96,16 +103,21 @@ class _HomeState extends State<Home> {
         elevation: 0,
         actions: [
           IconButton(
-              icon: const Icon(Icons.person, color: Colors.grey),
+              icon: const Icon(Icons.person, size: 40.0, color: Colors.black54),
               onPressed: _signOut),
           //Icon(Icons.person, color: Colors.grey),
           SizedBox(width: 16),
         ],
         leading: Icon(
-          Icons.local_fire_department,
-          color: Colors.deepOrangeAccent[100],
+          Icons.replay,
+          size: 40.0,
+          color: Colors.black54,
         ),
-        title: Icon(Icons.chat, color: Colors.grey),
+        title: ImageIcon(
+          AssetImage("assets/images/logo.png"),
+          color: Colors.deepOrangeAccent,
+          size: 60.0,
+        ),
       );
 
   Widget buildUser(User user) {
@@ -174,15 +186,54 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             //first element in column is the transparent offset
             Container(
-              height: SizeConfig.safeBlockHorizontal * 105,
+              height: SizeConfig.safeBlockHorizontal * 110,
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
               child: new Container(
-                height: SizeConfig.safeBlockVertical * 15,
+                height: SizeConfig.safeBlockVertical * 12,
                 width: SizeConfig.safeBlockHorizontal * 80,
                 child: new Card(
-                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Jude Hashane",
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 23,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "26",
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 23,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "10 kms Away",
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontStyle: FontStyle.normal),
+                        ),
+                      ],
+                    ),
+                  ),
+                  color: Colors.white70,
                   elevation: 4.0,
                 ),
               ),
@@ -197,26 +248,37 @@ class _HomeState extends State<Home> {
   Widget buildButtonSection() {
     return Container(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          IconButton(
-              icon: Icon(Icons.arrow_back_rounded),
-              highlightColor: Colors.deepOrange,
-              onPressed: () {}),
-          IconButton(
-              icon: Icon(Icons.info_outline_rounded),
-              highlightColor: Colors.deepOrange,
-              onPressed: () {
-                setState(() {
-                  _visible = !_visible;
-                });
-                _userBottomSheetModal(context);
-              }),
-          IconButton(
-              icon: Icon(Icons.arrow_forward_rounded),
-              highlightColor: Colors.deepOrange,
-              onPressed: () {}),
+          CircleAvatar(
+            backgroundColor: Colors.orangeAccent,
+            child: IconButton(
+                icon: Icon(Icons.arrow_left),
+                color: Colors.white,
+                highlightColor: Colors.deepOrange,
+                onPressed: () {}),
+          ),
+          CircleAvatar(
+            backgroundColor: Colors.orangeAccent,
+            child: IconButton(
+                icon: Icon(Icons.info_outline_rounded),
+                color: Colors.white,
+                highlightColor: Colors.deepOrange,
+                onPressed: () {
+                  setState(() {
+                    _visible = !_visible;
+                  });
+                  _userBottomSheetModal(context);
+                }),
+          ),
+          CircleAvatar(
+            backgroundColor: Colors.orangeAccent,
+            child: IconButton(
+                icon: Icon(Icons.arrow_right),
+                color: Colors.white,
+                highlightColor: Colors.deepOrange,
+                onPressed: () {}),
+          ),
         ],
       ),
     );
