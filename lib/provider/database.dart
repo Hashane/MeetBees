@@ -81,6 +81,12 @@ class Database {
 
     return usersCollection.snapshots();
   }
+  static Stream<QuerySnapshot> fetchUsers() {
+    CollectionReference usersCollection = _mainCollection;
+    final Query filtered=  usersCollection.where("isProUser", isEqualTo: true);
+    return filtered.snapshots();
+    // return usersCollection.snapshots();
+  }
 
   static Future<void> deleteItem({
     String docId,

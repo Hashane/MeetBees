@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: Database.readItems(),
+                      stream: Database.fetchUsers(),
                       builder: (context, snapshot) {
                         if(snapshot.hasData && users.isEmpty)
                            snapshot.data.docs.forEach((element) {

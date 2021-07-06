@@ -45,6 +45,7 @@ class User {
     isSwipedOf = false,
   });
 
+  //Serializing JSON(Map JSON objects from firestore to custom User model)
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         uid = json['uid'],
@@ -64,6 +65,4 @@ class User {
         boosted = json['boosted'],
         lastSignIn = json['last_sign_in'],
         signUpDate = json['account_created'];
-
-
 }
