@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/database.dart';
@@ -17,10 +19,28 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<User> users = [];
+  StreamSubscription _messSubs;
+
   final firebaseAuth.FirebaseAuth _firebaseAuth =
       firebaseAuth.FirebaseAuth.instance;
   bool _visible = true;
   int _index = 0;
+
+  //streambuilder
+  StreamBuilder _streamBuilder;
+
+  @override
+  void initState() {
+    print("init");
+    super.initState();
+    getPostItems();
+  }
+
+  @override
+  void dispose() {
+    _messSubs.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,42 +59,44 @@ class _HomeState extends State<Home> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: Database.fetchUsers(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && users.isEmpty)
-                            snapshot.data.docs.forEach((element) {
-                              Map<String, dynamic> obj = element.data();
-                              users.add(User.fromJson(obj));
-                            });
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              users == null
-                                  ? Text(
-                                      "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
-                                  : SizedBox(
-                                      height: 600,
-                                      child: Stack(
-                                          children:
-                                              users.map(buildUser).toList())),
-                              SizedBox(
-                                height: SizeConfig.safeBlockVertical * 1,
-                              ),
-                              buildButtonSection()
-                            ],
-                          );
-                        }),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        users.length == 0
+                            ? Text(
+                            "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
+                            : SizedBox(
+                                height: 600,
+                                child: Stack(
+                                    children: users.map(buildUser).toList())),
+                        SizedBox(
+                          height: SizeConfig.safeBlockVertical * 1,
+                        ),
+                        buildButtonSection()
+                      ],
+                    ),
                   ),
                 ],
               ),
-              buildInfoCard(),
+             // buildInfoCard(),
             ],
           ),
         ),
         bottomNavigationBar: BottomNavWidget(),
       ),
     );
+  }
+
+  getPostItems() {
+    final FirebaseFirestore _db = FirebaseFirestore.instance;
+    _messSubs = _db.collection('SL').snapshots().listen((event) {
+      event.docs.forEach((element) {
+        Map<String, dynamic> obj = element.data();
+        users.add(User.fromJson(obj));
+        setState(() {});
+      });
+
+    });
   }
 
   Stream<List<User>> getUserList() async* {
@@ -178,7 +200,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Widget buildInfoCard() {
+  Widget buildInfoCard(User user) {
     //for the button i create another column
     return Visibility(
       child: Container(
@@ -192,7 +214,7 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.all(8.0),
               child: new Container(
                 height: SizeConfig.safeBlockVertical * 12,
-                width: SizeConfig.safeBlockHorizontal * 80,
+                width: SizeConfig.safeBlockHorizontal * 87,
                 child: new Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -207,7 +229,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Jude Hashane",
+                              users[0].name,
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 23,
@@ -215,7 +237,7 @@ class _HomeState extends State<Home> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "26",
+                              users[0].age.toString(),
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 23,
