@@ -19,25 +19,33 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<User> users = [];
+
+  ///stream subscription
   StreamSubscription _messSubs;
 
+  ///logging out user
   final firebaseAuth.FirebaseAuth _firebaseAuth =
       firebaseAuth.FirebaseAuth.instance;
+
+  /// value used to determines if to hide/show infoCard
   bool _visible = true;
+
+  ///Card carousel transform scale initial value
   int _index = 0;
 
-  //streambuilder
-  StreamBuilder _streamBuilder;
+  ///To determine which user being displayed in the card from the users list.
+  int userIndex = 0;
 
   @override
   void initState() {
-    print("init");
     super.initState();
-    getPostItems();
+    ///initializing stream and fetching users
+    fetchUsers();
   }
 
   @override
   void dispose() {
+    ///cancelling StreamSubscription on dispose
     _messSubs.cancel();
     super.dispose();
   }
@@ -63,8 +71,10 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         users.length == 0
-                            ? Text(
-                            "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.")
+                            ? SizedBox(
+                                height: 600,
+                                child: Text(
+                                    "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time."))
                             : SizedBox(
                                 height: 600,
                                 child: Stack(
@@ -72,13 +82,13 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: SizeConfig.safeBlockVertical * 1,
                         ),
-                        buildButtonSection()
+                        users.length != 0 ? buildButtonSection() : Container(),
                       ],
                     ),
                   ),
                 ],
               ),
-             // buildInfoCard(),
+              users.length != 0 ? buildInfoCard(users[userIndex]) : Container(),
             ],
           ),
         ),
@@ -87,38 +97,26 @@ class _HomeState extends State<Home> {
     );
   }
 
-  getPostItems() {
-    final FirebaseFirestore _db = FirebaseFirestore.instance;
-    _messSubs = _db.collection('SL').snapshots().listen((event) {
+  /// Listening to the Stream & looping through the documents
+  /// Assigning Each Json Object user profile to a map
+  /// Mapping that JSON object map to custom User model
+  /// At the end changing the state to update the users list.
+  fetchUsers() {
+    _messSubs = Database.readItems().listen((event) {
       event.docs.forEach((element) {
         Map<String, dynamic> obj = element.data();
         users.add(User.fromJson(obj));
         setState(() {});
       });
-
     });
   }
 
-  Stream<List<User>> getUserList() async* {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    final CollectionReference _mainCollection = _firestore.collection("SL");
-
-    List<User> userList = [];
-    QuerySnapshot snapshot = await _mainCollection.get();
-    snapshot.docs.length;
-    snapshot.docs.forEach((doc) {
-      Map<String, dynamic> obj = doc.data();
-      userList.add(User.fromJson(obj));
-      // usersList = usersList.map((User) => User.fromJson(obj)).toList();
-      // Map<String, dynamic> toJson() => _employeeToJson(this);
-      return userList;
-    });
-  }
-
+  ///Sign out function
   _signOut() async {
     await _firebaseAuth.signOut();
   }
 
+  ///App bar on top
   Widget buildAppBar() => AppBar(
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -142,8 +140,9 @@ class _HomeState extends State<Home> {
         ),
       );
 
+  ///This builds the user cards
   Widget buildUser(User user) {
-    final userIndex = users.indexOf(user);
+    userIndex = users.indexOf(user);
     final isUserInFocus = userIndex == users.length - 1;
 
     return Listener(
@@ -184,6 +183,9 @@ class _HomeState extends State<Home> {
     );
   }
 
+  ///Function responsible for handling drag/swipe behavior
+  ///Determines if user swiped left/right
+  ///Users swiped off are removed from the user list at the end.
   void onDragEnd(DraggableDetails details, User user) {
     final minimumDrag = 100;
     if (details.offset.dx > minimumDrag) {
@@ -195,11 +197,13 @@ class _HomeState extends State<Home> {
     if (user.isSwipedOff == true || user.isLiked == true) {
       print(users.length.toString());
       setState(() {
-        users.remove(user);
+        users.removeAt(userIndex);
       });
     }
   }
 
+  ///Displays current user's basic personal info in a card
+  ///Visibility widget is used to hide/show the info card when _userBottomSheetModal pops up/down
   Widget buildInfoCard(User user) {
     //for the button i create another column
     return Visibility(
@@ -229,7 +233,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              users[0].name,
+                              user.name,
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 23,
@@ -237,7 +241,7 @@ class _HomeState extends State<Home> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              users[0].age.toString(),
+                              user.age.toString(),
                               style: TextStyle(
                                   color: Colors.black54,
                                   fontSize: 23,
@@ -267,6 +271,8 @@ class _HomeState extends State<Home> {
     );
   }
 
+  ///Set of action buttons underneath the Card
+  ///on click of 'i' button _userBottomSheetModal will be displayed and infoCard will be hidden.
   Widget buildButtonSection() {
     return Container(
       child: Row(
@@ -306,6 +312,7 @@ class _HomeState extends State<Home> {
     );
   }
 
+  ///Bottom Sheet widget containing user information
   Widget _userBottomSheetModal(context) {
     Future<void> future = showModalBottomSheet(
         isDismissible: true,
@@ -337,13 +344,15 @@ class _HomeState extends State<Home> {
     future.then((void value) => _onCloseModal(value));
   }
 
-  //onClose we set infoard visible
+
+  ///on Bottom Sheet widget Close setting info card invisible
   void _onCloseModal(void value) {
     setState(() {
       _visible = true;
     });
   }
 
+  ///Sample set of user info content
   Widget userInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -371,6 +380,7 @@ class _HomeState extends State<Home> {
     );
   }
 
+  ///Card carousel used to display user images
   Widget userPassions() {
     return Center(
       child: SizedBox(
