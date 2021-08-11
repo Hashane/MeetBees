@@ -97,22 +97,6 @@ class _UserCardWidgetState extends State<UserCardWidget> {
                 ),
               ),
             ),
-            // Positioned(
-            //   right: 10,
-            //   left: 10,
-            //   bottom: 10,
-            //   child: Row(
-            //     crossAxisAlignment: CrossAxisAlignment.end,
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       buildUserInfo(user: widget.user),
-            //       Padding(
-            //         padding: EdgeInsets.only(bottom: 16, right: 8),
-            //         child: Icon(Icons.info, color: Colors.white),
-            //       )
-            //     ],
-            //   ),
-            // ),
             Positioned(
               top: 0.0,
               left: 0.0,
@@ -131,7 +115,7 @@ class _UserCardWidgetState extends State<UserCardWidget> {
 
   Widget buildLikeBadge(SwipingDirection swipingDirection) {
     final isSwipingRight = swipingDirection == SwipingDirection.right;
-    final color = isSwipingRight ? Colors.green : Colors.pink;
+    final color = isSwipingRight ? Colors.deepOrangeAccent : Colors.white;
     final angle = isSwipingRight ? -0.5 : 0.5;
 
     if (swipingDirection == SwipingDirection.none) {
@@ -161,34 +145,6 @@ class _UserCardWidgetState extends State<UserCardWidget> {
       );
     }
   }
-
-  // Widget buildUserInfo({@required User user}) => Padding(
-  //       padding: const EdgeInsets.all(8),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: [
-  //           Text(
-  //             '${user.name}, ${user.age}',
-  //             style: TextStyle(
-  //               color: Colors.white,
-  //               fontWeight: FontWeight.bold,
-  //               fontSize: 18,
-  //             ),
-  //           ),
-  //           SizedBox(height: 8),
-  //           Text(
-  //             user.designation,
-  //             style: TextStyle(color: Colors.white),
-  //           ),
-  //           SizedBox(height: 4),
-  //           Text(
-  //             '${user.mutualFriends} Mutual Friends',
-  //             style: TextStyle(color: Colors.white),
-  //           )
-  //         ],
-  //       ),
-  //     );
 }
 
 class SelectedPhotoIndicator extends StatelessWidget {

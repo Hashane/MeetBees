@@ -10,6 +10,8 @@ import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/widget/user_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
+import 'package:google_fonts/google_fonts.dart';
+
 import 'dart:developer' as developer;
 
 class Home extends StatefulWidget {
@@ -39,6 +41,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
     ///initializing stream and fetching users
     fetchUsers();
   }
@@ -56,6 +59,7 @@ class _HomeState extends State<Home> {
     return SafeArea(
       top: false,
       child: Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: buildAppBar(),
         body: SingleChildScrollView(
           child: Stack(
@@ -278,34 +282,69 @@ class _HomeState extends State<Home> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.orangeAccent,
-            child: IconButton(
-                icon: Icon(Icons.arrow_left),
-                color: Colors.white,
-                highlightColor: Colors.deepOrange,
-                onPressed: () {}),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: new Container(
+              height: 45.0,
+              width: 80.0,
+              child: new Material(
+                child: InkWell(
+                  // When the user taps the button, show a snackbar.
+                  onTap: () {
+
+                    ///user is removed but not added to disliked list yet.
+                    setState(() {
+                      users.removeAt(userIndex);
+                    });
+
+                  },
+                  child: Icon(Icons.clear, size: 30.0, color: Colors.black38),
+                ),
+                color: Colors.transparent,
+              ),
+              color: Colors.white,
+            ),
           ),
-          CircleAvatar(
-            backgroundColor: Colors.orangeAccent,
-            child: IconButton(
-                icon: Icon(Icons.info_outline_rounded),
-                color: Colors.white,
-                highlightColor: Colors.deepOrange,
-                onPressed: () {
-                  setState(() {
-                    _visible = !_visible;
-                  });
-                  _userBottomSheetModal(context);
-                }),
+          ClipRRect(
+            child: Container(
+                height: 45.0,
+                width: 60.0,
+                color: Colors.transparent,
+                child: InkWell(
+                  // When the user taps the button, show a snackbar.
+                  onTap: () {
+                    setState(() {
+                      _visible = !_visible;
+                    });
+                    _userBottomSheetModal(context);
+                  },
+                  child: Icon(Icons.more_horiz_sharp,
+                      size: 50.0, color: Colors.black45),
+                )),
           ),
-          CircleAvatar(
-            backgroundColor: Colors.orangeAccent,
-            child: IconButton(
-                icon: Icon(Icons.arrow_right),
-                color: Colors.white,
-                highlightColor: Colors.deepOrange,
-                onPressed: () {}),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: new Container(
+              height: 45.0,
+              width: 80.0,
+              child: new Material(
+                child: InkWell(
+                  // When the user taps the button, show a snackbar.
+                  onTap: () {
+
+                    ///user is removed but not added to disliked list yet.
+                    setState(() {
+                      users.removeAt(userIndex);
+                    });
+
+                  },
+                  child:
+                      Icon(Icons.favorite, size: 30.0, color: Colors.black38),
+                ),
+                color: Colors.transparent,
+              ),
+              color: Colors.white,
+            ),
           ),
         ],
       ),
@@ -322,19 +361,12 @@ class _HomeState extends State<Home> {
           return Container(
             height: SizeConfig.safeBlockVertical * 60,
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Container(
                 child: ListView(
                   // controller: , // set this too
                   children: [
                     userInfo(),
-                    Text(
-                      'Here is a little trick for you. If you add an intriguing phrase like “better looking in person”, more women will go on a date with you. Females are curious by nature, so they will want to see how you actually look like.',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    userInfo(),
-                    userInfo(),
-                    userPassions(),
                   ],
                 ),
               ),
@@ -343,7 +375,6 @@ class _HomeState extends State<Home> {
         });
     future.then((void value) => _onCloseModal(value));
   }
-
 
   ///on Bottom Sheet widget Close setting info card invisible
   void _onCloseModal(void value) {
@@ -358,22 +389,226 @@ class _HomeState extends State<Home> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 5),
+        SizedBox(height: 20),
         Text(
           'Hashane, 26',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 38,
+            fontSize: 28,
           ),
         ),
+        SizedBox(height: 5),
         Text(
-          "Software Engineer",
-          style: TextStyle(color: Colors.white),
+          "10 kms Away",
+          style: TextStyle(
+              color: Colors.white,
+              fontStyle: FontStyle.normal),
         ),
-        SizedBox(height: 18),
+        SizedBox(height: 10),
+        RichText(
+          text: TextSpan(
+            children: [
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: Icon(Icons.work, color: Colors.white),
+                ),
+              ),
+              TextSpan(
+                text: "Software Engineer",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 5),
+        RichText(
+          text: TextSpan(
+            children: [
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: Icon(Icons.school, color: Colors.white),
+                ),
+              ),
+              TextSpan(
+                text: "Computer Science",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 25),
         Text(
-          'Here is a little trick for you. If you add an intriguing phrase like “better looking in person”, more women will go on a date with you. Females are curious by nature, so they will want to see how you actually look like.',
+          'Interests & Hobbies',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 10),
+        Wrap(runSpacing: 5.0,
+          spacing: 5.0,
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                height: 35,
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child:  Text(
+                    'Basketball',
+                    style: GoogleFonts.lobster(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Lobster',
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.rectangle,
+                  border: new Border.all(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 35,
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child:  Text(
+                    'DIY',
+                    style: GoogleFonts.lobster(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Lobster',
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.rectangle,
+                  border: new Border.all(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 35,
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child:  Text(
+                    'Reading',
+                    style: GoogleFonts.lobster(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Lobster',
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.rectangle,
+                  border: new Border.all(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 35,
+                child: FittedBox(
+                    fit: BoxFit.none,
+                    child:  Text(
+                      'Workout',
+                      style: GoogleFonts.lobster(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Lobster',
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                ),
+                decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.rectangle,
+                  border: new Border.all(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 35,
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child:  Text(
+                    'Music',
+                    style: GoogleFonts.lobster(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Lobster',
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.rectangle,
+                  border: new Border.all(
+                    color: Colors.white,
+                    width: 1.0,
+                  ),
+                ),
+
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 25),
+        Text(
+          'Bio',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 15),
+        Text(
+          'Here is a little trick for you. If you add an intriguing phrase like “better looking in person.',
           style: TextStyle(color: Colors.white),
         )
       ],

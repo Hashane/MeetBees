@@ -18,28 +18,29 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
       BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home,size: 30.0,),
             label: 'Home',
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
+            icon: Icon(Icons.chat_bubble,size: 30.0,),
             label: 'Chat',
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.auto_awesome),
+            icon: Icon(Icons.local_fire_department,size: 30.0,),
             label: 'Flames',
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Stars',
-            backgroundColor: Colors.pink,
+            icon: Icon(Icons.star,size: 30.0,),
+            label: 'Crush',
+            backgroundColor: Colors.white,
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Color(0xFFF434A50),
         onTap: _onItemTapped,
       );
 }
