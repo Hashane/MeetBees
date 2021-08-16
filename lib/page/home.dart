@@ -93,11 +93,13 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              users.length != 0 ? Positioned(
-                  bottom: SizeConfig.safeBlockVertical * 8,
-                  left: SizeConfig.safeBlockHorizontal * 1 ,
-                  right:  SizeConfig.safeBlockHorizontal * 1,
-                  child: buildInfoCard(users[userIndex])) : Container(),
+              users.length != 0
+                  ? Positioned(
+                      bottom: SizeConfig.safeBlockVertical * 8,
+                      left: SizeConfig.safeBlockHorizontal * 1,
+                      right: SizeConfig.safeBlockHorizontal * 1,
+                      child: buildInfoCard(users[userIndex]))
+                  : Container(),
             ],
           ),
         ),
@@ -320,6 +322,8 @@ class _HomeState extends State<Home> {
                     setState(() {
                       _visible = !_visible;
                     });
+                    //_premiumPlansBottomSheetModal(context);
+                    //_matchingBottomSheetModal(context);
                     _userBottomSheetModal(context);
                   },
                   child: Icon(Icons.more_horiz_sharp,
@@ -384,54 +388,6 @@ class _HomeState extends State<Home> {
       _visible = true;
     });
   }
-
-  ///Bottom Sheet widget for matching users
-  Widget _matchingBottomSheetModal(context) {
-    Future<void> future = showModalBottomSheet(
-        isDismissible: true,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-            height: SizeConfig.safeBlockVertical * 60,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Container(
-                child: ListView(
-                  // controller: , // set this too
-                  children: [
-                    _matchedCards(),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-    future.then((void value) => _onCloseModal(value));
-  }
-
-  Widget _matchedCards(){
-    return Container(
-      child: Transform.rotate(
-        angle: 0.5,
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black45, width: 2),
-          ),
-          child: Text(
-            'asa',
-            style: TextStyle(
-              color: Colors.deepOrangeAccent,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
 
   ///Sample set of user info content
   Widget userInfo() {
@@ -655,6 +611,278 @@ class _HomeState extends State<Home> {
           'Here is a little trick for you. If you add an intriguing phrase like “better looking in person.',
           style: TextStyle(color: Colors.white),
         )
+      ],
+    );
+  }
+
+  ///Bottom Sheet widget for matching users
+  Widget _matchedBottomSheetModal(context) {
+    Future<void> future = showModalBottomSheet(
+        isDismissible: true,
+        isScrollControlled: false,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            height: SizeConfig.safeBlockVertical * 60,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Container(
+                child: ListView(
+                  // controller: , // set this too
+                  children: [
+                    _matchingCards(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+    future.then((void value) => _onCloseModal(value));
+  }
+
+  Widget _matchingCards() {
+    return Stack(
+      alignment: Alignment.topCenter,
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
+      children: [
+        Column(
+          children: [
+            SizedBox(height: SizeConfig.safeBlockVertical * 5),
+            Center(
+              child: Text(
+                'Match!',
+                style: GoogleFonts.lobster(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Lobster',
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: SizeConfig.safeBlockVertical * 2),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Transform.rotate(
+                    alignment: Alignment.centerRight,
+                    angle: -0.3,
+                    child: Container(
+                        width: 120,
+                        height: 170,
+                        decoration: BoxDecoration(
+                          // color: Colors.blue,
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: NetworkImage(users[userIndex].imageUris[0]),
+                            fit: BoxFit.cover,
+                          ),
+                        )),
+                  ),
+                  Transform.rotate(
+                    alignment: Alignment.centerLeft,
+                    angle: 0.3,
+                    child: Container(
+                        width: 120,
+                        height: 170,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+                            fit: BoxFit.cover,
+                          ),
+                        )),
+                  ),
+                ]),
+            SizedBox(height: SizeConfig.safeBlockVertical * 5),
+            OutlinedButton(
+              onPressed: null,
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(Size(
+                    SizeConfig.safeBlockHorizontal * 45,
+                    SizeConfig.safeBlockVertical * 5)),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor: MaterialStateProperty.all(Colors.black45),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0))),
+              ),
+              child: Text(
+                'Chat',
+                style: GoogleFonts.lobster(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Lobster',
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Positioned(
+          bottom: 40,
+          child: ImageIcon(
+            AssetImage("assets/images/logo.png"),
+            color: Colors.deepOrangeAccent,
+            size: 80.0,
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///Bottom Sheet widget to display Premium Plans
+  Widget _premiumPlansBottomSheetModal(context) {
+    Future<void> future = showModalBottomSheet(
+        isDismissible: true,
+        isScrollControlled: false,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            height: SizeConfig.safeBlockVertical * 60,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Container(
+                child: ListView(
+                  // controller: , // set this too
+                  children: [
+                    _premiumPlansContent(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+    future.then((void value) => _onCloseModal(value));
+  }
+
+  Widget _premiumPlansContent() {
+    return Stack(
+      alignment: Alignment.topCenter,
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
+      children: [
+        Column(
+          children: [
+            SizedBox(height: SizeConfig.safeBlockVertical * 5),
+            Center(
+              child: Text(
+                'Plans',
+                style: GoogleFonts.lobster(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Lobster',
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: SizeConfig.safeBlockVertical * 2),
+            Center(
+              child: Text(
+                'Likes or Dislikes as many as you want',
+                style:
+                    TextStyle(fontSize: 12,color: Colors.white, fontStyle: FontStyle.normal),
+              ),
+            ),
+            SizedBox(height: SizeConfig.safeBlockVertical * 2),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 120,
+                    height: 170,
+                    decoration: new BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        stops: [0.0, 1.0],
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                        colors: <Color>[
+                          Colors.orangeAccent,
+                          Colors.deepOrange,
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    width: 120,
+                    height: 170,
+                    decoration: new BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        stops: [0.0, 1.0],
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                        colors: <Color>[
+                          Colors.orangeAccent,
+                          Colors.deepOrange,
+                        ],
+                      ),
+                    ),
+                    child: ClipRect(
+                      child: Banner(
+                        message: "Save 50%",
+                        location: BannerLocation.topEnd,
+                        color: Colors.red,
+                        child: Container(
+                          child: Center(
+                            child: Text("premium"),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+            SizedBox(height: SizeConfig.safeBlockVertical * 1),
+            Center(
+              child: Text(
+                'Recurring bill, cancel anytime',
+                style:
+                TextStyle(fontSize: 10, color: Colors.blueGrey, fontStyle: FontStyle.normal),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Terms of Services & Privacy Policy',
+                style:
+                    TextStyle(fontSize: 12,color: Colors.white, fontStyle: FontStyle.normal),
+              ),
+            ),
+            SizedBox(height: SizeConfig.safeBlockVertical * 1),
+            OutlinedButton(
+              onPressed: null,
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(Size(
+                    SizeConfig.safeBlockHorizontal * 45,
+                    SizeConfig.safeBlockVertical * 5)),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor: MaterialStateProperty.all(Colors.black45),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0))),
+              ),
+              child: Text(
+                'Continue',
+                style: GoogleFonts.lobster(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Lobster',
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
