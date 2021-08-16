@@ -466,7 +466,7 @@ class _HomeState extends State<Home> {
           runSpacing: 5.0,
           spacing: 5.0,
           children: <Widget>[
-            Expanded(
+            Container(
               child: Container(
                 height: 35,
                 child: FittedBox(
@@ -492,7 +492,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Expanded(
+            Container(
               child: Container(
                 height: 35,
                 child: FittedBox(
@@ -518,7 +518,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Expanded(
+            Container(
               child: Container(
                 height: 35,
                 child: FittedBox(
@@ -544,7 +544,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Expanded(
+            Container(
               child: Container(
                 height: 35,
                 child: FittedBox(
@@ -570,7 +570,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Expanded(
+            Container(
               child: Container(
                 height: 35,
                 child: FittedBox(
