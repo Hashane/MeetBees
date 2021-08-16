@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavWidget(),
+        //bottomNavigationBar: showModalBottomSheet();
       ),
     );
   }
@@ -360,6 +360,7 @@ class _HomeState extends State<Home> {
   ///Bottom Sheet widget containing user information
   Widget _userBottomSheetModal(context) {
     Future<void> future = showModalBottomSheet(
+        useRootNavigator: true,
         isDismissible: true,
         isScrollControlled: true,
         context: context,

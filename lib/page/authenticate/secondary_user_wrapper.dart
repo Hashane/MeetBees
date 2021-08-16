@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/main/main_screen.dart';
 import 'package:meet_ceylon/page/profile_data/personal_info.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/widget/loading_widget.dart';
@@ -46,7 +47,7 @@ class _SecondaryWrapperState extends State<SecondaryWrapper> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return snapshot.data
-              ? homeBuilder()
+              ? MainScreen()
               : MaterialApp(home: PersonalInfo());
         } else {
           return loading();
