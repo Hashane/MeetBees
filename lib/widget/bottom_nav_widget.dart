@@ -23,7 +23,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble,size: 30.0,),
+            icon: Icon(Icons.question_answer_rounded,size: 30.0,),
             label: 'Chat',
             backgroundColor: Colors.white,
           ),

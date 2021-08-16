@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _HomeState extends State<Home> {
               Column(
                 children: [
                   SizedBox(
-                    height: SizeConfig.safeBlockVertical * 2,
+                    height: SizeConfig.safeBlockVertical * 1,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
@@ -76,11 +77,11 @@ class _HomeState extends State<Home> {
                       children: [
                         users.length == 0
                             ? SizedBox(
-                                height: 600,
+                                height: SizeConfig.safeBlockVertical * 70,
                                 child: Text(
                                     "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time."))
                             : SizedBox(
-                                height: 600,
+                                height: SizeConfig.safeBlockVertical * 70,
                                 child: Stack(
                                     children: users.map(buildUser).toList())),
                         SizedBox(
@@ -92,7 +93,11 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              users.length != 0 ? buildInfoCard(users[userIndex]) : Container(),
+              users.length != 0 ? Positioned(
+                  bottom: SizeConfig.safeBlockVertical * 8,
+                  left: SizeConfig.safeBlockHorizontal * 1 ,
+                  right:  SizeConfig.safeBlockHorizontal * 1,
+                  child: buildInfoCard(users[userIndex])) : Container(),
             ],
           ),
         ),
@@ -279,24 +284,23 @@ class _HomeState extends State<Home> {
   ///on click of 'i' button _userBottomSheetModal will be displayed and infoCard will be hidden.
   Widget buildButtonSection() {
     return Container(
+      padding: const EdgeInsets.fromLTRB(50.0, 0, 50.0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: new Container(
-              height: 45.0,
+              height: 50.0,
               width: 80.0,
               child: new Material(
                 child: InkWell(
                   // When the user taps the button, show a snackbar.
                   onTap: () {
-
                     ///user is removed but not added to disliked list yet.
                     setState(() {
                       users.removeAt(userIndex);
                     });
-
                   },
                   child: Icon(Icons.clear, size: 30.0, color: Colors.black38),
                 ),
@@ -325,18 +329,16 @@ class _HomeState extends State<Home> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: new Container(
-              height: 45.0,
+              height: 50.0,
               width: 80.0,
               child: new Material(
                 child: InkWell(
                   // When the user taps the button, show a snackbar.
                   onTap: () {
-
                     ///user is removed but not added to disliked list yet.
                     setState(() {
                       users.removeAt(userIndex);
                     });
-
                   },
                   child:
                       Icon(Icons.favorite, size: 30.0, color: Colors.black38),
@@ -383,6 +385,54 @@ class _HomeState extends State<Home> {
     });
   }
 
+  ///Bottom Sheet widget for matching users
+  Widget _matchingBottomSheetModal(context) {
+    Future<void> future = showModalBottomSheet(
+        isDismissible: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            height: SizeConfig.safeBlockVertical * 60,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Container(
+                child: ListView(
+                  // controller: , // set this too
+                  children: [
+                    _matchedCards(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+    future.then((void value) => _onCloseModal(value));
+  }
+
+  Widget _matchedCards(){
+    return Container(
+      child: Transform.rotate(
+        angle: 0.5,
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black45, width: 2),
+          ),
+          child: Text(
+            'asa',
+            style: TextStyle(
+              color: Colors.deepOrangeAccent,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
   ///Sample set of user info content
   Widget userInfo() {
     return Column(
@@ -401,9 +451,7 @@ class _HomeState extends State<Home> {
         SizedBox(height: 5),
         Text(
           "10 kms Away",
-          style: TextStyle(
-              color: Colors.white,
-              fontStyle: FontStyle.normal),
+          style: TextStyle(color: Colors.white, fontStyle: FontStyle.normal),
         ),
         SizedBox(height: 10),
         RichText(
@@ -457,7 +505,8 @@ class _HomeState extends State<Home> {
           ),
         ),
         SizedBox(height: 10),
-        Wrap(runSpacing: 5.0,
+        Wrap(
+          runSpacing: 5.0,
           spacing: 5.0,
           children: <Widget>[
             Expanded(
@@ -465,7 +514,7 @@ class _HomeState extends State<Home> {
                 height: 35,
                 child: FittedBox(
                   fit: BoxFit.none,
-                  child:  Text(
+                  child: Text(
                     'Basketball',
                     style: GoogleFonts.lobster(
                       textStyle: TextStyle(
@@ -484,7 +533,6 @@ class _HomeState extends State<Home> {
                     width: 1.0,
                   ),
                 ),
-
               ),
             ),
             Expanded(
@@ -492,7 +540,7 @@ class _HomeState extends State<Home> {
                 height: 35,
                 child: FittedBox(
                   fit: BoxFit.none,
-                  child:  Text(
+                  child: Text(
                     'DIY',
                     style: GoogleFonts.lobster(
                       textStyle: TextStyle(
@@ -511,7 +559,6 @@ class _HomeState extends State<Home> {
                     width: 1.0,
                   ),
                 ),
-
               ),
             ),
             Expanded(
@@ -519,7 +566,7 @@ class _HomeState extends State<Home> {
                 height: 35,
                 child: FittedBox(
                   fit: BoxFit.none,
-                  child:  Text(
+                  child: Text(
                     'Reading',
                     style: GoogleFonts.lobster(
                       textStyle: TextStyle(
@@ -538,24 +585,23 @@ class _HomeState extends State<Home> {
                     width: 1.0,
                   ),
                 ),
-
               ),
             ),
             Expanded(
               child: Container(
                 height: 35,
                 child: FittedBox(
-                    fit: BoxFit.none,
-                    child:  Text(
-                      'Workout',
-                      style: GoogleFonts.lobster(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Lobster',
-                          fontSize: 18,
-                        ),
+                  fit: BoxFit.none,
+                  child: Text(
+                    'Workout',
+                    style: GoogleFonts.lobster(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Lobster',
+                        fontSize: 18,
                       ),
                     ),
+                  ),
                 ),
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -565,7 +611,6 @@ class _HomeState extends State<Home> {
                     width: 1.0,
                   ),
                 ),
-
               ),
             ),
             Expanded(
@@ -573,7 +618,7 @@ class _HomeState extends State<Home> {
                 height: 35,
                 child: FittedBox(
                   fit: BoxFit.none,
-                  child:  Text(
+                  child: Text(
                     'Music',
                     style: GoogleFonts.lobster(
                       textStyle: TextStyle(
@@ -592,7 +637,6 @@ class _HomeState extends State<Home> {
                     width: 1.0,
                   ),
                 ),
-
               ),
             ),
           ],

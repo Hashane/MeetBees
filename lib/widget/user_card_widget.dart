@@ -68,8 +68,8 @@ class _UserCardWidgetState extends State<UserCardWidget> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        width: size.width * 0.90,
-        height: size.height * 0.55,
+        width: size.width * 0.99,
+        height: size.height * 0.58,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
