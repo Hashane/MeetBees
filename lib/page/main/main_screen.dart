@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> ScreensList = <Widget>[
     Home(),
     Chat(),
+    Flames(),
   ];
 
   @override
