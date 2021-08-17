@@ -83,15 +83,31 @@ class _FlamesState extends State<Flames> {
                     ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.local_fire_department,
-                    ),
-                    SizedBox(height: SizeConfig.safeBlockVertical * 3),
+                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
                     Text(
                       "Use flames to get more matches",
+                      style: TextStyle(
+                          color: Colors.white, fontStyle: FontStyle.normal),
+                    ),
+                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                    Icon(
+                      Icons.local_fire_department,
+                      color: Colors.white,
+                      size: 40.0,
+                    ),
+                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                    Text(
+                      "5",
+                      style: TextStyle(
+                          color: Colors.white, fontStyle: FontStyle.normal),
+                    ),
+                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                    Text(
+                      "Remaining",
                       style: TextStyle(
                           color: Colors.white, fontStyle: FontStyle.normal),
                     ),
@@ -106,7 +122,6 @@ class _FlamesState extends State<Flames> {
           ],
         ),
       ),
-      //bottomNavigationBar: showModalBottomSheet();
     );
   }
 
@@ -114,8 +129,6 @@ class _FlamesState extends State<Flames> {
     SizeConfig().init(context);
     return Stack(
       alignment: Alignment.topCenter,
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      // mainAxisSize: MainAxisSize.min,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +138,6 @@ class _FlamesState extends State<Flames> {
               'Buy more',
               style: TextStyle(
                 color: Colors.black54,
-                fontFamily: 'Lobster',
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -165,54 +177,34 @@ class _FlamesState extends State<Flames> {
                   ),
                 ]),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
-            Center(
-              child: Container(
-                width: SizeConfig.safeBlockHorizontal * 40,
-                height: SizeConfig.safeBlockVertical * 5,
-                decoration: new BoxDecoration(
-                  border: Border.all(color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: LinearGradient(
-                    stops: [0.0, 1.0],
-                    begin: FractionalOffset.topCenter,
-                    end: FractionalOffset.bottomCenter,
-                    colors: <Color>[
-                      Colors.orangeAccent,
-                      Colors.deepOrange,
-                    ],
+            InkWell(
+              onTap: () {},
+              child: Center(
+                child: Container(
+                  width: SizeConfig.safeBlockHorizontal * 40,
+                  height: SizeConfig.safeBlockVertical * 5,
+                  decoration: new BoxDecoration(
+                    border: Border.all(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      stops: [0.0, 1.0],
+                      begin: FractionalOffset.centerLeft,
+                      end: FractionalOffset.centerRight,
+                      colors: <Color>[
+                        Colors.orangeAccent,
+                        Colors.deepOrange,
+                      ],
+                    ),
                   ),
-                ),
-                child:
-                    Center(child: Text(
+                  child: Center(
+                    child: Text(
                       "Flame it!",
                       style: TextStyle(
                           color: Colors.black, fontStyle: FontStyle.normal),
-                    ), ),
+                    ),
+                  ),
+                ),
               ),
-              // DecoratedBox(
-              //   decoration: new BoxDecoration(
-              //     border: Border.all(color: Colors.transparent),
-              //     borderRadius: BorderRadius.circular(10),
-              //     gradient: LinearGradient(
-              //       stops: [0.0, 1.0],
-              //       begin: FractionalOffset.centerLeft,
-              //       end: FractionalOffset.centerRight,
-              //       colors: <Color>[
-              //         Colors.orangeAccent,
-              //         Colors.deepOrange,
-              //       ],
-              //     ),
-              //   ),
-              //   child: ElevatedButton(
-              //     onPressed: () {},
-              //     style: ButtonStyle(
-              //       minimumSize: MaterialStateProperty.all(Size(
-              //           SizeConfig.safeBlockHorizontal * 45,
-              //           SizeConfig.safeBlockVertical * 5)),
-              //       shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),),
-              //     child: Text('Flame it'),
-              //   ),
-              // ),
             ),
           ],
         ),
