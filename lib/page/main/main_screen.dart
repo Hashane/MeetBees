@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../home.dart';
+import 'home.dart';
+import 'chat.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> ScreensList = <Widget>[
     Home(),
-    Text("asa"),
+    Chat(),
   ];
 
   @override

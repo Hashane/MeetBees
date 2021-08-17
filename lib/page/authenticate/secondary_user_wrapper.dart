@@ -7,7 +7,7 @@ import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/widget/loading_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../home.dart';
+import '../main/home.dart';
 
 class SecondaryWrapper extends StatefulWidget {
   @override

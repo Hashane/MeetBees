@@ -5,7 +5,7 @@ import 'package:meet_ceylon/page/authenticate/secondary_user_wrapper.dart';
 import 'package:meet_ceylon/provider/auth.dart';
 import 'package:meet_ceylon/widget/loading_widget.dart';
 
-import 'authenticate/login.dart';
+import 'login.dart';
 
 class Wrapper extends StatefulWidget {
   @override

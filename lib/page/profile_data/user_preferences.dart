@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
-import 'package:meet_ceylon/page/home.dart';
+import 'package:meet_ceylon/page/main/home.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
