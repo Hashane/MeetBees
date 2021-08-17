@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'home.dart';
 import 'chat.dart';
+import 'crush.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     Home(),
     Chat(),
     Flames(),
+    Crush(),
   ];
 
   @override

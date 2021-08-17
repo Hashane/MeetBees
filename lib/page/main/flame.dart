@@ -12,7 +12,7 @@ class Flames extends StatefulWidget {
 }
 
 class _FlamesState extends State<Flames> {
-  double percent = 20.0;
+  double percent = 100.0;
 
   @override
   void initState() {
@@ -47,14 +47,22 @@ class _FlamesState extends State<Flames> {
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: SizeConfig.safeBlockVertical * 5,
             ),
-            LinearProgressIndicator(
-              value: percent / 100,
-              semanticsLabel: 'Linear progress indicator',
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                child: LinearProgressIndicator(
+                  value: percent/100,
+                  minHeight: 10,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+                  backgroundColor: Color(0xffD6D6D6),
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -144,20 +152,20 @@ class _FlamesState extends State<Flames> {
             ),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 120,
-                    height: 170,
+                    width: 110,
+                    height: 130,
                     decoration: new BoxDecoration(
                       border: Border.all(width: 2, color: Colors.deepOrange),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   Container(
-                    width: 120,
-                    height: 170,
+                    width: 110,
+                    height: 130,
                     decoration: new BoxDecoration(
                       border: Border.all(width: 2, color: Colors.deepOrange),
                       borderRadius: BorderRadius.circular(10),
@@ -181,7 +189,7 @@ class _FlamesState extends State<Flames> {
               onTap: () {},
               child: Center(
                 child: Container(
-                  width: SizeConfig.safeBlockHorizontal * 40,
+                  width: SizeConfig.safeBlockHorizontal * 80,
                   height: SizeConfig.safeBlockVertical * 5,
                   decoration: new BoxDecoration(
                     border: Border.all(color: Colors.transparent),
