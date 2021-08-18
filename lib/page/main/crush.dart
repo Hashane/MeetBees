@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
@@ -23,7 +25,8 @@ class _CrushState extends State<Crush> {
   Widget build(BuildContext context) {
     List cardsList = [
       CrushesList(),
-      CrushesList(), CrushesList(),
+      CrushesList(),
+      CrushesList(),
       CrushesList(),
     ];
     SizeConfig().init(context);
@@ -60,7 +63,7 @@ class _CrushState extends State<Crush> {
                     Icons.star,
                   ),
                   Text(
-                    1.toString() +"(Remaining)",
+                    1.toString() + "(Remaining)",
                     style: TextStyle(
                         color: Colors.white, fontStyle: FontStyle.normal),
                   ),
@@ -86,23 +89,25 @@ class _CrushState extends State<Crush> {
               }).toList(),
             ),
             Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: cardsList.asMap().entries.map((e) {
-                    return Container(
-                      width: 8.0,
-                      height: 8.0,
-                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentIndex == e.key ? Colors.deepOrange : Color.fromRGBO(0, 0, 0, 0.4)
-                      ),
-                    );
-                  }).toList(),
-                ),
+              top: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: cardsList.asMap().entries.map((e) {
+                  return Container(
+                    width: 8.0,
+                    height: 8.0,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentIndex == e.key
+                            ? Colors.deepOrange
+                            : Color.fromRGBO(0, 0, 0, 0.4)),
+                  );
+                }).toList(),
+              ),
             ),
             premiumPlansContentCustom(context),
           ],
@@ -245,6 +250,20 @@ class _CrushesListState extends State<CrushesList> {
                                   Colors.black.withOpacity(0.8),
                                   BlendMode.dstATop),
                             ),
+                          ),
+                        ),
+                      ),
+                      ClipRect(  // <-- clips to the 200x200 [Container] below
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                            sigmaX: 5.0,
+                            sigmaY: 5.0,
+                          ),
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 200.0,
+                            height: 200.0,
+                            child: Icon(Icons.lock),
                           ),
                         ),
                       ),
