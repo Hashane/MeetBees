@@ -7,6 +7,8 @@ import 'package:meet_ceylon/page/main/home.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../test.dart';
+
 
 class MainScreen extends StatefulWidget {
   @override
@@ -32,13 +34,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MyAppTheme _myAppTheme = new MyAppTheme(isDark: false);
-    return  ChangeNotifierProvider(
-        create: (context) => FeedbackPositionProvider(),
-    child: MaterialApp(
-    title: 'Meet Ceylon',
-    theme: _myAppTheme.themeData,
-    home: WillPopScope(
+    return WillPopScope(
         onWillPop: () async {
         final isFirstRouteInCurrentTab =
         !await _navigatorKeys[_selectedIndex].currentState.maybePop();
@@ -102,7 +98,12 @@ class _MainScreenState extends State<MainScreen> {
           _buildOffstageNavigator(3),
         ],
       ),
-    ),),),);
+    ),);
+  }
+
+
+  void _next() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Screen2()));
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
@@ -112,11 +113,12 @@ class _MainScreenState extends State<MainScreen> {
           Home(),
           Chat(),
           Flames(),
-          Crush(),
+          Crush(onNext: _next,),
         ].elementAt(index);
       },
     };
   }
+
 
 
 

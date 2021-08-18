@@ -7,6 +7,7 @@ import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/widget/loading_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../custom_theme.dart';
 import '../main/home.dart';
 
 class SecondaryWrapper extends StatefulWidget {
@@ -27,8 +28,9 @@ class _SecondaryWrapperState extends State<SecondaryWrapper> {
       // Get reference to Firestore collection
       DocumentSnapshot ds =
           await _firestore.collection("SL").doc(_auth.currentUser.uid).get();
-      if(ds.exists == false) {
-        ds = await _firestore.collection("AUS").doc(_auth.currentUser.uid).get();
+      if (ds.exists == false) {
+        ds =
+            await _firestore.collection("AUS").doc(_auth.currentUser.uid).get();
       }
       return ds.exists;
     } catch (e) {
@@ -42,12 +44,18 @@ class _SecondaryWrapperState extends State<SecondaryWrapper> {
   ///
   @override
   Widget build(BuildContext context) {
+    MyAppTheme _myAppTheme = new MyAppTheme(isDark: false);
     return FutureBuilder<bool>(
       future: checkIfDocExists(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return snapshot.data
-              ? MainScreen()
+              ? ChangeNotifierProvider(  //passing the provider
+                  create: (context) => FeedbackPositionProvider(),
+                  child: MaterialApp(
+                      title: 'Meet Ceylon',
+                      theme: _myAppTheme.themeData,
+                      home: MainScreen()))
               : MaterialApp(home: PersonalInfo());
         } else {
           return loading();

@@ -8,8 +8,12 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/app_bar_widget.dart';
 
 class Crush extends StatefulWidget {
+  final Function onNext;
+
   @override
   _CrushState createState() => _CrushState();
+
+  Crush({this.onNext()});
 }
 
 Widget kBackBtn = Icon(
@@ -88,6 +92,11 @@ class _CrushState extends State<Crush> {
                 });
               }).toList(),
             ),
+        TextButton(
+          onPressed: widget.onNext,
+          child: Text('Go to next screen'),
+        ),
+
           Align(
             alignment: Alignment.bottomCenter,
               child: Row(
