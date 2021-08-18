@@ -88,10 +88,8 @@ class _CrushState extends State<Crush> {
                 });
               }).toList(),
             ),
-            Positioned(
-              top: 0.0,
-              left: 0.0,
-              right: 0.0,
+          Align(
+            alignment: Alignment.bottomCenter,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: cardsList.asMap().entries.map((e) {
