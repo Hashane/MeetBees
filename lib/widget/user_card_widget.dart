@@ -80,7 +80,7 @@ class _UserCardWidgetState extends State<UserCardWidget> {
         child: Stack(
           children: [
             new Positioned.fill(
-              left: size.width / 2,
+              left: size.width / 2.2,
               child: new Material(
                 color: Colors.transparent,
                 child: new InkWell(
@@ -89,7 +89,7 @@ class _UserCardWidgetState extends State<UserCardWidget> {
               ),
             ),
             new Positioned.fill(
-              right: size.width / 2,
+              right: size.width / 2.2,
               child: new Material(
                 color: Colors.transparent,
                 child: new InkWell(
