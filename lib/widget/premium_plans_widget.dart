@@ -1,5 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meet_ceylon/data/package_descriptions.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 
 Widget premiumPlansContent(context) {
@@ -25,12 +27,19 @@ Widget premiumPlansContent(context) {
             ),
           ),
           SizedBox(height: SizeConfig.safeBlockVertical * 2),
-          Center(
-            child: Text(
-              'Likes or Dislikes as many as you want',
-              style:
-              TextStyle(fontSize: 12,color: Colors.white, fontStyle: FontStyle.normal),
+          CarouselSlider(
+            options: CarouselOptions(
+              autoPlay: true,
+              enableInfiniteScroll: true,
+              aspectRatio: 20.0,
+              viewportFraction: 20.0,
+              enlargeCenterPage: false,
             ),
+            items: packageDescriptions.map((card) {
+              return Builder(builder: (BuildContext context) {
+                return Text(card.toString(), style: TextStyle(color: Colors.white),);
+              });
+            }).toList(),
           ),
           SizedBox(height: SizeConfig.safeBlockVertical * 2),
           Row(
@@ -54,7 +63,6 @@ Widget premiumPlansContent(context) {
                     ),
                   ),
                 ),
-
                 Container(
                   width: 120,
                   height: 170,
@@ -89,15 +97,19 @@ Widget premiumPlansContent(context) {
           Center(
             child: Text(
               'Recurring bill, cancel anytime',
-              style:
-              TextStyle(fontSize: 10, color: Colors.blueGrey, fontStyle: FontStyle.normal),
+              style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.blueGrey,
+                  fontStyle: FontStyle.normal),
             ),
           ),
           Center(
             child: Text(
               'Terms of Services & Privacy Policy',
-              style:
-              TextStyle(fontSize: 12,color: Colors.white, fontStyle: FontStyle.normal),
+              style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontStyle: FontStyle.normal),
             ),
           ),
           SizedBox(height: SizeConfig.safeBlockVertical * 1),
