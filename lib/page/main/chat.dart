@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/app_bar_widget.dart';
 
+import '../test.dart';
+
 class Chat extends StatefulWidget {
   @override
   _ChatState createState() => _ChatState();
@@ -73,6 +75,15 @@ class _ChatState extends State<Chat> {
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.normal),
               ),
+            ),
+            TextButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => Screen2()
+                ));
+              },
+              child: Text('Go to next screen'),
+
             ),
             SizedBox(
               height: SizeConfig.safeBlockVertical * 3,

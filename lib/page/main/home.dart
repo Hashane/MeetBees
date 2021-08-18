@@ -3,11 +3,12 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/profile_data/personal_info.dart';
+import 'package:meet_ceylon/page/test.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/app_bar_widget.dart';
-import 'package:meet_ceylon/widget/bottom_nav_widget.dart';
 import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/widget/premium_plans_widget.dart';
 import 'package:meet_ceylon/widget/user_card_widget.dart';
@@ -99,7 +100,7 @@ class _HomeState extends State<Home> {
               ),
               users.length != 0
                   ? Positioned(
-                      bottom: SizeConfig.safeBlockVertical * 8,
+                      bottom: SizeConfig.safeBlockVertical * 10,
                       left: SizeConfig.safeBlockHorizontal * 1,
                       right: SizeConfig.safeBlockHorizontal * 1,
                       child: buildInfoCard(users[userIndex]))
@@ -131,6 +132,12 @@ class _HomeState extends State<Home> {
     await _firebaseAuth.signOut();
   }
 
+  _navigateProfile() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => Screen2()
+    ));
+  }
+
   ///App bar on top
   Widget buildAppBar() => AppBar(
         centerTitle: true,
@@ -139,7 +146,7 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
               icon: const Icon(Icons.person, size: 40.0, color: Colors.black54),
-              onPressed: _signOut),
+              onPressed: _navigateProfile),
           //Icon(Icons.person, color: Colors.grey),
           SizedBox(width: 16),
         ],
@@ -618,6 +625,7 @@ class _HomeState extends State<Home> {
         isDismissible: true,
         isScrollControlled: false,
         context: context,
+        useRootNavigator: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20.0),
