@@ -749,7 +749,7 @@ class _HomeState extends State<Home> {
           return Container(
             height: SizeConfig.safeBlockVertical * 60,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Container(
                 child: ListView(
                   // controller: , // set this too

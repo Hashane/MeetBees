@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meet_ceylon/data/package_descriptions.dart';
@@ -12,19 +13,12 @@ Widget premiumPlansContent(context) {
     // mainAxisSize: MainAxisSize.min,
     children: [
       Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: SizeConfig.safeBlockVertical * 5),
-          Center(
-            child: Text(
-              'Plans',
-              style: GoogleFonts.lobster(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Lobster',
-                  fontSize: 40,
-                ),
-              ),
-            ),
+          Text(
+            'Plans',
+            style: Theme.of(context).textTheme.headline2,
           ),
           SizedBox(height: SizeConfig.safeBlockVertical * 2),
           CarouselSlider(
@@ -37,7 +31,10 @@ Widget premiumPlansContent(context) {
             ),
             items: packageDescriptions.map((card) {
               return Builder(builder: (BuildContext context) {
-                return Text(card.toString(), style: TextStyle(color: Colors.white),);
+                return Text(
+                  card.toString(),
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 14),
+                );
               });
             }).toList(),
           ),
@@ -94,22 +91,38 @@ Widget premiumPlansContent(context) {
                 ),
               ]),
           SizedBox(height: SizeConfig.safeBlockVertical * 1),
-          Center(
-            child: Text(
-              'Recurring bill, cancel anytime',
-              style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.blueGrey,
-                  fontStyle: FontStyle.normal),
-            ),
+          Text(
+            'Recurring bill, cancel anytime',
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                .copyWith(color: Colors.grey, fontWeight: FontWeight.normal),
           ),
-          Center(
-            child: Text(
-              'Terms of Services & Privacy Policy',
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                  fontStyle: FontStyle.normal),
+          SizedBox(height: SizeConfig.safeBlockVertical * 0.2),
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  .copyWith(color: Colors.grey, fontWeight: FontWeight.normal),
+              children: <TextSpan>[
+                TextSpan(
+                    text: 'Terms of Service',
+                    style: Theme.of(context).textTheme.bodyText2,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        print('Terms of Service"');
+                      }),
+                TextSpan(text: ' and ',style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    color: Colors.grey),),
+                TextSpan(
+                    text: 'Privacy Policy',
+                    style: Theme.of(context).textTheme.bodyText2,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        print('Privacy Policy"');
+                      }),
+              ],
             ),
           ),
           SizedBox(height: SizeConfig.safeBlockVertical * 1),
@@ -126,13 +139,8 @@ Widget premiumPlansContent(context) {
             ),
             child: Text(
               'Continue',
-              style: GoogleFonts.lobster(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Lobster',
-                  fontSize: 20,
-                ),
-              ),
+              style:
+                  Theme.of(context).textTheme.headline2.copyWith(fontSize: 20),
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/custom_theme.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
@@ -31,23 +32,13 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MyAppTheme _myAppTheme = new MyAppTheme(isDark: false);
     return Builder(
       builder: (BuildContext context) => ChangeNotifierProvider(
         create: (context) => FeedbackPositionProvider(),
         child: MaterialApp(
           title: 'Meet Ceylon',
-          theme: ThemeData(
-            // scaffoldBackgroundColor: const Color(0x1F000000),
-            bottomSheetTheme: BottomSheetThemeData(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0)),
-                ),
-                backgroundColor: Colors.black.withOpacity(0.5)),
-            primarySwatch: Colors.deepOrange,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
+          theme: _myAppTheme.themeData,
           home: Scaffold(
             body: ScreensList.elementAt(_selectedIndex),
             bottomNavigationBar: BottomNavigationBar(

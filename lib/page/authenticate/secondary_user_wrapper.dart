@@ -71,19 +71,6 @@ class _SecondaryWrapperState extends State<SecondaryWrapper> {
         create: (context) => FeedbackPositionProvider(),
         child: MaterialApp(
           title: 'Meet Ceylon',
-          theme: ThemeData(
-            // scaffoldBackgroundColor: const Color(0x1F000000),
-            bottomSheetTheme: BottomSheetThemeData(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0)),
-                ),
-                backgroundColor: Colors.black.withOpacity(0.5)),
-
-            primarySwatch: Colors.deepOrange,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
           home: Home(),
         ),
       ),
