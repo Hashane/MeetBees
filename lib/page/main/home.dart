@@ -89,7 +89,9 @@ class _HomeState extends State<Home> {
                         SizedBox(
                           height: SizeConfig.safeBlockVertical * 1,
                         ),
-                        users.length != 0 ? buildButtonSection() : Container(),
+                        users.length != 0
+                            ? buildButtonSection(users[userIndex])
+                            : Container(),
                       ],
                     ),
                   ),
@@ -286,7 +288,7 @@ class _HomeState extends State<Home> {
 
   ///Set of action buttons underneath the Card
   ///on click of 'i' button _userBottomSheetModal will be displayed and infoCard will be hidden.
-  Widget buildButtonSection() {
+  Widget buildButtonSection(User user) {
     return Container(
       padding: const EdgeInsets.fromLTRB(50.0, 0, 50.0, 0),
       child: Row(
@@ -324,9 +326,9 @@ class _HomeState extends State<Home> {
                     setState(() {
                       _visible = !_visible;
                     });
-                    _premiumPlansBottomSheetModal(context);
-                    //_matchedBottomSheetModal(context);
-                   // _userBottomSheetModal(context);
+                    //_premiumPlansBottomSheetModal(context);
+                    _matchedBottomSheetModal(context);
+                    //_userBottomSheetModal(context, user);
                   },
                   child: Icon(Icons.more_horiz_sharp,
                       size: 50.0, color: Colors.black45),
@@ -360,12 +362,18 @@ class _HomeState extends State<Home> {
   }
 
   ///Bottom Sheet widget containing user information
-  Widget _userBottomSheetModal(context) {
+  Widget _userBottomSheetModal(context, User user) {
     Future<void> future = showModalBottomSheet(
         useRootNavigator: true,
         isDismissible: true,
         isScrollControlled: true,
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20.0),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext bc) {
           return Container(
             height: SizeConfig.safeBlockVertical * 60,
@@ -375,7 +383,7 @@ class _HomeState extends State<Home> {
                 child: ListView(
                   // controller: , // set this too
                   children: [
-                    userInfo(),
+                    userInfo(user),
                   ],
                 ),
               ),
@@ -393,14 +401,14 @@ class _HomeState extends State<Home> {
   }
 
   ///Sample set of user info content
-  Widget userInfo() {
+  Widget userInfo(User user) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(height: 20),
         Text(
-          'Hashane, 26',
+          user.name + ", " + user.age.toString(),
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -410,7 +418,10 @@ class _HomeState extends State<Home> {
         SizedBox(height: 5),
         Text(
           "10 kms Away",
-          style: TextStyle(color: Colors.white, fontStyle: FontStyle.normal),
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2
+              .copyWith(fontWeight: FontWeight.normal),
         ),
         SizedBox(height: 10),
         RichText(
@@ -424,11 +435,10 @@ class _HomeState extends State<Home> {
               ),
               TextSpan(
                 text: "Software Engineer",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 18, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -445,11 +455,10 @@ class _HomeState extends State<Home> {
               ),
               TextSpan(
                 text: "Computer Science",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 18, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -475,13 +484,10 @@ class _HomeState extends State<Home> {
                   fit: BoxFit.none,
                   child: Text(
                     'Basketball',
-                    style: GoogleFonts.lobster(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Lobster',
-                        fontSize: 18,
-                      ),
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        .copyWith(fontSize: 20),
                   ),
                 ),
                 decoration: new BoxDecoration(
@@ -501,13 +507,10 @@ class _HomeState extends State<Home> {
                   fit: BoxFit.none,
                   child: Text(
                     'DIY',
-                    style: GoogleFonts.lobster(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Lobster',
-                        fontSize: 18,
-                      ),
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        .copyWith(fontSize: 20),
                   ),
                 ),
                 decoration: new BoxDecoration(
@@ -527,13 +530,10 @@ class _HomeState extends State<Home> {
                   fit: BoxFit.none,
                   child: Text(
                     'Reading',
-                    style: GoogleFonts.lobster(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Lobster',
-                        fontSize: 18,
-                      ),
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        .copyWith(fontSize: 20),
                   ),
                 ),
                 decoration: new BoxDecoration(
@@ -553,13 +553,10 @@ class _HomeState extends State<Home> {
                   fit: BoxFit.none,
                   child: Text(
                     'Workout',
-                    style: GoogleFonts.lobster(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Lobster',
-                        fontSize: 18,
-                      ),
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        .copyWith(fontSize: 20),
                   ),
                 ),
                 decoration: new BoxDecoration(
@@ -579,13 +576,10 @@ class _HomeState extends State<Home> {
                   fit: BoxFit.none,
                   child: Text(
                     'Music',
-                    style: GoogleFonts.lobster(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Lobster',
-                        fontSize: 18,
-                      ),
-                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        .copyWith(fontSize: 20),
                   ),
                 ),
                 decoration: new BoxDecoration(
@@ -624,6 +618,11 @@ class _HomeState extends State<Home> {
         isDismissible: true,
         isScrollControlled: false,
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20.0),
+          ),
+        ),
         builder: (BuildContext bc) {
           return Container(
             height: SizeConfig.safeBlockVertical * 60,
@@ -745,6 +744,11 @@ class _HomeState extends State<Home> {
         isDismissible: true,
         isScrollControlled: false,
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20.0),
+          ),
+        ),
         builder: (BuildContext bc) {
           return Container(
             height: SizeConfig.safeBlockVertical * 60,
