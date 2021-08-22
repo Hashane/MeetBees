@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/profile_data/personal_info.dart';
 import 'package:meet_ceylon/page/test.dart';
+import 'package:meet_ceylon/page/user_profile/profile.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
@@ -134,7 +135,7 @@ class _HomeState extends State<Home> {
 
   _navigateProfile() {
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => Screen2()
+        builder: (context) => UserProfile()
     ));
   }
 
