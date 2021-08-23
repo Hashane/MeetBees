@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/app_bar_widget.dart';
+import 'package:meet_ceylon/widget/customAppBar.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -8,8 +8,7 @@ class UserProfile extends StatefulWidget {
 }
 
 Widget _backBtn = Icon(
-  Icons.arrow_back_ios,
-  size: 40.0,
+  Icons.settings,
 );
 
 class _UserProfileState extends State<UserProfile> {
@@ -18,7 +17,7 @@ class _UserProfileState extends State<UserProfile> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: CustomAppBar(title: "Profile", child: _backBtn, onPressed: null),
+      appBar: CustomAppBar(title: Text("Profile"), actionIcon: _backBtn, onPressed: null),
       body:
       Padding(
       padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),

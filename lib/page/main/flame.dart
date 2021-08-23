@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/app_bar_widget.dart';
 import 'package:meet_ceylon/widget/premium_plans_widget.dart';
 
 class Flames extends StatefulWidget {
@@ -42,7 +41,9 @@ class _FlamesState extends State<Flames> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: CustomAppBar(title: "Flames", child: kBackBtn, onPressed: null),
+      appBar: AppBar(
+        title: Text("Flames"),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(

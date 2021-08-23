@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/model/preference.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/app_bar_widget.dart';
 
 class Crush extends StatefulWidget {
   final Function onNext;
@@ -37,7 +36,9 @@ class _CrushState extends State<Crush> {
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: CustomAppBar(title: "Crush", child: kBackBtn, onPressed: null),
+      appBar: AppBar(
+        title: Text("Crush"),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(

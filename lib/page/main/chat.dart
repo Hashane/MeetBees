@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/app_bar_widget.dart';
 
 import '../test.dart';
 
@@ -20,7 +19,9 @@ class _ChatState extends State<Chat> {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: CustomAppBar(title: "Chat", child: kBackBtn, onPressed: null),
+      appBar: AppBar(
+        title: Text("Chat"),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(
@@ -77,13 +78,11 @@ class _ChatState extends State<Chat> {
               ),
             ),
             TextButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Screen2()
-                ));
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Screen2()));
               },
               child: Text('Go to next screen'),
-
             ),
             SizedBox(
               height: SizeConfig.safeBlockVertical * 3,
@@ -123,75 +122,77 @@ class _ChatState extends State<Chat> {
 
   Widget recentMatches() {
     return PhysicalModel(
-        color: Colors.white,
-        elevation: 8,
-        shadowColor: Colors.grey[100],
-        borderRadius: BorderRadius.circular(10),
-    child: Container(
-      width: SizeConfig.safeBlockHorizontal * 75,
-      height: SizeConfig.safeBlockVertical * 10,
-      decoration: new BoxDecoration(
-        border: Border.all(color: Colors.black54),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(5, 5, 45, 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-        ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),child:
-            Container(
-              width: SizeConfig.safeBlockHorizontal * 15,
-              height: SizeConfig.safeBlockVertical * 10,
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
-                ),
-                border: Border.all(color: Colors.transparent),
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0, 1.0), //(x,y)
-                    blurRadius: 6.0,
+      color: Colors.white,
+      elevation: 8,
+      shadowColor: Colors.grey[100],
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        width: SizeConfig.safeBlockHorizontal * 75,
+        height: SizeConfig.safeBlockVertical * 10,
+        decoration: new BoxDecoration(
+          border: Border.all(color: Colors.black54),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 5, 45, 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5.0),
+                child: Container(
+                  width: SizeConfig.safeBlockHorizontal * 15,
+                  height: SizeConfig.safeBlockVertical * 10,
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+                    ),
+                    border: Border.all(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 6.0,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),),
-            Container(
-              width: SizeConfig.safeBlockHorizontal * 15,
-              height: SizeConfig.safeBlockVertical * 10,
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
                 ),
-                border: Border.all(color: Colors.transparent),
-                borderRadius: BorderRadius.circular(5),
               ),
-            ),
-            Container(
-              width: SizeConfig.safeBlockHorizontal * 15,
-              height: SizeConfig.safeBlockVertical * 10,
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+              Container(
+                width: SizeConfig.safeBlockHorizontal * 15,
+                height: SizeConfig.safeBlockVertical * 10,
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+                  ),
+                  border: Border.all(color: Colors.transparent),
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                border: Border.all(color: Colors.transparent),
-                borderRadius: BorderRadius.circular(5),
               ),
-            ),
-          ],
+              Container(
+                width: SizeConfig.safeBlockHorizontal * 15,
+                height: SizeConfig.safeBlockVertical * 10,
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+                  ),
+                  border: Border.all(color: Colors.transparent),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),);
+    );
   }
 
   Widget personDetailCard() {
