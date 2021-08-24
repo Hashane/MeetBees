@@ -4,6 +4,7 @@ import 'package:meet_ceylon/page/main/chat.dart';
 import 'package:meet_ceylon/page/main/crush.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/page/main/home.dart';
+import 'package:meet_ceylon/page/user_profile/profile.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,6 @@ class _MainScreenState extends State<MainScreen> {
 
   void _onItemTapped(int index) {
     setState(() {
-      print(index);
       _selectedIndex = index;
     });
   }
@@ -106,11 +106,15 @@ class _MainScreenState extends State<MainScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Screen2()));
   }
 
+  void _nav() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfile()));
+  }
+
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
         return [
-          Home(),
+          Home(onNav: _nav,),
           Chat(),
           Flames(),
           Crush(onNext: _next,),

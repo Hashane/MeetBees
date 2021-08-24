@@ -19,6 +19,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:developer' as developer;
 
 class Home extends StatefulWidget {
+  final Function onNav;
+
+  const Home({Key key, this.onNav}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -63,7 +67,7 @@ class _HomeState extends State<Home> {
     return SafeArea(
       top: false,
       child: Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: buildAppBar(),
         body: SingleChildScrollView(
           child: Stack(
@@ -132,12 +136,6 @@ class _HomeState extends State<Home> {
     await _firebaseAuth.signOut();
   }
 
-  _navigateProfile() {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => UserProfile()
-    ));
-  }
-
   ///App bar on top
   Widget buildAppBar() => AppBar(
         centerTitle: true,
@@ -146,7 +144,7 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
               icon: const Icon(Icons.person, size: 40.0, color: Colors.black54),
-              onPressed: _navigateProfile),
+              onPressed: widget.onNav),
           //Icon(Icons.person, color: Colors.grey),
           SizedBox(width: 16),
         ],
@@ -301,25 +299,49 @@ class _HomeState extends State<Home> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: new Container(
-              height: 50.0,
-              width: 80.0,
-              child: new Material(
-                child: InkWell(
-                  // When the user taps the button, show a snackbar.
-                  onTap: () {
-                    ///user is removed but not added to disliked list yet.
-                    setState(() {
-                      users.removeAt(userIndex);
-                    });
-                  },
-                  child: Icon(Icons.clear, size: 30.0, color: Colors.black38),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(10.0),
+          //   child: new Container(
+          //     height: 50.0,
+          //     width: 80.0,
+          //     child: new Material(
+          //       child: InkWell(
+          //         // When the user taps the button, show a snackbar.
+          //         onTap: () {
+          //
+          //           setState(() {
+          //             users.removeAt(userIndex);
+          //           });
+          //         },
+          //         child: Icon(Icons.clear, size: 30.0, color: Colors.black38),
+          //       ),
+          //       color: Colors.transparent,
+          //     ),
+          //     color: Colors.white,
+          //   ),
+          // ),
+          SizedBox(
+            height: SizeConfig.safeBlockVertical * 7.5,
+            width: SizeConfig.safeBlockHorizontal * 24.5,
+            child: Card(
+              elevation: 3,
+              //  margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
-                color: Colors.transparent,
               ),
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
+              child: InkWell(
+                // When the user taps the button, show a snackbar.
+                onTap: () {
+                  setState(() {
+                    ///user is removed but not added to disliked list yet.
+                    users.removeAt(userIndex);
+                  });
+                },
+                child: Icon(Icons.clear, size: 30.0, color: Colors.black45),
+              ),
             ),
           ),
           ClipRRect(
@@ -341,26 +363,27 @@ class _HomeState extends State<Home> {
                       size: 50.0, color: Colors.black45),
                 )),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: new Container(
-              height: 50.0,
-              width: 80.0,
-              child: new Material(
-                child: InkWell(
-                  // When the user taps the button, show a snackbar.
-                  onTap: () {
-                    ///user is removed but not added to disliked list yet.
-                    setState(() {
-                      users.removeAt(userIndex);
-                    });
-                  },
-                  child:
-                      Icon(Icons.favorite, size: 30.0, color: Colors.black38),
+          SizedBox(
+            height: SizeConfig.safeBlockVertical * 7.5,
+            width: SizeConfig.safeBlockHorizontal * 24.5,
+            child: Card(
+              elevation: 3,
+              //  margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
                 ),
-                color: Colors.transparent,
               ),
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
+              child: InkWell(
+                // When the user taps the button, show a snackbar.
+                onTap: () {
+                  setState(() {
+                    users.removeAt(userIndex);
+                  });
+                },
+                child: Icon(Icons.favorite, size: 30.0, color: Colors.black45),
+              ),
             ),
           ),
         ],

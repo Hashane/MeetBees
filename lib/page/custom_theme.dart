@@ -16,6 +16,7 @@ class MyAppTheme {
       headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
       headline2: GoogleFonts.lobster(textStyle: TextStyle(color: Colors.white, fontFamily: 'Lobster', fontSize: 40,)),
       headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      headline4: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,color: Colors.black45),
       bodyText1: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w100,fontStyle: FontStyle.normal, color: Colors.black54),
       bodyText2: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600,fontStyle: FontStyle.normal, color: Colors.white),
     );
@@ -23,8 +24,8 @@ class MyAppTheme {
     Color txtColor = textTheme.bodyText1.color;
     ColorScheme colorScheme = ColorScheme(
       primary: Colors.red,
-      onPrimary: Colors.black,
-      primaryVariant: Colors.orange,
+      onPrimary: Colors.orange,
+      primaryVariant: Colors.deepOrange,
 
       background: Colors.black.withOpacity(0.5),
       onBackground: Colors.black,
