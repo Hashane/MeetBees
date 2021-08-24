@@ -9,10 +9,10 @@ class Settings extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Settings",style: Theme.of(context).textTheme.headline5),
+        title: Text("Settings",style: Theme.of(context).textTheme.headline4),
         backgroundColor:  Theme.of(context).colorScheme.surface,
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         elevation: 0,
       ),

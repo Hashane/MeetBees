@@ -40,9 +40,14 @@ class _FlamesState extends State<Flames> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Flames"),
+        title: Text("Flames", style: Theme.of(context).textTheme.headline5),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
@@ -58,7 +63,7 @@ class _FlamesState extends State<Flames> {
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 child: LinearProgressIndicator(
-                  value: percent/100,
+                  value: percent / 100,
                   minHeight: 10,
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
                   backgroundColor: Color(0xffD6D6D6),

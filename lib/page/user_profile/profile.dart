@@ -12,12 +12,17 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text("Profile",style: Theme.of(context).textTheme.headline4),
         actions: [
           IconButton(icon: Icon(Icons.settings), onPressed: onPressed),
         ],
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),

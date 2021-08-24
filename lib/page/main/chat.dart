@@ -18,10 +18,16 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Chat"),
+        title: Text("Chat", style: Theme.of(context).textTheme.headline5),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        elevation: 0,
       ),
+
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(
@@ -202,7 +208,7 @@ class _ChatState extends State<Chat> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      color: Colors.grey[100],
+      color: Theme.of(context).colorScheme.surface,
       child: Row(
         children: <Widget>[
           Padding(

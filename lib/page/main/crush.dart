@@ -35,9 +35,14 @@ class _CrushState extends State<Crush> {
     SizeConfig().init(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Crush"),
+        title: Text("Crush", style: Theme.of(context).textTheme.headline5),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
@@ -93,13 +98,12 @@ class _CrushState extends State<Crush> {
                 });
               }).toList(),
             ),
-        TextButton(
-          onPressed: widget.onNext,
-          child: Text('Go to next screen'),
-        ),
-
-          Align(
-            alignment: Alignment.bottomCenter,
+            TextButton(
+              onPressed: widget.onNext,
+              child: Text('Go to next screen'),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: cardsList.asMap().entries.map((e) {
@@ -261,7 +265,8 @@ class _CrushesListState extends State<CrushesList> {
                           ),
                         ),
                       ),
-                      ClipRect(  // <-- clips to the 200x200 [Container] below
+                      ClipRect(
+                        // <-- clips to the 200x200 [Container] below
                         child: BackdropFilter(
                           filter: ImageFilter.blur(
                             sigmaX: 5.0,
