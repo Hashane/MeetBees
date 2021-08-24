@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
 import 'package:meet_ceylon/widget/elevated_gradient_btn.dart';
 
 class Settings extends StatelessWidget {
@@ -116,75 +117,15 @@ class Settings extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 2,
               ),
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 6,
-                width: SizeConfig.safeBlockHorizontal * 60,
-                child: Card(
-                  elevation: 6,
-                  //  margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                  ),
-                  color: Theme.of(context).colorScheme.onSurface,
-                  child: Center(
-                    child: Text(
-                      "Community guidelines",
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontWeight: FontWeight.bold, fontSize: 14.0),
-                    ),
-                  ),
-                ),
-              ),
+              ElevatedDarkButton(child: Text("Community guidelines"),width: SizeConfig.safeBlockHorizontal * 60,),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 1,
               ),
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 6,
-                width: SizeConfig.safeBlockHorizontal * 60,
-                child: Card(
-                  elevation: 6,
-                  //margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                  ),
-                  color: Theme.of(context).colorScheme.onSurface,
-                  child: Center(
-                    child: Text(
-                      "Terms of services",
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontWeight: FontWeight.bold, fontSize: 14.0),
-                    ),
-                  ),
-                ),
-              ),
+              ElevatedDarkButton(child: Text("Terms of services"),width: SizeConfig.safeBlockHorizontal * 60,),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 1,
               ),
-              SizedBox(
-                height: SizeConfig.safeBlockVertical * 6,
-                width: SizeConfig.safeBlockHorizontal * 60,
-                child: Card(
-                  elevation: 6,
-                  // margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                  ),
-                  color: Theme.of(context).colorScheme.onSurface,
-                  child: Center(
-                    child: Text(
-                      "Privary policy",
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontWeight: FontWeight.bold, fontSize: 14.0),
-                    ),
-                  ),
-                ),
-              ),
+              ElevatedDarkButton(child: Text("Privacy policy"),width: SizeConfig.safeBlockHorizontal * 60,),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 5,
               ),

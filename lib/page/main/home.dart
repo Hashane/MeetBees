@@ -136,6 +136,10 @@ class _HomeState extends State<Home> {
     await _firebaseAuth.signOut();
   }
 
+  // _onPrs(){
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: (context) => Screen2()));
+  // }
   ///App bar on top
   Widget buildAppBar() => AppBar(
         centerTitle: true,
@@ -340,7 +344,7 @@ class _HomeState extends State<Home> {
                     users.removeAt(userIndex);
                   });
                 },
-                child: Icon(Icons.clear, size: 30.0, color: Colors.black45),
+                child: Icon(Icons.clear_rounded, size: 30.0, color: Colors.black45),
               ),
             ),
           ),

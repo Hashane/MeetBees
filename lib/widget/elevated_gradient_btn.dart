@@ -20,29 +20,37 @@ class ElevatedGradientButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Container(
-      width: width,
-      height: SizeConfig.safeBlockVertical * 5,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.transparent),
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          stops: [0.0, 1.0],
-          begin: FractionalOffset.centerLeft,
-          end: FractionalOffset.centerRight,
-          colors: <Color>[
-            Colors.orangeAccent,
-            Colors.deepOrange,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12.0),
+      child: Container(
+        width: width,
+        height: SizeConfig.safeBlockVertical * 5,
+        margin: const EdgeInsets.only(bottom: 6.0), //Same as `blurRadius` i guess
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.white,
+          gradient: LinearGradient(
+            stops: [0.0, 1.0],
+            begin: FractionalOffset.centerLeft,
+            end: FractionalOffset.centerRight,
+            colors: <Color>[
+              Colors.orangeAccent,
+              Colors.red,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.0), //(x,y)
+              blurRadius: 6.0,
+            ),
           ],
         ),
-      ),
-      child: Material(
-        color: Colors.transparent,
         child: InkWell(
             onTap: onPressed,
             child: Center(
               child: child,
-            )),
+            ),),
       ),
     );
   }

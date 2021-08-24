@@ -23,9 +23,9 @@ class MyAppTheme {
 
     Color txtColor = textTheme.bodyText1.color;
     ColorScheme colorScheme = ColorScheme(
-      primary: Colors.red,
+      primary: Colors.deepOrange,
       onPrimary: Colors.orange,
-      primaryVariant: Colors.deepOrange,
+      primaryVariant: Colors.orangeAccent,
 
       background: Colors.black.withOpacity(0.5),
       onBackground: Colors.black,
@@ -38,7 +38,7 @@ class MyAppTheme {
       onError: Colors.white,
 
       surface: Colors.white,
-      onSurface: Colors.black45,
+      onSurface: Colors.black54,
 
       brightness: isDark ? Brightness.dark : Brightness.light,
     );

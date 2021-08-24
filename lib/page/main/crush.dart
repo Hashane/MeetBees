@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/model/preference.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/widget/elevated_gradient_btn.dart';
 
 class Crush extends StatefulWidget {
   final Function onNext;
@@ -179,34 +180,9 @@ class _CrushState extends State<Crush> {
                   ),
                 ]),
             SizedBox(height: SizeConfig.safeBlockVertical * 1),
-            InkWell(
-              onTap: () {},
-              child: Center(
-                child: Container(
-                  width: SizeConfig.safeBlockHorizontal * 80,
-                  height: SizeConfig.safeBlockVertical * 5,
-                  decoration: new BoxDecoration(
-                    border: Border.all(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      stops: [0.0, 1.0],
-                      begin: FractionalOffset.centerLeft,
-                      end: FractionalOffset.centerRight,
-                      colors: <Color>[
-                        Colors.orangeAccent,
-                        Colors.deepOrange,
-                      ],
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Flame it!",
-                      style: TextStyle(
-                          color: Colors.black, fontStyle: FontStyle.normal),
-                    ),
-                  ),
-                ),
-              ),
+            ElevatedGradientButton(
+              child: Text("Crush it"),
+              width: SizeConfig.safeBlockHorizontal * 80,
             ),
           ],
         ),

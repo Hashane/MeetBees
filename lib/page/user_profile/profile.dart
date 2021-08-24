@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/main/settings.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
+import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Profile",style: Theme.of(context).textTheme.headline4),
+        title: Text("Profile", style: Theme.of(context).textTheme.headline4),
         actions: [
           IconButton(icon: Icon(Icons.settings), onPressed: onPressed),
         ],
@@ -28,10 +30,13 @@ class _UserProfileState extends State<UserProfile> {
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Center(
               child: userCard(),
+            ),
+            SizedBox(
+              height: SizeConfig.safeBlockVertical * 2,
             ),
             Text('Jude Hashane, 26',
                 style: Theme.of(context)
@@ -39,93 +44,63 @@ class _UserProfileState extends State<UserProfile> {
                     .bodyText1
                     .copyWith(fontWeight: FontWeight.normal, fontSize: 15)),
             SizedBox(
-              height: 40,
-              width: 250,
-              child: TextButton(
-                  child: Text("Edit my profile".toUpperCase(),
-                      style: TextStyle(fontSize: 14)),
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                          EdgeInsets.all(15)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.red)))),
-                  onPressed: () => null),
+              height: SizeConfig.safeBlockVertical * 2,
+            ),
+            ElevatedDarkButton(
+              child: Text("Edit my profile"),
+              width: SizeConfig.safeBlockHorizontal * 70,
+            ),
+            SizedBox(
+              height: SizeConfig.safeBlockVertical * 2,
             ),
             Text('Active packages',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
                     .copyWith(fontWeight: FontWeight.normal, fontSize: 15)),
-            Container(
-              width: SizeConfig.safeBlockHorizontal * 70,
-              height: SizeConfig.safeBlockVertical * 10,
-              decoration: new BoxDecoration(
-                border: Border.all(color: Colors.transparent),
-                borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(
-                  stops: [0.0, 1.0],
-                  begin: FractionalOffset.centerLeft,
-                  end: FractionalOffset.centerRight,
-                  colors: <Color>[
-                    Colors.orangeAccent,
-                    Colors.deepOrange,
-                  ],
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: SizeConfig.safeBlockVertical * 1),
-                  Text(
-                    "Use flames to get more matches",
-                    style: TextStyle(
-                        color: Colors.white, fontStyle: FontStyle.normal),
-                  ),
-                  Text(
-                    "Remaining",
-                    style: TextStyle(
-                        color: Colors.white, fontStyle: FontStyle.normal),
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: SizeConfig.safeBlockVertical * 1,
+            ),
+            ActivePlanCard(context),
+            SizedBox(
+              height: SizeConfig.safeBlockVertical * 2,
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 100,
-                    height: 130,
-                    decoration: new BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.deepOrange),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 130,
-                    decoration: new BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.deepOrange),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ClipRect(
-                      child: Banner(
-                        message: "Save 50%",
-                        location: BannerLocation.topEnd,
-                        color: Colors.red,
-                        child: Container(
-                          child: Center(
-                            child: Text("premium"),
-                          ),
-                        ),
+                  ActivePerksCards(
+                      icon: Icon(
+                        Icons.local_fire_department,
+                        color: Theme.of(context).colorScheme.primaryVariant,
+                        size: 40.0,
                       ),
-                    ),
-                  ),
+                      text: Text(
+                        "4",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      width: SizeConfig.safeBlockHorizontal * 23,
+                      height: SizeConfig.safeBlockVertical * 14,
+                      onPressed: null),
+                  ActivePerksCards(
+                      icon: Icon(
+                        Icons.star,
+                        color: Theme.of(context).colorScheme.primaryVariant,
+                        size: 40.0,
+                      ),
+                      text: Text(
+                        "2",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      width: SizeConfig.safeBlockHorizontal * 23,
+                      height: SizeConfig.safeBlockVertical * 14,
+                      onPressed: null),
                 ]),
           ],
         ),
@@ -133,10 +108,64 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
+  ///Navigating to settings screen
   void onPressed() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Settings()));
   }
+}
+
+Widget ActivePlanCard(BuildContext context) {
+  return SizedBox(
+    width: SizeConfig.safeBlockHorizontal * 70,
+    height: SizeConfig.safeBlockVertical * 10,
+    child: Card(
+      elevation: 8,
+      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      color: Theme.of(context).colorScheme.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.transparent),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text("Weekly 5.60\$",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
+              border: Border.all(color: Colors.transparent),
+              borderRadius: BorderRadius.only(
+                bottomRight: const Radius.circular(12.0),
+                bottomLeft: const Radius.circular(12.0),
+              ),
+            ),
+            child: Center(
+              child: Text("Cancel anytime in app store",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(fontWeight: FontWeight.bold,fontSize: 11,color: Theme.of(context).colorScheme.primaryVariant)),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 Widget userCard() {

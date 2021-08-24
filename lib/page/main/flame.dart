@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/widget/elevated_gradient_btn.dart';
 import 'package:meet_ceylon/widget/premium_plans_widget.dart';
 
 class Flames extends StatefulWidget {
@@ -17,7 +18,7 @@ class _FlamesState extends State<Flames> {
   void initState() {
     Timer timer;
     timer = Timer.periodic(Duration(milliseconds: 300), (_) {
-      print('Percent Update');
+     //print('Percent Update');
       if (this.mounted) {
         setState(() {
           percent -= 1;
@@ -191,34 +192,9 @@ class _FlamesState extends State<Flames> {
                   ),
                 ]),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
-            InkWell(
-              onTap: () {},
-              child: Center(
-                child: Container(
-                  width: SizeConfig.safeBlockHorizontal * 80,
-                  height: SizeConfig.safeBlockVertical * 5,
-                  decoration: new BoxDecoration(
-                    border: Border.all(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      stops: [0.0, 1.0],
-                      begin: FractionalOffset.centerLeft,
-                      end: FractionalOffset.centerRight,
-                      colors: <Color>[
-                        Colors.orangeAccent,
-                        Colors.deepOrange,
-                      ],
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Flame it!",
-                      style: TextStyle(
-                          color: Colors.black, fontStyle: FontStyle.normal),
-                    ),
-                  ),
-                ),
-              ),
+            ElevatedGradientButton(
+              child: Text("Flame it"),
+              width: SizeConfig.safeBlockHorizontal * 80,
             ),
           ],
         ),
