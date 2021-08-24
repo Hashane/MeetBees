@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/elevated_gradient_btn.dart';
-import 'package:meet_ceylon/widget/premium_plans_widget.dart';
 
 class Flames extends StatefulWidget {
   @override

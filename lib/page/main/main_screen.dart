@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/page/custom_theme.dart';
 import 'package:meet_ceylon/page/main/chat.dart';
-import 'package:meet_ceylon/page/main/crush.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/page/main/home.dart';
 import 'package:meet_ceylon/page/main/settings_screen.dart';
 import 'package:meet_ceylon/page/user_profile/profile.dart';
-import 'package:meet_ceylon/provider/position_feedback_provider.dart';
-import 'package:provider/provider.dart';
+
 
 import '../test.dart';
 

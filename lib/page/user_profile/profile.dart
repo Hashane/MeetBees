@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/page/main/settings_screen.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
 import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
