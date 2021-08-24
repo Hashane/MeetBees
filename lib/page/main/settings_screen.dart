@@ -3,7 +3,7 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
 import 'package:meet_ceylon/widget/elevated_gradient_btn.dart';
 
-class Settings extends StatelessWidget {
+class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

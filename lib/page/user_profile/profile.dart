@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/page/main/settings.dart';
+import 'package:meet_ceylon/page/main/settings_screen.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
 import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
 
 class UserProfile extends StatefulWidget {
+  final Function onNav;
+
+  const UserProfile({Key key, this.onNav}) : super(key: key);
+
   @override
   _UserProfileState createState() => _UserProfileState();
 }
@@ -18,7 +22,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: AppBar(
         title: Text("Profile", style: Theme.of(context).textTheme.headline4),
         actions: [
-          IconButton(icon: Icon(Icons.settings), onPressed: onPressed),
+          IconButton(icon: Icon(Icons.settings), onPressed: widget.onNav),
         ],
         backgroundColor: Theme.of(context).colorScheme.surface,
         iconTheme: IconThemeData(
@@ -109,10 +113,10 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   ///Navigating to settings screen
-  void onPressed() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Settings()));
-  }
+  // void onPressed() {
+  //   Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+  // }
 }
 
 Widget ActivePlanCard(BuildContext context) {

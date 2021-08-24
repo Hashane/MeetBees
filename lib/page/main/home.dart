@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/page/profile_data/personal_info.dart';
-import 'package:meet_ceylon/page/test.dart';
-import 'package:meet_ceylon/page/user_profile/profile.dart';
+import 'package:meet_ceylon/page/main/crush.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
@@ -15,7 +12,6 @@ import 'package:meet_ceylon/widget/user_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 import 'package:google_fonts/google_fonts.dart';
-
 import 'dart:developer' as developer;
 
 class Home extends StatefulWidget {
@@ -136,10 +132,10 @@ class _HomeState extends State<Home> {
     await _firebaseAuth.signOut();
   }
 
-  // _onPrs(){
-  //   Navigator.push(context,
-  //       MaterialPageRoute(builder: (context) => Screen2()));
-  // }
+  void _onPressed() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Crush(onNext: widget.onNav,)));
+  }
+
   ///App bar on top
   Widget buildAppBar() => AppBar(
         centerTitle: true,
@@ -147,8 +143,8 @@ class _HomeState extends State<Home> {
         elevation: 0,
         actions: [
           IconButton(
-              icon: const Icon(Icons.person, size: 40.0, color: Colors.black54),
-              onPressed: widget.onNav),
+              icon: const Icon(Icons.star, size: 40.0, color: Colors.black54),
+              onPressed: _onPressed),
           //Icon(Icons.person, color: Colors.grey),
           SizedBox(width: 16),
         ],

@@ -4,6 +4,7 @@ import 'package:meet_ceylon/page/main/chat.dart';
 import 'package:meet_ceylon/page/main/crush.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/page/main/home.dart';
+import 'package:meet_ceylon/page/main/settings_screen.dart';
 import 'package:meet_ceylon/page/user_profile/profile.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:provider/provider.dart';
@@ -78,10 +79,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.star,
+              Icons.person,
               size: 30.0,
             ),
-            label: 'Crush',
+            label: 'Profile',
             backgroundColor: Colors.white,
           ),
         ],
@@ -107,17 +108,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _nav() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfile()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
         return [
-          Home(onNav: _nav,),
+          Home(onNav: _next,),
           Chat(),
           Flames(),
-          Crush(onNext: _next,),
+          UserProfile(onNav: _nav,),
         ].elementAt(index);
       },
     };
