@@ -193,6 +193,7 @@ class _FlamesState extends State<Flames> {
             ElevatedGradientButton(
               child: Text("Flame it"),
               width: SizeConfig.safeBlockHorizontal * 80,
+              onPressed: () {print("asasa");},
             ),
           ],
         ),
