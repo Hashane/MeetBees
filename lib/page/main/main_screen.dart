@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/authenticate/sub/filters_screen.dart';
+import 'package:meet_ceylon/page/authenticate/sub/settings_screen.dart';
 import 'package:meet_ceylon/page/main/chat.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/page/main/home.dart';
-import 'package:meet_ceylon/page/main/settings_screen.dart';
 import 'package:meet_ceylon/page/user_profile/profile.dart';
 
 
@@ -108,6 +109,11 @@ class _MainScreenState extends State<MainScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
   }
 
+  ///Filter screen
+  void _nav1() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen()));
+  }
+
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
@@ -115,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
           Home(onNav: _next,),
           Chat(),
           Flames(),
-          UserProfile(onNav: _nav,),
+          UserProfile(onNav: _nav,onFilterNav: _nav1,),
         ].elementAt(index);
       },
     };

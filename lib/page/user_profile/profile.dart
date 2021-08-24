@@ -5,8 +5,9 @@ import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
 
 class UserProfile extends StatefulWidget {
   final Function onNav;
+  final Function onFilterNav;
 
-  const UserProfile({Key key, this.onNav}) : super(key: key);
+  const UserProfile({Key key, this.onNav, this.onFilterNav}) : super(key: key);
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -23,6 +24,7 @@ class _UserProfileState extends State<UserProfile> {
         actions: [
           IconButton(icon: Icon(Icons.settings), onPressed: widget.onNav),
         ],
+        leading: IconButton(icon: Icon(Icons.settings_input_component), onPressed: widget.onFilterNav),
         backgroundColor: Theme.of(context).colorScheme.surface,
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.secondary,
