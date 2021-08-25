@@ -32,8 +32,14 @@ class ElevatedDarkButton extends StatelessWidget {
           ),
         ),
         color: Theme.of(context).colorScheme.onSurface,
-        child: Center(
-          child: child,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            child: Center(
+              child: child,
+            ),
+            onTap: onPressed,
+          ),
         ),
       ),
     );

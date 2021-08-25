@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/user_profile/edit_profile_screen.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
 import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
@@ -54,6 +55,7 @@ class _UserProfileState extends State<UserProfile> {
             ElevatedDarkButton(
               child: Text("Edit my profile"),
               width: SizeConfig.safeBlockHorizontal * 70,
+              onPressed: onEditPressed,
             ),
             SizedBox(
               height: SizeConfig.safeBlockVertical * 2,
@@ -113,11 +115,11 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  ///Navigating to settings screen
-  // void onPressed() {
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => SettingsScreen()));
-  // }
+  ///Navigating to Edit profile
+  void onEditPressed() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => EditProfile()));
+  }
 }
 
 Widget ActivePlanCard(BuildContext context) {
