@@ -11,6 +11,7 @@ class MyAppTheme {
   MyAppTheme({@required this.isDark});
 
   ThemeData get themeData {
+
     /// Create a TextTheme and ColorScheme, that we can use to generate ThemeData
     TextTheme textTheme =  TextTheme(
       headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),

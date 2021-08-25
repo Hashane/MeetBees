@@ -118,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
 
   ///Chat Screen
   void _nav2(){
-    Navigator.push(context, ScaleRoute(page: MessageScreen()));
+    Navigator.push(context, ScaleRoute(page: MessagesScreen()));
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {

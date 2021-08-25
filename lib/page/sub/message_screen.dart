@@ -1,54 +1,89 @@
+import 'package:meet_ceylon/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/widget/messages/body_widget.dart';
 
-class MessageScreen extends StatefulWidget {
-  @override
-  _MessageScreenState createState() => _MessageScreenState();
-}
 
-class _MessageScreenState extends State<MessageScreen> {
+class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Colors.white,
       appBar: buildAppBar(context),
-      body: Container(),
+      body: Body(),
     );
   }
-}
 
-buildAppBar(BuildContext context) {
-  return AppBar(
-    title: Row(
-      children: [
-        ///Todo add to git wiki - used for backbutton
-        //BackButton(),
-        CircleAvatar(
-          backgroundImage:
-              NetworkImage("https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      // automaticallyImplyLeading: false,
+      title: Row(
+        children: [
+          //BackButton(),
+          CircleAvatar(
+            backgroundColor: Colors.transparent,
+            backgroundImage:NetworkImage(
+                "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+          ),
+          SizedBox(width: kDefaultPadding * 0.75),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Hashane",
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              Text(
+                "Active 3m ago",
+                style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 12),
+              )
+            ],
+          )
+        ],
+      ),
+      backgroundColor:  Theme.of(context).colorScheme.surface,
+      iconTheme: IconThemeData(
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      elevation: 0,
+      actions: [
+        IconButton(
+          icon: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.secondary,),
+          onPressed: () {},
         ),
-        SizedBox(width: SizeConfig.safeBlockHorizontal * 0.75),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Kristin Watson",
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            // Text(
-            //   "Active 3m ago",
-            //   style: TextStyle(fontSize: 12),
-            // )
-          ],
-        )
       ],
-    ),
-    backgroundColor: Theme.of(context).colorScheme.surface,
-    iconTheme: IconThemeData(
-      color: Theme.of(context).colorScheme.secondary,
-    ),
-    actions: [IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),],
-    elevation: 0,
-  );
+    );
+    return AppBar(
+     // automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      title: Row(
+        children: [
+          //BackButton(),
+          CircleAvatar(
+            backgroundImage:NetworkImage(
+                "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+          ),
+          SizedBox(width: kDefaultPadding * 0.75),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Hashane",
+                style: TextStyle(fontSize: 16),
+              ),
+              Text(
+                "Active 3m ago",
+                style: TextStyle(fontSize: 12),
+              )
+            ],
+          )
+        ],
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.secondary,),
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
 }

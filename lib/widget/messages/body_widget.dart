@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/model/chatMessages.dart';
 
+import '../../constants.dart';
 import 'chat_input_widget.dart';
+import 'message.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return
+      Column(
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: ListView.builder(
-              itemCount: 3,
+              itemCount: demeChatMessages.length,
               itemBuilder: (context, index) =>
-                 Text("asa"),
+                  Message(message: demeChatMessages[index]),
             ),
           ),
         ),
