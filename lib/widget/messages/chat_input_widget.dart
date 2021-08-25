@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 
-
 class ChatInputField extends StatelessWidget {
   const ChatInputField({
     Key key,
@@ -12,7 +11,7 @@ class ChatInputField extends StatelessWidget {
     SizeConfig().init(context);
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal:10,
+        horizontal: 20,
         vertical: 10 / 2,
       ),
       child: SafeArea(
@@ -21,11 +20,27 @@ class ChatInputField extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.safeBlockHorizontal * 0.75,
+                  horizontal: SizeConfig.safeBlockHorizontal * 2,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(12.0),
+                  color: Colors.white,
+                  gradient: LinearGradient(
+                    stops: [0.0, 1.0],
+                    begin: FractionalOffset.centerLeft,
+                    end: FractionalOffset.centerRight,
+                    colors: <Color>[
+                      Colors.orangeAccent,
+                      Colors.red,
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0), //(x,y)
+                      blurRadius: 6.0,
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -42,6 +57,7 @@ class ChatInputField extends StatelessWidget {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: "Type message",
+                          hintStyle: Theme.of(context).textTheme.bodyText2,
                           border: InputBorder.none,
                         ),
                       ),

@@ -35,13 +35,15 @@ class Message extends StatelessWidget {
           if (!message.isSender) ...[
             CircleAvatar(
               radius: 12,
+              backgroundColor: Theme.of(context).colorScheme.primaryVariant,
               backgroundImage: NetworkImage(
                   "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
             ),
             SizedBox(width: kDefaultPadding / 2),
           ],
           messageContaint(message),
-          if (message.isSender) MessageStatusDot(status: message.messageStatus)
+          ///Todo used to indicate the message status
+          // if (message.isSender) MessageStatusDot(status: message.messageStatus)
         ],
       ),
     );

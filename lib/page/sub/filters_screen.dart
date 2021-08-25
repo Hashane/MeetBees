@@ -43,7 +43,7 @@ class _FilterScreenState extends State<FilterScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GradientLabel(
-                width: SizeConfig.safeBlockHorizontal * 70,
+                width: SizeConfig.safeBlockHorizontal * 80,
                 child: Text("Interested in"),
               ),
               SizedBox(
@@ -69,8 +69,8 @@ class _FilterScreenState extends State<FilterScreen> {
                 ),
               ),
               GradientLabel(
-                width: SizeConfig.safeBlockHorizontal * 70,
-                child: Text(age.toString()),
+                width: SizeConfig.safeBlockHorizontal * 80,
+                child: Text("Age"),
               ),
               SliderWidget(
                 onValChanged: (newVal) {
@@ -82,8 +82,8 @@ class _FilterScreenState extends State<FilterScreen> {
                 min: 0,
               ),
               GradientLabel(
-                width: SizeConfig.safeBlockHorizontal * 70,
-                child: Text(distance.toString()),
+                width: SizeConfig.safeBlockHorizontal * 80,
+                child: Text("Distance"),
               ),
               SliderWidget(
                 onValChanged: (newVal) {
@@ -95,7 +95,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 min: 0,
               ),
               GradientLabel(
-                width: SizeConfig.safeBlockHorizontal * 70,
+                width: SizeConfig.safeBlockHorizontal * 80,
                 child: Text("Visa mode"),
               ),
             ],

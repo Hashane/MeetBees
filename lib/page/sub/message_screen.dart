@@ -7,12 +7,13 @@ class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: buildAppBar(context),
       body: Body(),
     );
   }
 
+  ///Builds the App bar
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       // automaticallyImplyLeading: false,
@@ -20,7 +21,7 @@ class MessagesScreen extends StatelessWidget {
         children: [
           //BackButton(),
           CircleAvatar(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Theme.of(context).colorScheme.primaryVariant,
             backgroundImage:NetworkImage(
                 "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
           ),
@@ -43,40 +44,6 @@ class MessagesScreen extends StatelessWidget {
       backgroundColor:  Theme.of(context).colorScheme.surface,
       iconTheme: IconThemeData(
         color: Theme.of(context).colorScheme.secondary,
-      ),
-      elevation: 0,
-      actions: [
-        IconButton(
-          icon: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.secondary,),
-          onPressed: () {},
-        ),
-      ],
-    );
-    return AppBar(
-     // automaticallyImplyLeading: false,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      title: Row(
-        children: [
-          //BackButton(),
-          CircleAvatar(
-            backgroundImage:NetworkImage(
-                "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
-          ),
-          SizedBox(width: kDefaultPadding * 0.75),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hashane",
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                "Active 3m ago",
-                style: TextStyle(fontSize: 12),
-              )
-            ],
-          )
-        ],
       ),
       actions: [
         IconButton(
