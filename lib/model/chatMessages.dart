@@ -8,13 +8,26 @@ class ChatMessage {
   final ChatMessageType messageType;
   final MessageStatus messageStatus;
   final bool isSender;
+  final DateTime date;
 
   ChatMessage({
     this.text = '',
     @required this.messageType,
     @required this.messageStatus,
     @required this.isSender,
+    this.date,
   });
+
+  ///Transform the JSON you receive from the Realtime Database, into a Message
+  ChatMessage.fromJson(Map<dynamic, dynamic> json, this.messageType, this.messageStatus, this.isSender)
+      : date = DateTime.parse(json['date'] as String),
+        text = json['text'] as String;
+
+  ///Transform the Message into JSON, for saving.
+  Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
+    'date': date.toString(),
+    'text': text,
+  };
 }
 
 List demeChatMessages = [

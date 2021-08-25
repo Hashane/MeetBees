@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/model/chatMessages.dart';
+import 'package:meet_ceylon/provider/message_dao.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 
 class ChatInputField extends StatelessWidget {
+
   const ChatInputField({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //message text field controller to extract value
+    final _messageFieldController = TextEditingController();
+
     SizeConfig().init(context);
+
+    void _sendMessage() {
+      MessageDao _messageDao = new MessageDao();
+      final message = ChatMessage(text: _messageFieldController.text, date: DateTime.now());
+      _messageDao.saveMessage(message);
+      _messageFieldController.clear();
+    }
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 20,
@@ -55,6 +69,7 @@ class ChatInputField extends StatelessWidget {
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                     Expanded(
                       child: TextField(
+                        controller: _messageFieldController,
                         decoration: InputDecoration(
                           hintText: "Type message",
                           hintStyle: Theme.of(context).textTheme.bodyText2,
@@ -63,13 +78,16 @@ class ChatInputField extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
-                    Icon(
-                      Icons.send,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .color
-                          .withOpacity(0.64),
+                    IconButton(
+                      onPressed: () {_sendMessage();},
+                      icon: Icon(
+                        Icons.send,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .color
+                            .withOpacity(0.64),
+                      ),
                     ),
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                   ],
@@ -82,3 +100,6 @@ class ChatInputField extends StatelessWidget {
     );
   }
 }
+
+
+
