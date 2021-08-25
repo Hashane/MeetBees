@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/widget/scale_page_route.dart';
 
 import '../test.dart';
 
@@ -86,7 +87,7 @@ class _ChatState extends State<Chat> {
             TextButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Screen2()));
+                    ScaleRoute(page: Screen2()));
               },
               child: Text('Go to next screen'),
             ),
@@ -209,7 +210,8 @@ class _ChatState extends State<Chat> {
         borderRadius: BorderRadius.circular(5),
       ),
       color: Theme.of(context).colorScheme.surface,
-      child: Row(
+      child: Material(color:Colors.transparent,child: InkWell(child:
+      Row(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
@@ -263,7 +265,9 @@ class _ChatState extends State<Chat> {
             ),
           ),
         ],
-      ),
+      )
+        , onTap: (){Navigator.push(context,
+            ScaleRoute(page: Screen2()));},),)
     );
   }
 }

@@ -5,10 +5,9 @@ import 'package:meet_ceylon/page/main/chat.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/page/main/home.dart';
 import 'package:meet_ceylon/page/user_profile/profile.dart';
-
+import 'package:meet_ceylon/widget/slide_right_page_route.dart';
 
 import '../test.dart';
-
 
 class MainScreen extends StatefulWidget {
   @override
@@ -34,101 +33,104 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
+      onWillPop: () async {
         final isFirstRouteInCurrentTab =
-        !await _navigatorKeys[_selectedIndex].currentState.maybePop();
+            !await _navigatorKeys[_selectedIndex].currentState.maybePop();
 
         print(
-        'isFirstRouteInCurrentTab: ' + isFirstRouteInCurrentTab.toString());
+            'isFirstRouteInCurrentTab: ' + isFirstRouteInCurrentTab.toString());
 
         // let system handle back button if we're on the first route
         return isFirstRouteInCurrentTab;
-        },
-          child:
-    Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        elevation: 0,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 30.0,
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
+          elevation: 0,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                size: 30.0,
+              ),
+              label: 'Home',
+              backgroundColor: Colors.white,
             ),
-            label: 'Home',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.question_answer_rounded,
-              size: 30.0,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.question_answer_rounded,
+                size: 30.0,
+              ),
+              label: 'Chat',
+              backgroundColor: Colors.white,
             ),
-            label: 'Chat',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.local_fire_department,
-              size: 30.0,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.local_fire_department,
+                size: 30.0,
+              ),
+              label: 'Flames',
+              backgroundColor: Colors.white,
             ),
-            label: 'Flames',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 30.0,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                size: 30.0,
+              ),
+              label: 'Profile',
+              backgroundColor: Colors.white,
             ),
-            label: 'Profile',
-            backgroundColor: Colors.white,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Color(0xFFF434A50),
-        onTap: _onItemTapped,
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          unselectedItemColor: Color(0xFFF434A50),
+          onTap: _onItemTapped,
+        ),
+        body: Stack(
+          children: [
+            _buildOffstageNavigator(0),
+            _buildOffstageNavigator(1),
+            _buildOffstageNavigator(2),
+            _buildOffstageNavigator(3),
+          ],
+        ),
       ),
-      body: Stack(
-        children: [
-          _buildOffstageNavigator(0),
-          _buildOffstageNavigator(1),
-          _buildOffstageNavigator(2),
-          _buildOffstageNavigator(3),
-        ],
-      ),
-    ),);
+    );
   }
-
 
   void _next() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Screen2()));
   }
 
   void _nav() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SettingsScreen()));
   }
 
   ///Filter screen
   void _nav1() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen()));
+    Navigator.push(context, SlideRightRoute(page: FilterScreen()));
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen()));
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
         return [
-          Home(onNav: _next,),
+          Home(
+            onNav: _next,
+          ),
           Chat(),
           Flames(),
-          UserProfile(onNav: _nav,onFilterNav: _nav1,),
+          UserProfile(
+            onNav: _nav,
+            onFilterNav: _nav1,
+          ),
         ].elementAt(index);
       },
     };
   }
-
-
-
 
   Widget _buildOffstageNavigator(int index) {
     var routeBuilders = _routeBuilders(context, index);
