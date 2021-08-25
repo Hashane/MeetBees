@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/scale_page_route.dart';
+import 'package:meet_ceylon/widget/page_routes/scale_page_route.dart';
 
 import '../test.dart';
 
 class Chat extends StatefulWidget {
+  final Function onNav;
+
+  const Chat({Key key, this.onNav}) : super(key: key);
+
   @override
   _ChatState createState() => _ChatState();
 }
@@ -86,8 +90,7 @@ class _ChatState extends State<Chat> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    ScaleRoute(page: Screen2()));
+                Navigator.push(context, ScaleRoute(page: Screen2()));
               },
               child: Text('Go to next screen'),
             ),
@@ -210,64 +213,73 @@ class _ChatState extends State<Chat> {
         borderRadius: BorderRadius.circular(5),
       ),
       color: Theme.of(context).colorScheme.surface,
-      child: Material(color:Colors.transparent,child: InkWell(child:
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                image: new DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Hashane",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(
-                      height: SizeConfig.safeBlockVertical * 1,
-                    ),
-                    Text(
-                      "See you!",
-                      style: TextStyle(color: Colors.black54, fontSize: 12),
-                    )
-                  ],
-                ),
-                Positioned(
-                  right: 8,
-                  child: Text(
-                    "Yesterday",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 11,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                child: Container(
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: new DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Hashane",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.safeBlockVertical * 1,
+                        ),
+                        Opacity(
+                          opacity: 0.64,
+                          child: Text(
+                            "See you!",
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      right: 8,
+                      child: Text(
+                        "Yesterday",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      )
-        , onTap: (){Navigator.push(context,
-            ScaleRoute(page: Screen2()));},),)
+          onTap: () {
+            widget.onNav();
+          },
+        ),
+      ),
     );
   }
 }

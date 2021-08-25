@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/user_profile/edit_profile_screen.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
-import 'package:meet_ceylon/widget/elevated_dark_btn.dart';
+import 'package:meet_ceylon/widget/buttons_and_labels/elevated_dark_btn.dart';
 
 class UserProfile extends StatefulWidget {
   final Function onNav;

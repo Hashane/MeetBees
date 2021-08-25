@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/model/preference.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/elevated_gradient_btn.dart';
+import 'package:meet_ceylon/widget/buttons_and_labels/elevated_gradient_btn.dart';
 
 class Crush extends StatefulWidget {
   final Function onNext;

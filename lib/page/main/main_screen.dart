@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/page/authenticate/sub/filters_screen.dart';
-import 'package:meet_ceylon/page/authenticate/sub/settings_screen.dart';
+import 'package:meet_ceylon/page/sub/filters_screen.dart';
+import 'package:meet_ceylon/page/sub/message_screen.dart';
+import 'package:meet_ceylon/page/sub/settings_screen.dart';
 import 'package:meet_ceylon/page/main/chat.dart';
 import 'package:meet_ceylon/page/main/flame.dart';
 import 'package:meet_ceylon/page/main/home.dart';
 import 'package:meet_ceylon/page/user_profile/profile.dart';
-import 'package:meet_ceylon/widget/slide_right_page_route.dart';
+import 'package:meet_ceylon/widget/page_routes/scale_page_route.dart';
+import 'package:meet_ceylon/widget/page_routes/slide_right_page_route.dart';
 
 import '../test.dart';
 
@@ -114,6 +116,11 @@ class _MainScreenState extends State<MainScreen> {
     //Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen()));
   }
 
+  ///Chat Screen
+  void _nav2(){
+    Navigator.push(context, ScaleRoute(page: MessageScreen()));
+  }
+
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
       '/': (context) {
@@ -121,7 +128,7 @@ class _MainScreenState extends State<MainScreen> {
           Home(
             onNav: _next,
           ),
-          Chat(),
+          Chat(onNav: _nav2,),
           Flames(),
           UserProfile(
             onNav: _nav,

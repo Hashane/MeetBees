@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/gender.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
-import 'package:meet_ceylon/widget/gradient_label.dart';
+import 'package:meet_ceylon/widget/buttons_and_labels/gradient_label.dart';
 import 'package:meet_ceylon/widget/radio_btn_tiles_widget.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -24,7 +24,6 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _currentSliderValue = 20;
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
