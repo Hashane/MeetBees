@@ -12,9 +12,9 @@ class ChatMessage {
 
   ChatMessage({
     this.text = '',
-    @required this.messageType,
-    @required this.messageStatus,
-    @required this.isSender,
+    this.messageType,
+    this.messageStatus,
+    this.isSender,
     this.date,
   });
 

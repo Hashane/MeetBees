@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
+
 import 'package:meet_ceylon/provider/message_dao.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
+
+import 'message.dart';
 
 class ChatInputField extends StatelessWidget {
 
@@ -12,15 +15,17 @@ class ChatInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //message text field controller to extract value
-    final _messageFieldController = TextEditingController();
+    final _messageController = TextEditingController();
 
     SizeConfig().init(context);
 
     void _sendMessage() {
-      MessageDao _messageDao = new MessageDao();
-      final message = ChatMessage(text: _messageFieldController.text, date: DateTime.now());
+
+
+      final _messageDao = MessageDao();
+      final message = ChatMessage(text: _messageController.text,date: DateTime.now());
       _messageDao.saveMessage(message);
-      _messageFieldController.clear();
+      _messageController.clear();
     }
 
     return Container(
@@ -69,7 +74,7 @@ class ChatInputField extends StatelessWidget {
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                     Expanded(
                       child: TextField(
-                        controller: _messageFieldController,
+                        controller: _messageController,
                         decoration: InputDecoration(
                           hintText: "Type message",
                           hintStyle: Theme.of(context).textTheme.bodyText2,

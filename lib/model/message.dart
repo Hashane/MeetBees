@@ -1,11 +1,11 @@
-class Message {
+class Message1 {
   final String text;
   final DateTime date;
 
-  Message(this.text, this.date);
+  Message1(this.text, this.date);
 
   ///Transform the JSON you receive from the Realtime Database, into a Message
-  Message.fromJson(Map<dynamic, dynamic> json)
+  Message1.fromJson(Map<dynamic, dynamic> json)
       : date = DateTime.parse(json['date'] as String),
         text = json['text'] as String;
 
