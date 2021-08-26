@@ -46,11 +46,59 @@ class MessagesScreen extends StatelessWidget {
         color: Theme.of(context).colorScheme.secondary,
       ),
       actions: [
-        IconButton(
-          icon: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.secondary,),
-          onPressed: () {},
+        // IconButton(
+        //   icon: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.secondary,),
+        //   onPressed: () {},
+        // ),
+        Theme(
+          data: Theme.of(context).copyWith(
+              textTheme: Theme.of(context).textTheme,
+              dividerColor: Colors.red,
+              iconTheme: IconThemeData(color: Colors.black54)),
+          child: PopupMenuButton<int>(
+            color: Theme.of(context).colorScheme.surface,
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(value: 0, child: Text("Profile")),
+              PopupMenuItem<int>(
+                  value: 1, child: Text("Report")),
+              PopupMenuDivider(),
+              PopupMenuItem<int>(
+                  value: 2,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.block,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      Text("End match")
+                    ],
+                  )),
+            ],
+            onSelected: (item) => SelectedItem(context, item),
+          ),
         ),
       ],
     );
+  }
+  void SelectedItem(BuildContext context, item) {
+    switch (item) {
+      case 0:
+        print("Settings");
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => SettingPage()));
+        break;
+      case 1:
+        print("Privacy Clicked");
+        break;
+      case 2:
+        print("User Logged out");
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(builder: (context) => LoginPage()),
+        //         (route) => false);
+        break;
+    }
   }
 }
