@@ -25,12 +25,47 @@ class MessageDao {
   /// * This is the scenario where user initiates a existing chat from the Inbox.
   ///
   void saveMessage(ChatMessage message) {
+    _ref
+        .child("ChatMessages")
+        .child(message.chatID)
+        .once()
+        .then((DataSnapshot snapshot) {
+      ///Writting messages under correct ChatID
+      _ref
+          .child("ChatMessages")
+          .child(message.chatID)
+          .push()
+          .set(message.toChatMessagesJson());
 
-    pushToexisting(message.chatID, message);
+      ///Also updating the last message
+      _ref.child("Chats").child(message.chatID).update({
+        'lastSentMessage': message.text,
+      });
+    });
+    print("Pushed to Existing");
   }
 
   void openNewChat(ChatMessage message) {
-    pushBrandNew(message);
+    ///Read the chatID before pushing
+    _chatID = _ref.child("Chats").push().key;
+
+    ///Create a child with ChatID in the "Chats" node
+    _ref.child("Chats").child(_chatID).set(message.toChatsJson());
+
+    ///Using the same ChatID
+    _ref
+        .child("ChatMessages")
+        .child(_chatID.toString())
+        .push()
+        .set(message.toChatMessagesJson());
+
+    ///User chats
+    _ref.child("UserChats").child(message.uID).push().set(_chatID);
+
+    //Todo optional
+    /// _ref.child("UserChats").child(message.u2ID).push().set(_chatID);
+
+    print("done");
   }
 
   // /// For the retrieval method we only need to expose a Query since we’ll use a cool widget called a FirebaseAnimatedList,
@@ -82,47 +117,5 @@ class MessageDao {
   //
   // }
 
-  void pushToexisting(String chatid, ChatMessage message) {
-    _ref
-        .child("ChatMessages")
-        .child(chatid)
-        .once()
-        .then((DataSnapshot snapshot) {
-      ///Writting messages under correct ChatID
-      _ref
-          .child("ChatMessages")
-          .child(chatid)
-          .push()
-          .set(message.toChatMessagesJson());
 
-      ///Also updating the last message
-      _ref.child("Chats").child(chatid).update({
-        'lastSentMessage': message.text,
-      });
-    });
-    print("caught me offguard yo");
-  }
-
-  void pushBrandNew(ChatMessage message) {
-    ///Read the chatID before pushing
-    _chatID = _ref.child("Chats").push().key;
-
-    ///Create a child with ChatID in the "Chats" node
-    _ref.child("Chats").child(_chatID).set(message.toChatsJson());
-
-    ///Using the same ChatID
-    _ref
-        .child("ChatMessages")
-        .child(_chatID.toString())
-        .push()
-        .set(message.toChatMessagesJson());
-
-    ///User chats
-    _ref.child("UserChats").child(message.uID).push().set(_chatID);
-
-    //Todo optional
-    /// _ref.child("UserChats").child(message.u2ID).push().set(_chatID);
-
-    print("done");
-  }
 }

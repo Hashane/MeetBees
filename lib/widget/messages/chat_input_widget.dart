@@ -47,33 +47,37 @@ class ChatInputField extends StatelessWidget {
           chatID: chatID,
 
       );
-      _messageDao.saveMessage(message);
+      if(chatID.isNotEmpty){
+        _messageDao.saveMessage(message);
+      }else {
+        _messageDao.openNewChat(message);
+      }
       _messageController.clear();
     }
-    void _sendNewMessage(){
-      ///Extracting time from DateTime
-      DateTime now = DateTime.now();
-      String _formattedTime = DateFormat.Hms().format(now);
-
-      ///current user id
-      final String _currentUserId = FirebaseAuth.instance.currentUser.uid;
-
-      final _messageDao = MessageDao();
-      final message = ChatMessage(
-        text:_messageController.text,
-        date: DateTime.now(),
-        messageType: ChatMessageType.text,
-        messageStatus: MessageStatus.viewed,
-        isSender: true,
-        time: _formattedTime,
-        uID: _currentUserId,
-        u2ID: user2id, //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2",
-        chatID: null,
-
-      );
-      _messageDao.openNewChat(message);
-      _messageController.clear();
-    }
+    // void _sendNewMessage(){
+    //   ///Extracting time from DateTime
+    //   DateTime now = DateTime.now();
+    //   String _formattedTime = DateFormat.Hms().format(now);
+    //
+    //   ///current user id
+    //   final String _currentUserId = FirebaseAuth.instance.currentUser.uid;
+    //
+    //   final _messageDao = MessageDao();
+    //   final message = ChatMessage(
+    //     text:_messageController.text,
+    //     date: DateTime.now(),
+    //     messageType: ChatMessageType.text,
+    //     messageStatus: MessageStatus.viewed,
+    //     isSender: true,
+    //     time: _formattedTime,
+    //     uID: _currentUserId,
+    //     u2ID: user2id, //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2",
+    //     chatID: null,
+    //
+    //   );
+    //   _messageDao.openNewChat(message);
+    //   _messageController.clear();
+    // }
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -131,10 +135,7 @@ class ChatInputField extends StatelessWidget {
                     ),
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                     IconButton(
-                      onPressed: () {
-                        chatID != null ?
-                        _sendMessage() :  _sendNewMessage();
-                        },
+                      onPressed: () {_sendMessage();},
                       icon: Icon(
                         Icons.send,
                         color: Theme.of(context)
