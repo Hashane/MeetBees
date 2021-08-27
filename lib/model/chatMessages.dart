@@ -9,6 +9,11 @@ class ChatMessage {
   final MessageStatus messageStatus;
   final bool isSender;
   final DateTime date;
+  ///custom fields
+  final String uID; ///current user ID
+  final String u2ID; ///user two ID
+  final String time;
+  final String chatID;
 
   ChatMessage({
     this.text = '',
@@ -16,10 +21,15 @@ class ChatMessage {
     this.messageStatus,
     this.isSender,
     this.date,
+    this.uID,
+    this.u2ID,
+    this.time,
+    this.chatID
   });
 
+
   ///Transform the JSON you receive from the Realtime Database, into a Message
-  ChatMessage.fromJson(Map<dynamic, dynamic> json, this.messageType, this.messageStatus, this.isSender)
+  ChatMessage.fromJson(Map<dynamic, dynamic> json, this.messageType, this.messageStatus, this.isSender, this.uID, this.u2ID, this.time, this.chatID)
       : date = DateTime.parse(json['date'] as String),
         text = json['text'] as String;
 
@@ -27,6 +37,20 @@ class ChatMessage {
   Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
     'date': date.toString(),
     'text': text,
+  };
+
+  ///Transform the Message into JSON, for saving.
+ // final String CurrentUserId = FirebaseAuth.instance.currentUser.uid;
+  Map<dynamic, dynamic> toChatsJson() => <dynamic, dynamic>{
+    'lastSentMessage': text,
+    "members" : [uID,u2ID],
+  };
+
+  Map<dynamic, dynamic> toChatMessagesJson() => <dynamic, dynamic>{
+    'message': text,
+    "message_date" : date.toString(),
+    "message_time": time,
+    "sent_by": isSender ? uID : u2ID,
   };
 }
 

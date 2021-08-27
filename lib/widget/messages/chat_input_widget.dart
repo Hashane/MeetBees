@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
 
 import 'package:meet_ceylon/provider/message_dao.dart';
@@ -21,9 +23,26 @@ class ChatInputField extends StatelessWidget {
 
     void _sendMessage() {
 
+      ///Extracting time from DateTime
+      DateTime now = DateTime.now();
+      String _formattedTime = DateFormat.Hms().format(now);
+
+      ///current user id
+      final String _currentUserId = FirebaseAuth.instance.currentUser.uid;
 
       final _messageDao = MessageDao();
-      final message = ChatMessage(text: _messageController.text,date: DateTime.now());
+      final message = ChatMessage(
+          text:_messageController.text,
+          date: DateTime.now(),
+          messageType: ChatMessageType.text,
+          messageStatus: MessageStatus.viewed,
+          isSender: true,
+          time: _formattedTime,
+          uID: _currentUserId,
+          u2ID: "0zU1Zjf7mVY3aRbbngYMi0azXbg2",
+          chatID: "-Mi3zaQ-ILkTX_aIqG4X",
+
+      );
       _messageDao.saveMessage(message);
       _messageController.clear();
     }

@@ -41,6 +41,7 @@ dependencies:
   geocoder: ^0.2.1
   path: ^1.8.0
   google_fonts: ^2.1.0
+  intl: ^0.17.0
 
 
 

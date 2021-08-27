@@ -47,13 +47,13 @@ class _HomeState extends State<Home> {
     super.initState();
 
     ///initializing stream and fetching users
-    fetchUsers();
+    // fetchUsers();
   }
 
   @override
   void dispose() {
     ///cancelling StreamSubscription on dispose
-    _messSubs.cancel();
+    // _messSubs.cancel();
     super.dispose();
   }
 
@@ -81,8 +81,8 @@ class _HomeState extends State<Home> {
                         users.length == 0
                             ? SizedBox(
                                 height: SizeConfig.safeBlockVertical * 70,
-                                child: Text(
-                                    "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time."))
+                                child: Center(child: Text(
+                                    "We've run out of potential matches in your area. Go global and see poeple around the world. You can turn off global profiles in your settings at any time.",style: Theme.of(context).textTheme.bodyText1,),),)
                             : SizedBox(
                                 height: SizeConfig.safeBlockVertical * 70,
                                 child: Stack(
