@@ -9,9 +9,11 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'message.dart';
 
 class ChatInputField extends StatelessWidget {
+  final String chatID;
+  final String user2id;
 
   const ChatInputField({
-    Key key,
+    Key key, this.chatID, this.user2id,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,8 @@ class ChatInputField extends StatelessWidget {
       ///current user id
       final String _currentUserId = FirebaseAuth.instance.currentUser.uid;
 
+      //Todo this is the SEND function for existing chats. where chat id not null.
+
       final _messageDao = MessageDao();
       final message = ChatMessage(
           text:_messageController.text,
@@ -39,11 +43,35 @@ class ChatInputField extends StatelessWidget {
           isSender: true,
           time: _formattedTime,
           uID: _currentUserId,
-          u2ID: "0zU1Zjf7mVY3aRbbngYMi0azXbg2",
-          chatID: "-Mi3zaQ-ILkTX_aIqG4X",
+          u2ID: user2id, //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2",
+          chatID: chatID,
 
       );
       _messageDao.saveMessage(message);
+      _messageController.clear();
+    }
+    void _sendNewMessage(){
+      ///Extracting time from DateTime
+      DateTime now = DateTime.now();
+      String _formattedTime = DateFormat.Hms().format(now);
+
+      ///current user id
+      final String _currentUserId = FirebaseAuth.instance.currentUser.uid;
+
+      final _messageDao = MessageDao();
+      final message = ChatMessage(
+        text:_messageController.text,
+        date: DateTime.now(),
+        messageType: ChatMessageType.text,
+        messageStatus: MessageStatus.viewed,
+        isSender: true,
+        time: _formattedTime,
+        uID: _currentUserId,
+        u2ID: user2id, //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2",
+        chatID: null,
+
+      );
+      _messageDao.openNewChat(message);
       _messageController.clear();
     }
 
@@ -103,7 +131,10 @@ class ChatInputField extends StatelessWidget {
                     ),
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                     IconButton(
-                      onPressed: () {_sendMessage();},
+                      onPressed: () {
+                        chatID != null ?
+                        _sendMessage() :  _sendNewMessage();
+                        },
                       icon: Icon(
                         Icons.send,
                         color: Theme.of(context)

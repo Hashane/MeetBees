@@ -6,6 +6,11 @@ import 'chat_input_widget.dart';
 import 'message.dart';
 
 class Body extends StatelessWidget {
+  final String chatID;
+  final String user2id;
+
+  const Body({Key key, this.chatID, this.user2id}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return
@@ -21,7 +26,7 @@ class Body extends StatelessWidget {
             ),
           ),
         ),
-        ChatInputField(),
+        ChatInputField(chatID: chatID,),
       ],
     );
   }
