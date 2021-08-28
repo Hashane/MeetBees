@@ -14,7 +14,7 @@ class MessagesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: buildAppBar(context),
-      body: Body(chatID: chatID,),
+      body: Body(chatID: chatID,user2id: user2id,),
     );
   }
 

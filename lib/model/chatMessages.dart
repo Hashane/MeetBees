@@ -29,9 +29,26 @@ class ChatMessage {
 
 
   ///Transform the JSON you receive from the Realtime Database, into a Message
-  ChatMessage.fromJson(Map<dynamic, dynamic> json, this.messageType, this.messageStatus, this.isSender, this.uID, this.u2ID, this.time, this.chatID)
-      : date = DateTime.parse(json['date'] as String),
-        text = json['text'] as String;
+  // ChatMessage.fromJson(Map<dynamic, dynamic> json, this.messageType, this.messageStatus, this.isSender, this.uID, this.u2ID, this.time,this.date)
+  //     : chatID =json["-MiB0vz7Kmp9KZns2aGX"] as String,
+  //       text = json['text'] as String;
+
+  // factory ChatMessage.fromJson(Map<dynamic, dynamic> json) {
+  //  String parser(dynamic source) {
+  //     try {
+  //       return source.toString();
+  //     } on FormatException {
+  //       return "";
+  //     }
+  //   }
+  //
+  //   return ChatMessage(
+  //       chatID: parser(json['map entry']),
+  //       // temp: parser(json['temp']),
+  //       // humidity: parser(json['hum']),
+  //       // heatIndex: parser(json['ht'])
+  //      );
+  // }
 
   ///Transform the Message into JSON, for saving.
   Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
@@ -52,6 +69,7 @@ class ChatMessage {
     "message_time": time,
     "sent_by": isSender ? uID : u2ID,
   };
+
 }
 
 List demeChatMessages = [

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
@@ -43,14 +44,15 @@ class ChatInputField extends StatelessWidget {
           isSender: true,
           time: _formattedTime,
           uID: _currentUserId,
-          u2ID: user2id, //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2",
+          u2ID: user2id,//"0zU1Zjf7mVY3aRbbngYMi0azXbg2", //M9IKekozV2Qgklcg41yt3cfclgT2", //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2", ///todo for testing purpose only
           chatID: chatID,
 
       );
-      if(chatID.isNotEmpty){
-        _messageDao.saveMessage(message);
+      if(chatID != null){
+        _messageDao.saveMessage(message,null);
       }else {
-        _messageDao.openNewChat(message);
+
+        _messageDao.test(message);
       }
       _messageController.clear();
     }

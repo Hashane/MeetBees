@@ -26,7 +26,7 @@ class Body extends StatelessWidget {
             ),
           ),
         ),
-        ChatInputField(chatID: chatID,),
+        ChatInputField(chatID: chatID,user2id: user2id,),
       ],
     );
   }

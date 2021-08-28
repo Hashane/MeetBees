@@ -24,27 +24,101 @@ class MessageDao {
   ///
   /// * This is the scenario where user initiates a existing chat from the Inbox.
   ///
-  void saveMessage(ChatMessage message) {
+  void saveMessage(ChatMessage message,String id) {
+    if(message.chatID == null) _chatID = id;else _chatID = message.chatID;
+
     _ref
         .child("ChatMessages")
-        .child(message.chatID)
+        .child(_chatID)
         .once()
         .then((DataSnapshot snapshot) {
       ///Writting messages under correct ChatID
       _ref
           .child("ChatMessages")
-          .child(message.chatID)
+          .child(_chatID)
           .push()
           .set(message.toChatMessagesJson());
 
       ///Also updating the last message
-      _ref.child("Chats").child(message.chatID).update({
+      _ref.child("Chats").child(_chatID).update({
         'lastSentMessage': message.text,
       });
     });
     print("Pushed to Existing");
   }
 
+  void test(ChatMessage message){
+
+    final List<String> _chatIDList = [];
+    ///This is when a user initiates a new chat with a new user for the first time.
+    ///Check if userid exists in the "UserChats" node
+    _ref
+        .child("UserChats")
+        .child(message.uID)
+        .once()
+        .then((DataSnapshot snapshot) {
+      if (snapshot.exists) {
+        ///this is the key of the node which is the UID
+         //print(snapshot.key);
+
+
+        ///Snapshot values to a map
+        Map data = snapshot.value;
+
+        ///count how many chat records under user id.
+        // print(data.length);
+
+
+        if (data.length > 0) {
+          ///loop all the entries to grab the value of each key,value pair
+          data.entries.forEach((element) {
+            _chatIDList.add(element.value.toString());
+
+
+            //print(element.value.toString());
+          });
+
+
+          if (_chatIDList.isNotEmpty) {
+            ///looping chat ID list to see if there's a existing sub node with the chat ID
+            _chatIDList.forEach((element) {
+              _ref
+                  .child("Chats")
+                  .child(element)
+                  .once()
+                  .then((DataSnapshot snapshot) {
+                ///if found, put the values to a map and convert it to a list
+                /// in order to only read the 'last' which means 'members' value set.
+                if (snapshot.exists) {
+                  Map data = snapshot.value;
+                  var membersValSet = data.entries.toList().last;
+
+
+                  ///extracting the member at the 1st position id which belongs to the second user.
+                  //  print(membersValSet.value[1]);
+
+
+                  /// if any of the member ids match with the second user's user id we proceed.
+                  if (message.u2ID == membersValSet.value[1]) {
+                    ///if so get the root element to which this belongs to
+                    ///This is the ChatID we have been looking for.
+                    ///using this ChatID we can list the new messages under
+                    // print(snapshot.key);
+
+
+                    _chatID = snapshot.key;
+                    saveMessage(message,_chatID);
+                  }else{ openNewChat(message);}
+                }
+              });
+            });
+          }
+        }
+      } else {
+        openNewChat(message);
+      }
+    });
+  }
   void openNewChat(ChatMessage message) {
     ///Read the chatID before pushing
     _chatID = _ref.child("Chats").push().key;
@@ -60,6 +134,14 @@ class MessageDao {
         .set(message.toChatMessagesJson());
 
     ///User chats
+    ///
+
+    //Todo optional Save ChatID as a Map
+    Map<String, String> someMap = {
+      "chatID": _chatID,
+    };
+
+    //_ref.child("UserChats").child(message.uID).push().set(someMap);
     _ref.child("UserChats").child(message.uID).push().set(_chatID);
 
     //Todo optional

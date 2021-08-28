@@ -47,13 +47,13 @@ class _HomeState extends State<Home> {
     super.initState();
 
     ///initializing stream and fetching users
-    // fetchUsers();
+    //fetchUsers();
   }
 
   @override
   void dispose() {
     ///cancelling StreamSubscription on dispose
-    // _messSubs.cancel();
+    //_messSubs.cancel();
     super.dispose();
   }
 
@@ -122,6 +122,7 @@ class _HomeState extends State<Home> {
       event.docs.forEach((element) {
         Map<String, dynamic> obj = element.data();
         users.add(User.fromJson(obj));
+        print("damn");
         setState(() {});
       });
     });
