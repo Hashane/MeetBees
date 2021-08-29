@@ -43,10 +43,10 @@ class _ChatState extends State<Chat> {
 
   ///To track all the chats the user has started
   final List<String> _chatIDList = [];
-  final List<String> _lastMList = [];
-  final List<String> _membersList = [];
-  final List<String> _thumbList = [];
-  final List<String> _usernameList = [];
+  List<String> _lastMList = [];
+  List<String> _membersList = [];
+  List<String> _thumbList = [];
+  List<String> _usernameList = [];
   //final List<String> _chatIDList = [];
 
   ///Current user id
@@ -136,11 +136,13 @@ class _ChatState extends State<Chat> {
               StreamBuilder(
                   stream: Database.readItems(),
                   builder: (context, snapshot) {
+                    users.clear();
                     if (snapshot.hasData && users.isEmpty) {
                       snapshot.data.docs.forEach((element) {
                         Map<String, dynamic> obj = element.data();
                         users.add(User.fromJson(obj));
-                        print("loading");
+
+                        //print("loading");
                       });
                     }
                     return matchedUserCarousel();
@@ -185,7 +187,6 @@ class _ChatState extends State<Chat> {
               //         return Container();
               //     }
               // }),
-              Test(),
               new FirebaseAnimatedList(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -202,6 +203,7 @@ class _ChatState extends State<Chat> {
                   prepareData(snapshot, index);
                   //return Container(color: Colors.yellow,child: Text(index.toString()),);
                   if (_usernameList.length > 0) {
+                    print(index);
                     return ChatBox(index);
                   } else {
                     return Container(
@@ -228,16 +230,26 @@ class _ChatState extends State<Chat> {
         scrollDirection: Axis.horizontal,
         itemCount: users.length,
         itemBuilder: (context, index) {
-          return new Card(
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                users[index].imageUris[0],
-                fit: BoxFit.cover,
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                widget.onNav(null, users[index].uid.trim(),
+                    users[index].imageUris[0], users[index].name);
+              },
+              ///Initiating a new chat using uid
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(
+                    users[index].imageUris[0],
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           );
@@ -246,128 +258,118 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget matchedUserCarousel2() {
-    PhysicalModel(
-      color: Colors.white,
-      elevation: 8,
-      shadowColor: Colors.grey[100],
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: SizeConfig.safeBlockHorizontal * 75,
-        height: SizeConfig.safeBlockVertical * 10,
-        decoration: new BoxDecoration(
-          border: Border.all(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 5, 45, 5),
-          child: Container(
-            height: SizeConfig.safeBlockVertical * 10,
-            child: new ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return new Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      users[index].imageUris[0],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget matchedUserCarousel2() {
+  //   PhysicalModel(
+  //     color: Colors.white,
+  //     elevation: 8,
+  //     shadowColor: Colors.grey[100],
+  //     borderRadius: BorderRadius.circular(10),
+  //     child: Container(
+  //       width: SizeConfig.safeBlockHorizontal * 75,
+  //       height: SizeConfig.safeBlockVertical * 10,
+  //       decoration: new BoxDecoration(
+  //         border: Border.all(color: Colors.black54),
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       child: Padding(
+  //         padding: const EdgeInsets.fromLTRB(5, 5, 45, 5),
+  //         child: Container(
+  //           height: SizeConfig.safeBlockVertical * 10,
+  //           child: new ListView.builder(
+  //             scrollDirection: Axis.horizontal,
+  //             itemCount: users.length,
+  //             itemBuilder: (context, index) {
+  //               return new Card(
+  //                 clipBehavior: Clip.antiAlias,
+  //                 shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(10.0),
+  //                 ),
+  //                 child: ClipRRect(
+  //                   borderRadius: BorderRadius.circular(10.0),
+  //                   child: Image.network(
+  //                     users[index].imageUris[0],
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  void LiveListen() {
-    /// Fetching all the chats under the logged in user and adding their "ChatIds" to a list
-    var query = _ref.child("UserChats").child(currentUserId);
-    // query.onChildAdded.listen((event) {
-    //   _chatIDList.add(event.snapshot.value);
-    // });
-    query.onValue.forEach((element) {
-      Map data = element.snapshot.value;
-      data.values.forEach((element) {
-        print(element);
-        _chatIDList.add(element.toString());
-      });
-    });
-
-    ///Once the query completes and list is ready
-    query.once().whenComplete(() => {
-          _chatIDList.forEach((element) {
-            ///Grab individual Chat information using the "ChatIds" in the list
-            _ref
-                .child("Chats")
-                .child(element)
-                .once()
-                .then((DataSnapshot snapshot) async {
-              if (snapshot.exists) {
-                ///Sample snapshot -
-                /// {lastSentMessage: a, members: [PRRP71u1p1SwCWo8JguIf8T4xG73, 0ooqj1kSWtbEj1TvzXpaVn5so3L2]}
-                Map data = snapshot.value;
-
-                ///From the map takes 'last' set which contains all the member information
-                var membersValSet = data.entries.toList().last;
-
-                ///from that set we grab the member at the 01 position (which is the 2nd user id)
-                _membersList.add(membersValSet.value[1]);
-                //print(membersValSet.value[1]);
-                ///First set of the map contains the lastMessages
-                var lastMessageSet = data.entries.toList().first;
-
-                _lastMList.add(lastMessageSet.value);
-                //print(lastMessageSet.value);
-
-                ///2nd User's thumbnail and name is fetched here
-                var collection = FirebaseFirestore.instance.collection('SL');
-                var docSnapshot =
-                    await collection.doc(membersValSet.value[1]).get();
-                if (docSnapshot.exists) {
-                  Map<String, dynamic> data = docSnapshot.data();
-                  _usernameList.add(data['name']);
-                  _thumbList.add(data['image_uris'][0]);
-                  //print( _usernameList.length.toString() + " aa" + _thumbList.length.toString());
-
-                  // if (mounted) {
-                  //   setState(() {
-                  //     /** **/
-                  //   });
-                  // }
-
-                }
-              }
-            });
-          }),
-        });
-  }
+  // void LiveListen() {
+  //   /// Fetching all the chats under the logged in user and adding their "ChatIds" to a list
+  //   var query = _ref.child("UserChats").child(currentUserId);
+  //   // query.onChildAdded.listen((event) {
+  //   //   _chatIDList.add(event.snapshot.value);
+  //   // });
+  //   query.onValue.forEach((element) {
+  //     Map data = element.snapshot.value;
+  //     data.values.forEach((element) {
+  //       print(element);
+  //       _chatIDList.add(element.toString());
+  //     });
+  //   });
+  //
+  //   ///Once the query completes and list is ready
+  //   query.once().whenComplete(() => {
+  //         _chatIDList.forEach((element) {
+  //           ///Grab individual Chat information using the "ChatIds" in the list
+  //           _ref
+  //               .child("Chats")
+  //               .child(element)
+  //               .once()
+  //               .then((DataSnapshot snapshot) async {
+  //             if (snapshot.exists) {
+  //               ///Sample snapshot -
+  //               /// {lastSentMessage: a, members: [PRRP71u1p1SwCWo8JguIf8T4xG73, 0ooqj1kSWtbEj1TvzXpaVn5so3L2]}
+  //               Map data = snapshot.value;
+  //
+  //               ///From the map takes 'last' set which contains all the member information
+  //               var membersValSet = data.entries.toList().last;
+  //
+  //               ///from that set we grab the member at the 01 position (which is the 2nd user id)
+  //               _membersList.add(membersValSet.value[1]);
+  //               //print(membersValSet.value[1]);
+  //               ///First set of the map contains the lastMessages
+  //               var lastMessageSet = data.entries.toList().first;
+  //
+  //               _lastMList.add(lastMessageSet.value);
+  //               //print(lastMessageSet.value);
+  //
+  //               ///2nd User's thumbnail and name is fetched here
+  //               var collection = FirebaseFirestore.instance.collection('SL');
+  //               var docSnapshot =
+  //                   await collection.doc(membersValSet.value[1]).get();
+  //               if (docSnapshot.exists) {
+  //                 Map<String, dynamic> data = docSnapshot.data();
+  //                 _usernameList.add(data['name']);
+  //                 _thumbList.add(data['image_uris'][0]);
+  //                 //print( _usernameList.length.toString() + " aa" + _thumbList.length.toString());
+  //
+  //                 // if (mounted) {
+  //                 //   setState(() {
+  //                 //     /** **/
+  //                 //   });
+  //                 // }
+  //
+  //               }
+  //             }
+  //           });
+  //         }),
+  //       });
+  // }
 
   void prepareData(DataSnapshot snapshot, int index) {
     /// Fetching all the chats under the logged in user and adding their "ChatIds" to a list
-    // var query = _ref.child("UserChats").child(currentUserId);
-    // // query.onChildAdded.listen((event) {
-    // //   _chatIDList.add(event.snapshot.value);
-    // // });
-    // query.onValue.forEach((element) {
-    //   Map data = element.snapshot.value;
-    //   data.values.forEach((element) {
-    //     print(element);
-    //     _chatIDList.add(element.toString());
-    //   });
-    // });
-
     if (_chatIDList.contains(snapshot.value)) {
-      print(snapshot.value + " " + "Dismissed");
+      // print(snapshot.value + " " + "Dismissed");
     } else {
+      //print(snapshot.value.toString() + " " + "Accepted");
+
       _chatIDList.add(snapshot.value.toString());
 
       // print(_chatIDList.first);
@@ -385,33 +387,38 @@ class _ChatState extends State<Chat> {
               /// {lastSentMessage: a, members: [PRRP71u1p1SwCWo8JguIf8T4xG73, 0ooqj1kSWtbEj1TvzXpaVn5so3L2]}
               Map data = snapshot.value;
 
-              ///From the map takes 'last' set which contains all the member information
-              var membersValSet = data.entries.toList().last;
+              ///From the map takes 'members' set which contains all the member information
+              var user2ID = data["members"][1];
+              _membersList.add(user2ID);
+              // print(membersValSet);
 
-              ///from that set we grab the member at the 01 position (which is the 2nd user id)
-              _membersList.add(membersValSet.value[1]);
-              //print(membersValSet.value[1]);
               ///First set of the map contains the lastMessages
-              var lastMessageSet = data.entries.toList().first;
-
-              _lastMList.add(lastMessageSet.value);
-              print(lastMessageSet.value);
+              // print(data.values);
+              var lastMessageSet = data["lastSentMessage"];
+              _lastMList.add(lastMessageSet);
+              //print(lastMessageSet.value);
 
               ///2nd User's thumbnail and name is fetched here
-              var collection = FirebaseFirestore.instance.collection('SL');
-              var docSnapshot =
-                  await collection.doc(membersValSet.value[1]).get();
-              if (docSnapshot.exists) {
-                Map<String, dynamic> data = docSnapshot.data();
-                _usernameList.add(data['name']);
-                _thumbList.add(data['image_uris'][0]);
+              var thumb = data["thumb"];
+              var name = data["name"];
+              _usernameList.add(name);
+              _thumbList.add(thumb);
 
-                if (mounted) {
-                  setState(() {
-                    /** **/
-                  });
-                }
-              }
+
+              ///Legacy method used for fetching thumb & name staright from Firestore.
+              ///Todo check this out later.
+              // var collection = FirebaseFirestore.instance.collection('SL');
+              // var docSnapshot = await collection.doc(user2ID).get();
+              // if (docSnapshot.exists) {
+              //   Map<String, dynamic> data = docSnapshot.data();
+              //   _usernameList.add(data['name']);
+              //   _thumbList.add(data['image_uris'][0]);
+              //   if (mounted) {
+              //     setState(() {
+              //       /** **/
+              //     });
+              //   }
+              // }
             }
           });
         });
@@ -421,221 +428,144 @@ class _ChatState extends State<Chat> {
     ///Once the query completes and list is ready
   }
 
-  Widget recentMatches(User user) {
-    return PhysicalModel(
-      color: Colors.white,
-      elevation: 8,
-      shadowColor: Colors.grey[100],
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        width: SizeConfig.safeBlockHorizontal * 75,
-        height: SizeConfig.safeBlockVertical * 10,
-        decoration: new BoxDecoration(
-          border: Border.all(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
+  // Widget recentMatches(User user) {
+  //   return PhysicalModel(
+  //     color: Colors.white,
+  //     elevation: 8,
+  //     shadowColor: Colors.grey[100],
+  //     borderRadius: BorderRadius.circular(10),
+  //     child: Container(
+  //       width: SizeConfig.safeBlockHorizontal * 75,
+  //       height: SizeConfig.safeBlockVertical * 10,
+  //       decoration: new BoxDecoration(
+  //         border: Border.all(color: Colors.black54),
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       child: Padding(
+  //         padding: const EdgeInsets.fromLTRB(5, 5, 45, 5),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           //crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Material(
+  //               child: InkWell(
+  //                 onTap: () {
+  //                   widget.onNav(null, user.uid);
+  //                 },
+  //                 child: ClipRRect(
+  //                   borderRadius: BorderRadius.circular(5.0),
+  //                   child: Container(
+  //                     width: SizeConfig.safeBlockHorizontal * 15,
+  //                     height: SizeConfig.safeBlockVertical * 10,
+  //                     decoration: new BoxDecoration(
+  //                       image: new DecorationImage(
+  //                         fit: BoxFit.cover,
+  //                         image: NetworkImage(user.imageUris[0]),
+  //                       ),
+  //                       border: Border.all(color: Colors.transparent),
+  //                       borderRadius: BorderRadius.circular(5),
+  //                       boxShadow: [
+  //                         BoxShadow(
+  //                           color: Colors.grey,
+  //                           offset: Offset(0.0, 1.0), //(x,y)
+  //                           blurRadius: 6.0,
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget ChatBox(int index) {
+    //print(_lastMList);
+    return Card(
+        elevation: 5,
+        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
         ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 5, 45, 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Material(
-                child: InkWell(
-                  onTap: () {
-                    widget.onNav(null, user.uid);
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5.0),
-                    child: Container(
-                      width: SizeConfig.safeBlockHorizontal * 15,
-                      height: SizeConfig.safeBlockVertical * 10,
-                      decoration: new BoxDecoration(
-                        image: new DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(user.imageUris[0]),
-                        ),
-                        border: Border.all(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 6.0,
+        color: Theme.of(context).colorScheme.surface,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(_thumbList[0]),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                           _usernameList[index],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(
+                            height: SizeConfig.safeBlockVertical * 1,
+                          ),
+                          Opacity(
+                            opacity: 0.64,
+                            child: Text(
+                              _lastMList[index],
+                              style:
+                              TextStyle(color: Colors.black54, fontSize: 12),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget ChatBox(int index) {
-    print(_lastMList[0]);
-    return Card(
-      elevation: 5,
-      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      color: Theme.of(context).colorScheme.surface,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-                child: Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          _usernameList.elementAt(index),
+                      Positioned(
+                        right: 8,
+                        child: Text(
+                          "Yesterday",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                            color: Colors.black54,
+                            fontSize: 11,
                           ),
-                        ),
-                        SizedBox(
-                          height: SizeConfig.safeBlockVertical * 1,
-                        ),
-                        Opacity(
-                          opacity: 0.64,
-                          child: Text(
-                            _lastMList[index],
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      right: 8,
-                      child: Text(
-                        "Yesterday",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 11,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          onTap: () {
-            widget.onNav(_chatIDList[0], _membersList[0]);
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget Test() {
-    return Card(
-      elevation: 5,
-      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      color: Theme.of(context).colorScheme.surface,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-                child: Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
-                    ),
+                    ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "test",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        SizedBox(
-                          height: SizeConfig.safeBlockVertical * 1,
-                        ),
-                        Opacity(
-                          opacity: 0.64,
-                          child: Text(
-                            "hey",
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      right: 8,
-                      child: Text(
-                        "Yesterday",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
+            onTap: () {
+              widget.onNav(_chatIDList[index], _membersList[index],
+                  users[index].imageUris[0], users[index].name);
+            },
           ),
-          onTap: () {
-            widget.onNav(null, "0ooqj1kSWtbEj1TvzXpaVn5so3L2");
-            //widget.onNav(null,"M9IKekozV2Qgklcg41yt3cfclgT2");
-          },
         ),
-      ),
-    );
+      );
+
   }
 
   @override
   void initState() {
     super.initState();
+    _chatIDList.clear();
   }
 }

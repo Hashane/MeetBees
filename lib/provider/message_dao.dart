@@ -144,8 +144,9 @@ class MessageDao {
     //_ref.child("UserChats").child(message.uID).push().set(someMap);
     _ref.child("UserChats").child(message.uID).push().set(_chatID);
 
-    //Todo optional
+    //Todo optional save under 2nd users
     /// _ref.child("UserChats").child(message.u2ID).push().set(_chatID);
+
 
     print("done");
   }

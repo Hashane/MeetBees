@@ -4,17 +4,16 @@ import 'package:meet_ceylon/widget/messages/body_widget.dart';
 
 
 class MessagesScreen extends StatelessWidget {
-  final String chatID;
-  final String user2id;
+  final String chatID, user2id, thumbUri,name;
 
-  const MessagesScreen({Key key, this.chatID, this.user2id}) : super(key: key);
+  const MessagesScreen({Key key, this.chatID, this.user2id, this.thumbUri, this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: buildAppBar(context),
-      body: Body(chatID: chatID,user2id: user2id,),
+      body: Body(chatID: chatID,user2id: user2id, thumbUri: thumbUri,name: name),
     );
   }
 

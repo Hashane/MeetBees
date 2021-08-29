@@ -10,11 +10,10 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'message.dart';
 
 class ChatInputField extends StatelessWidget {
-  final String chatID;
-  final String user2id;
+  final String chatID, user2id, thumbUri,name;
 
   const ChatInputField({
-    Key key, this.chatID, this.user2id,
+    Key key, this.chatID, this.user2id, this.thumbUri, this.name,
   }) : super(key: key);
 
   @override
@@ -46,6 +45,8 @@ class ChatInputField extends StatelessWidget {
           uID: _currentUserId,
           u2ID: user2id,//"0zU1Zjf7mVY3aRbbngYMi0azXbg2", //M9IKekozV2Qgklcg41yt3cfclgT2", //"0ooqj1kSWtbEj1TvzXpaVn5so3L2",// "M9IKekozV2Qgklcg41yt3cfclgT2", ///todo for testing purpose only
           chatID: chatID,
+          thumb: thumbUri,
+          name: name,
 
       );
       if(chatID != null){

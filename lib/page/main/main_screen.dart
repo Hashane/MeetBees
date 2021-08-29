@@ -117,13 +117,15 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   ///Chat Screen
-  void _nav2(String id, String user2id) {
+  void _nav2(String id, String user2id, String thumbUri, String name) {
     Navigator.push(
         context,
         ScaleRoute(
             page: MessagesScreen(
           chatID: id,
           user2id: user2id,
+          thumbUri: thumbUri,
+          name: name,
         )));
   }
 

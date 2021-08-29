@@ -14,6 +14,8 @@ class ChatMessage {
   final String u2ID; ///user two ID
   final String time;
   final String chatID;
+  final String thumb;
+  final String name;
 
   ChatMessage({
     this.text = '',
@@ -24,7 +26,9 @@ class ChatMessage {
     this.uID,
     this.u2ID,
     this.time,
-    this.chatID
+    this.chatID,
+    this.thumb,
+    this.name
   });
 
 
@@ -61,6 +65,8 @@ class ChatMessage {
   Map<dynamic, dynamic> toChatsJson() => <dynamic, dynamic>{
     'lastSentMessage': text,
     "members" : [uID,u2ID],
+    "thumb" : thumb,
+    "name": name,
   };
 
   Map<dynamic, dynamic> toChatMessagesJson() => <dynamic, dynamic>{
