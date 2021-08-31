@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
 import 'package:meet_ceylon/model/message.dart';
+import 'package:meet_ceylon/model/chat.dart' as ChatModel;
 
 /// Data Access Object for messages.
 ///
@@ -50,149 +51,130 @@ class MessageDao {
     print("Pushed to Existing");
   }
 
-  void test(ChatMessage message) {
-    final List<String> _chatIDList = [];
+  // void testOld(ChatMessage message) {
+  //   final List<String> _chatIDList = [];
+  //
+  //   ///This is when a user initiates a new chat with a new user for the first time.
+  //   ///Check if userid exists in the "UserChats" node
+  //   _ref
+  //       .child("UserChats")
+  //       .child(message.uID)
+  //       .once()
+  //       .then((DataSnapshot snapshot) {
+  //     if (snapshot.exists) {
+  //       ///this is the key of the node which is the UID
+  //       //print(snapshot.key);
+  //
+  //       ///Snapshot values to a map
+  //       Map data = snapshot.value;
+  //
+  //       ///count how many chat records under user id.
+  //       // print(data.length);
+  //
+  //       if (data.length > 0) {
+  //         ///loop all the entries to grab the value of each key,value pair
+  //         data.entries.forEach((element) {
+  //           _chatIDList.add(element.value.toString());
+  //         });
+  //
+  //         if (_chatIDList.length > 0 && _chatIDList != null) {
+  //           print(_chatIDList);
+  //
+  //           ///looping chat ID list to see if there's a existing sub node with the chat ID
+  //           _chatIDList.forEach((element) {
+  //             _ref
+  //                 .child("Chats")
+  //                 .child(element)
+  //                 .once()
+  //                 .then((DataSnapshot snapshot) {
+  //               ///if found, put the values to a map and convert it to a list
+  //               /// in order to only read the 'last' which means 'members' value set.
+  //
+  //               if (snapshot.exists) {
+  //                 Map data = snapshot.value;
+  //
+  //                 ///extracting the member at the 1st position id which belongs to the second user.
+  //                 var secondUsersId = data["members"][1];
+  //                 print("this is the 2nd user" + data["members"][1]);
+  //
+  //                 _chatID = snapshot.key;
+  //
+  //                 /// if any of the member ids match with the second user's user id we proceed.
+  //                 if (message.u2ID == secondUsersId && _chatID != null) {
+  //                   ///if so get the root element to which this belongs to
+  //                   ///This is the ChatID we have been looking for.
+  //                   ///using this ChatID we can list the new messages under
+  //                   // print(snapshot.key);
+  //
+  //                   print("user found & second users id matches....!!!");
+  //                   saveMessage(message, _chatID);
+  //                 } else {
+  //                   print("found user but second users id doesn't match..");
+  //                   openNewChat(message);
+  //                 }
+  //               }
+  //             });
+  //           });
+  //         }
+  //       }
+  //     } else {
+  //       print("cant find User. Opening new chat.....");
+  //       openNewChat(message);
+  //     }
+  //   });
+  // }
 
-    ///This is when a user initiates a new chat with a new user for the first time.
-    ///Check if userid exists in the "UserChats" node
-    _ref
-        .child("UserChats")
-        .child(message.uID)
-        .once()
-        .then((DataSnapshot snapshot) {
-      if (snapshot.exists) {
-        ///this is the key of the node which is the UID
-        //print(snapshot.key);
 
-        ///Snapshot values to a map
-        Map data = snapshot.value;
+void test(ChatMessage chatMessage) async {
+Map<Object, Object>_chatList;
+    _chatList = await getData(chatMessage);
 
-        ///count how many chat records under user id.
-        // print(data.length);
+ if(_chatList != null){
+   print(_chatList);
+    List<dynamic> secondUsersId = _chatList["members"];
 
-        if (data.length > 0) {
-          ///loop all the entries to grab the value of each key,value pair
-          data.entries.forEach((element) {
-            _chatIDList.add(element.value.toString());
-          });
 
-          if (_chatIDList.length > 0 && _chatIDList != null) {
-            print(_chatIDList);
+    /// if any of the member ids match with the second user's user id we proceed.
+    if (chatMessage.u2ID == secondUsersId.elementAt(1)) {
+      saveMessage(chatMessage, _chatID);
+    }else{
+      /// when the has not chat with this particular user, we start a new chat.
+      openNewChat(chatMessage);
+    }
+ }
 
-            ///looping chat ID list to see if there's a existing sub node with the chat ID
-            _chatIDList.forEach((element) {
-              _ref
-                  .child("Chats")
-                  .child(element)
-                  .once()
-                  .then((DataSnapshot snapshot) {
-                ///if found, put the values to a map and convert it to a list
-                /// in order to only read the 'last' which means 'members' value set.
+}
 
-                if (snapshot.exists) {
-                  Map data = snapshot.value;
+  Future<Map<Object, Object>> getData(ChatMessage chatMessage) async {
+    var usersMainChatsSnapshot = FirebaseDatabase(databaseURL: "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/").reference().child('UserChats/$currentUserId').once();
 
-                  ///extracting the member at the 1st position id which belongs to the second user.
-                  var secondUsersId = data["members"][1];
-                  print("this is the 2nd user" + data["members"][1]);
+    final List<String>_chatIDList  = [];
+    Map<Object, Object> obj;
 
-                  _chatID = snapshot.key;
+    await for (var userChatSnapshot in  usersMainChatsSnapshot.asStream()) {
 
-                  /// if any of the member ids match with the second user's user id we proceed.
-                  if (message.u2ID == secondUsersId && _chatID != null) {
-                    ///if so get the root element to which this belongs to
-                    ///This is the ChatID we have been looking for.
-                    ///using this ChatID we can list the new messages under
-                    // print(snapshot.key);
+      _chatIDList.clear(); ///Keep track of chatID
+      Map dictionary = userChatSnapshot.value;
+      if (dictionary != null) {
+        for (var dictItem in dictionary.entries) {
+          _chatID;
+          ChatModel.Chat thisChat;
+          if (dictItem.key != null) {
+            _chatID = dictItem.value; ///globally saving
 
-                    print("user found & second users id matches....!!!");
-                    saveMessage(message, _chatID);
-                  } else {
-                    print("found user but second users id doesn't match..");
-                    openNewChat(message);
-                  }
-                }
-              });
-            });
+            obj = (await FirebaseDatabase(databaseURL: "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/").reference().child("Chats/$_chatID").once()).value;
+
+          } else {
+           obj = Map();
           }
+          _chatIDList.add(_chatID); ///adding chatid to list
         }
-      } else {
-        print("cant find User. Opening new chat.....");
-        openNewChat(message);
-      }
-    });
-  }
-
-  void testNew(ChatMessage message) {
-    final List<String> _chatIDList = [];
-    Map _chatsData = Map();
-    var secondUsersId = "";
-
-    ///This is when a user initiates a new chat with a new user for the first time.
-    ///Check if userid exists in the "UserChats" node
-    _ref
-        .child("UserChats")
-        .child(message.uID)
-        .once()
-        .then((DataSnapshot snapshot) {
-      if (!snapshot.exists) {
-        print("cant find User. Opening new chat.....");
-        openNewChat(message);
       }else{
-        ///this is the key of the node which is the UID
-        //print(snapshot.key);
-
-        ///Snapshot values to a map
-        Map data = snapshot.value;
-
-        ///count how many chat records under user id.
-        // print(data.length);
-
-        if (data.length > 0) {
-          ///loop all the entries to grab the value of each key,value pair
-          data.entries.forEach((element) {
-            _chatIDList.add(element.value.toString());
-          });
-        }
-        ///
-        ///
-        ///
-        if (_chatIDList.length > 0 && _chatIDList != null) {
-          _chatIDList.forEach((element) {
-            _ref.child("Chats").child(element).once().then((DataSnapshot snapshot) {
-
-            }).whenComplete(() => {
-
-            if (snapshot.exists) {
-                _chatsData = snapshot.value,
-                secondUsersId = _chatsData["members"][1],
-                print("Second is  " + secondUsersId),
-            _chatID = snapshot.key,
-
-
-            print("Second" + secondUsersId + "plus" + message.u2ID),
-            if (secondUsersId != null && _chatID != null && message.u2ID == secondUsersId) {
-              print("user found & second users id matches....!!!"),
-              saveMessage(message, _chatID),
-            }else{
-              print("found user but second users id doesn't match.."),
-              openNewChat(message),
-            }
-
-          }
-
-            });
-          });
-
-        }
-        ///
-        ///
-        ///
+        ///When this particular user hasn't chat with anyone before
+        openNewChat(chatMessage);
       }
-
-    });
-
-
+      return obj;
+    }
   }
 
   void openNewChat(ChatMessage message) {

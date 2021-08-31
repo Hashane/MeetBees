@@ -164,13 +164,32 @@ class _ChatsState extends State<Chats> {
                 myChats.length.toString(),
                 style: TextStyle(color: Colors.red),
               ),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: myChats.length,
-                  itemBuilder: (context, index) {
-                    return ChatBox(index);
-                    //return Text(myChats[index].name);
+              // ListView.builder(
+              //     physics: NeverScrollableScrollPhysics(),
+              //     shrinkWrap: true,
+              //     itemCount: myChats.length,
+              //     itemBuilder: (context, index) {
+              //       return ChatBox(index);
+              //       //return Text(myChats[index].name);
+              //     }),
+
+              StreamBuilder(
+                  stream: getData(),
+                  builder: (context, snapshot) {
+                    itemCount: myChats.length;
+                    //myChats.clear();
+                    if (snapshot.hasError || !snapshot.hasData)
+                      return new Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting: return new Text("Loading...");
+                      default:
+                        print("asa");
+                        return ListView(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          children:  myChats.map(ChatBoxforStream).toList(),
+                        );
+                    }
                   }),
             ],
           ),
@@ -416,6 +435,87 @@ class _ChatsState extends State<Chats> {
 
   }
 
+  Widget ChatBoxforStream(ChatModel.Chat chat) {
+    int index = myChats.indexOf(chat);
+    //return Container(color: Colors.red,);
+
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      color: Theme.of(context).colorScheme.surface,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                child: Container(
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: new DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(chat.image.toString()),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          chat.name.toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(
+                          height: SizeConfig.safeBlockVertical * 1,
+                        ),
+                        Opacity(
+                          opacity: 0.64,
+                          child: Text(
+                           chat.lastMessage.toString(),
+                            style:
+                            TextStyle(color: Colors.black54, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      right: 8,
+                      child: Text(
+                        "Yesterday",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          onTap: () {
+            widget.onNav(_chatIDList[index], chat.user2.elementAt(1).toString(),
+                chat.image.toString(), chat.name.toString());
+          },
+        ),
+      ),
+    );
+
+  }
   @override
   void initState() {
     super.initState();
