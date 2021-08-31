@@ -49,10 +49,10 @@ class ChatInputField extends StatelessWidget {
           name: name,
 
       );
+
       if(chatID != null){
         _messageDao.saveMessage(message,null);
       }else {
-
         _messageDao.test(message);
       }
       _messageController.clear();

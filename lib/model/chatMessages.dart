@@ -37,6 +37,15 @@ class ChatMessage {
   //     : chatID =json["-MiB0vz7Kmp9KZns2aGX"] as String,
   //       text = json['text'] as String;
 
+  ///Transform the JSON you receive from the Realtime Database, into a Message
+  // factory ChatM.fromJson(MapEntry<dynamic, dynamic> data){
+  //   return Chat(
+  //     name: data.value['name'],
+  //     lastMessage: data.value['LastSentMessage'],
+  //     image: data.value['LastSentMessage'],
+  //   );
+  // }
+
   // factory ChatMessage.fromJson(Map<dynamic, dynamic> json) {
   //  String parser(dynamic source) {
   //     try {

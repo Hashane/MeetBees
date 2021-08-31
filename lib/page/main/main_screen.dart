@@ -136,7 +136,7 @@ class _MainScreenState extends State<MainScreen> {
           Home(
             onNav: _next,
           ),
-          Chat(
+          Chats(
             onNav: _nav2,
           ),
           Flames(),
