@@ -520,12 +520,12 @@ class _ChatsState extends State<Chats> {
   void initState() {
     super.initState();
 
-    _streamSubscription = getData().listen((data) {
-
-      setState(() {
-        myChats = data;
-      });
-    });
+    // _streamSubscription = getData().listen((data) {
+    //
+    //   setState(() {
+    //     myChats = data;
+    //   });
+    // });
 
   }
 
@@ -565,4 +565,14 @@ class _ChatsState extends State<Chats> {
     }
   }
 
+  @override
+  void didUpdateWidget(Chats oldWidget) {
+    _streamSubscription = getData().listen((data) {
+      if(!mounted)
+        return;
+        setState(() {
+          myChats = data;
+        });
+      });
+    }
 }
