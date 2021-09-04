@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
+import 'package:meet_ceylon/widget/messages/photo_message.dart';
 import 'package:meet_ceylon/widget/messages/text_message.dart';
 
 import '../../constants.dart';
@@ -11,9 +12,11 @@ class Message extends StatelessWidget {
   const Message({
     Key key,
     @required this.message,
+    this.photo_message,
   }) : super(key: key);
 
   final ChatMessage message;
+  final PhotoMessage photo_message;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,8 @@ class Message extends StatelessWidget {
       switch (message.messageType) {
         case ChatMessageType.text:
           return TextMessage(message: message);
+        case ChatMessageType.image:
+          return PhotoMessage(image: photo_message);
         default:
           return SizedBox();
       }
