@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+final String currentUserId = FirebaseAuth.instance.currentUser.uid;
 enum ChatMessageType { text, audio, image, video }
 enum MessageStatus { not_sent, not_view, viewed }
 
@@ -33,11 +35,13 @@ class ChatMessage {
 
 
   ///Transform the JSON you receive from the Realtime Database, into a Message
-  // ChatMessage.fromJson(Map<dynamic, dynamic> json, this.messageType, this.messageStatus, this.isSender, this.uID, this.u2ID, this.time,this.date)
-  //     : chatID =json["-MiB0vz7Kmp9KZns2aGX"] as String,
-  //       text = json['text'] as String;
+  ChatMessage.fromJson(Map<dynamic, dynamic> json, this.uID, this.u2ID, this.time, this.chatID, this.thumb, this.name, this.date)
+      : text = json['message'] as String,
+        messageType = ChatMessageType.text,
+        messageStatus =  MessageStatus.viewed,
+        isSender = json['sent_by']  == currentUserId ? true : false;
 
-  ///Transform the JSON you receive from the Realtime Database, into a Message
+        ///Transform the JSON you receive from the Realtime Database, into a Message
   // factory ChatM.fromJson(MapEntry<dynamic, dynamic> data){
   //   return Chat(
   //     name: data.value['name'],
