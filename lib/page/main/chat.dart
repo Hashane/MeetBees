@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chat.dart' as ChatModel;
+import 'package:meet_ceylon/model/chatMessages.dart';
 import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
@@ -36,6 +37,7 @@ class _ChatsState extends State<Chats> {
 
   var lastMessageSet, membersValSet;
   List<ChatModel.Chat> myChats = [];
+  List<ChatModel.Chat> secondUsers = [];
 
   ///test
   List<String> ids = [];
@@ -386,6 +388,23 @@ class _ChatsState extends State<Chats> {
   // }
 
   Widget ChatBox(int index) {
+    ///grab the index where current userid resides in the myChats list. That means under "members" of the "Chats" node in firebase
+    int usrIndex = myChats[index].user2.indexOf(currentUserId);
+
+    /// determine the index position of the second user in relation to the current user index
+    int secondUserIndex = usrIndex == 0 ? 1 : 0;
+
+    ///using the above index we grab the second user id from the list
+    String secondUser =
+        myChats[index].user2.elementAt(secondUserIndex).toString();
+
+    ///calling the method to fetch name and image of the second user
+    SecondUserInfo(FirebaseDatabase(
+            databaseURL:
+                "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+        .reference()
+        .child("Users/$secondUser"));
+
     return Dismissible(
       key: Key(myChats[index].name.toString()),
       direction: DismissDirection.endToStart,
@@ -395,7 +414,9 @@ class _ChatsState extends State<Chats> {
         });
       },
       background: Container(
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),  /// In order to match the height with the card
+        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+
+        /// In order to match the height with the card
         color: Colors.red,
         child: Icon(Icons.delete),
       ),
@@ -413,17 +434,18 @@ class _ChatsState extends State<Chats> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(myChats[index].image.toString()),
-                      ),
-                    ),
-                  ),
+                  child: secondUsers.isNotEmpty
+                      ? Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(secondUsers[index].image)),
+                          ),
+                        )
+                      : Container(),
                 ),
                 Expanded(
                   child: Stack(
@@ -432,7 +454,9 @@ class _ChatsState extends State<Chats> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            myChats[index].name.toString(),
+                            secondUsers.isNotEmpty
+                                ? secondUsers[index].name
+                                : "",
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -442,18 +466,19 @@ class _ChatsState extends State<Chats> {
                           SizedBox(
                             height: SizeConfig.safeBlockVertical * 1,
                           ),
-                          Opacity(
-                            opacity: _chatIDList[index] == chaId
-                                ? 1.0
-                                : 0.64,
-                            child: Text(
-                              _chatIDList[index] == chaId
-                                  ? last
-                                  : myChats[index].lastMessage.toString(),
-                              style: TextStyle(
-                                  color: Colors.black54, fontSize: 12),
-                            ),
-                          ),
+                          _chatIDList.length != 0
+                              ? Opacity(
+                                  opacity:
+                                      _chatIDList[index] == chaId ? 1.0 : 0.64,
+                                  child: Text(
+                                    _chatIDList[index] == chaId
+                                        ? last
+                                        : myChats[index].lastMessage.toString(),
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 12),
+                                  ),
+                                )
+                              : Container(),
                         ],
                       ),
                       Positioned(
@@ -569,22 +594,22 @@ class _ChatsState extends State<Chats> {
   void initState() {
     super.initState();
 
-      _streamSubscription = getData().listen((data) {
+    _streamSubscription = getData().listen((data) {
+      if (!mounted) return;
+      setState(() {
+        ids = data;
+      });
+    });
+
+    _streamSubscription.onData((data) {
+      print("ddd");
+      _streamSubscription1 = getInfo(data).listen((data) {
         if (!mounted) return;
         setState(() {
-          ids = data;
+          myChats = data;
         });
       });
-
-      _streamSubscription.onData((data) {
-        print("ddd");
-        _streamSubscription1 = getInfo(data).listen((data) {
-          if (!mounted) return;
-          setState(() {
-            myChats = data;
-          });
-        });
-      });
+    });
   }
 
   @override
@@ -824,27 +849,48 @@ class _ChatsState extends State<Chats> {
           //foundChats.add(thisChat);
         }
       }
+      print(_chatIDList);
       yield _chatIDList;
     }
   }
 
   @override
   void didUpdateWidget(Chats oldWidget) {
-  //   _streamSubscription = getData().listen((data) {
-  //     if (!mounted) return;
-  //     setState(() {
-  //       ids = data;
-  //     });
-  //   });
-  //
-  //   _streamSubscription.onData((data) {
-  //     print("ddd");
-  //     _streamSubscription1 = getInfo(data).listen((data) {
-  //       if (!mounted) return;
-  //       setState(() {
-  //         myChats = data;
-  //       });
-  //     });
-  //   });
+    //   _streamSubscription = getData().listen((data) {
+    //     if (!mounted) return;
+    //     setState(() {
+    //       ids = data;
+    //     });
+    //   });
+    //
+    //   _streamSubscription.onData((data) {
+    //     print("ddd");
+    //     _streamSubscription1 = getInfo(data).listen((data) {
+    //       if (!mounted) return;
+    //       setState(() {
+    //         myChats = data;
+    //       });
+    //     });
+    //   });
+  }
+
+  ///
+  /// DatabaseReference points to Users node of the DB
+  /// fetching second users info
+  ///
+  void SecondUserInfo(DatabaseReference databaseReference) async {
+    ChatModel.Chat secondUser;
+    DataSnapshot snapshot = await databaseReference.once();
+    if (snapshot.value != null) {
+      /// Since name & image is stored as a map in the DB we assign the values to a map and then iterate to access the JSON object map
+      Map dictionary = snapshot.value;
+      if (dictionary != null) {
+        for (var dictItem in dictionary.entries) {
+          ///Json object is transformed to the chat model
+          secondUser = ChatModel.Chat.fromUsers(dictItem.value, null, null);
+        }
+        secondUsers.add(secondUser);
+      }
+    }
   }
 }

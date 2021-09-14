@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
@@ -13,6 +14,7 @@ import 'package:meet_ceylon/model/chat.dart' as ChatModel;
 /// * This code looks for a JSON document inside Realtime Database called 'messages'. If it doesn’t exist, Firebase will create it.
 class MessageDao {
   final String currentUserId = FirebaseAuth.instance.currentUser.uid;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final DatabaseReference _ref = FirebaseDatabase(
           databaseURL:
@@ -177,7 +179,7 @@ Map<Object, Object>_chatList;
     }
   }
 
-  void openNewChat(ChatMessage message) {
+  void openNewChat(ChatMessage message) async{
     ///Read the chatID before pushing
     _chatID = _ref.child("Chats").push().key;
 
@@ -202,8 +204,41 @@ Map<Object, Object>_chatList;
     //_ref.child("UserChats").child(message.uID).push().set(someMap);
     _ref.child("UserChats").child(message.uID).push().set(_chatID);
 
-    //Todo optional save under 2nd users
-    /// _ref.child("UserChats").child(message.u2ID).push().set(_chatID);
+    ///Saving the chatID under the 2nd user
+    _ref.child("UserChats").child(message.u2ID).push().set(_chatID);
+
+    ///Before we fetch current user info from the firebase we check if they are already stored in the realtime DB
+    bool _exists = await selfInfoExists(FirebaseDatabase(
+        databaseURL:
+        "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+        .reference()
+        .child("Users/$currentUserId"));
+
+
+    //Todo Need to change the hardcoded Collection name
+    final CollectionReference _mainCollection = _firestore.collection("SL");
+
+    ///Fetching current user image & thumb from firestore and store under "Users" node
+    if(!_exists){
+      _mainCollection.doc(message.uID).get().then((value){
+        ///save user info as a map
+        Map<String, String> _userInfoMap = {
+          "name": value.get("name"),
+          "thumb": value.get("image_uris")[0],
+        };
+        _ref.child("Users").child(message.uID).push().set(_userInfoMap);
+      });
+    }
+
+    ///Fetching second users info and store
+    _mainCollection.doc(message.u2ID).get().then((value){
+      ///save user info as a map
+      Map<String, String> _userInfoMap = {
+        "name": value.get("name"),
+        "thumb": value.get("image_uris")[0],
+      };
+      _ref.child("Users").child(message.u2ID).push().set(_userInfoMap);
+    });
 
     print("done");
   }
@@ -256,5 +291,16 @@ Map<Object, Object>_chatList;
   //       }));
   //
   // }
+
+  Future<bool> selfInfoExists(DatabaseReference databaseReference) async{
+    DataSnapshot snapshot = await databaseReference.once();
+    bool isExist = false;
+    if( snapshot.value == null ){
+      isExist = false;
+    }else{
+      isExist = true;
+    }
+    return isExist;
+  }
 
 }

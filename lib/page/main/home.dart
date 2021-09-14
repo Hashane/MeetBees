@@ -47,13 +47,13 @@ class _HomeState extends State<Home> {
     super.initState();
 
     ///initializing stream and fetching users
-    //fetchUsers();
+    fetchUsers();
   }
 
   @override
   void dispose() {
     ///cancelling StreamSubscription on dispose
-    //_messSubs.cancel();
+    _messSubs.cancel();
     super.dispose();
   }
 

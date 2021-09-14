@@ -21,6 +21,19 @@ class Chat {
         image = json['thumb'],
         user2 =  json['members'];
 
+  ///Used for fetching second user's info
+  Chat.fromUsers(Map<Object, Object> json, this.lastMessage, this.user2)
+      : name = json["name"],
+        image = json['thumb'];
+
+// factory Chat.fromUsers(MapEntry<dynamic, dynamic> data){
+//   return Chat(
+//     name: data.value['name'],
+//     image: data.value['thumb'],
+//    // image: data.value['LastSentMessage'],
+//   );
+// }
+
   // List chatsData = [
   //   Chat(
   //     name: "Jenny Wilson",
