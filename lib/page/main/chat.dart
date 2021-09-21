@@ -75,6 +75,28 @@ class _ChatsState extends State<Chats> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
+    ///This part is cruicial when the data deleted from backend
+    ///When data is changed the listener fetches any remaining chats from the list
+    ///When that data is yeilded previously it was only captured in the initState but then the UI won't be updated
+    _streamSubscription.onData((data) {
+
+      ///This is when all the chats are deleted to set the list empty and update the ui
+      if(data.length == 0){
+        setState(() {
+          myChats.clear();
+        });
+      }
+
+      ///Listening for data
+      _streamSubscription1 = getInfo(data).listen((data) {
+        if (!mounted) return;
+        setState(() {
+          myChats = data;
+        });
+      });
+    });
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -442,7 +464,7 @@ class _ChatsState extends State<Chats> {
         builder: (context, AsyncSnapshot<List<ChatModel.Chat>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             var indexedInfo;
-            if(snapshot.data != null && snapshot.data.length > 0)
+            if(snapshot.data != null && snapshot.data.length != 0)
               indexedInfo = snapshot.data.elementAt(index);
             return  Dismissible(
                     key: Key(myChats[index].name.toString()),
