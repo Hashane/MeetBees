@@ -1,4 +1,6 @@
+
 import 'dart:async';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as usr;
@@ -11,50 +13,64 @@ import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/page_routes/scale_page_route.dart';
+import 'package:meet_ceylon/widget/custom_widget.dart';
+
 
 import '../test.dart';
+
 
 class Chats extends StatefulWidget {
   final Function onNav;
 
+
   const Chats({Key key, this.onNav}) : super(key: key);
+
 
   @override
   _ChatsState createState() => _ChatsState();
 }
 
+
 class _ChatsState extends State<Chats> {
   StreamSubscription _streamSubscription;
   StreamSubscription _streamSubscription1;
+
 
   Widget kBackBtn = Icon(
     Icons.arrow_back_ios,
     size: 40.0,
   );
 
+
   ///stream subscription
   final List<User> users = [];
+
 
   var lastMessageSet, membersValSet;
   List<ChatModel.Chat> myChats = [];
   List<ChatModel.Chat> secondUsers = [];
+
 
   ///test
   List<String> ids = [];
   String last = "";
   String chaId = "";
 
+
   ///Realtime updates from chat
   final DatabaseReference _ref = FirebaseDatabase(
-          databaseURL:
-              "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+      databaseURL:
+      "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
       .reference();
+
 
   ///To track all the chats the user has started
   List<String> _chatIDList = [];
 
+
   ///Current user id
   final String currentUserId = usr.FirebaseAuth.instance.currentUser.uid;
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +85,7 @@ class _ChatsState extends State<Chats> {
         ),
         elevation: 0,
       ),
+
 
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -147,6 +164,7 @@ class _ChatsState extends State<Chats> {
                         Map<String, dynamic> obj = element.data();
                         users.add(User.fromJson(obj));
 
+
                         //print("loading");
                       });
                     }
@@ -182,6 +200,7 @@ class _ChatsState extends State<Chats> {
                     //return Text(myChats[index].name);
                   }),
 
+
               // StreamBuilder(
               //     stream: getData(),
               //     builder: (context, snapshot) {
@@ -201,6 +220,7 @@ class _ChatsState extends State<Chats> {
               //           );
               //       }
               //     }),
+
 
               ///test
               // StreamBuilder(
@@ -230,6 +250,7 @@ class _ChatsState extends State<Chats> {
     );
   }
 
+
   Widget matchedUserCarousel() {
     return new Container(
       height: SizeConfig.safeBlockVertical * 10,
@@ -244,6 +265,7 @@ class _ChatsState extends State<Chats> {
                 widget.onNav(null, users[index].uid.trim(),
                     users[index].imageUris[0], users[index].name);
               },
+
 
               ///Initiating a new chat using uid
               child: Card(
@@ -265,6 +287,7 @@ class _ChatsState extends State<Chats> {
       ),
     );
   }
+
 
   // void prepareData(DataSnapshot snapshot, int index) {
   //   /// Fetching all the chats under the logged in user and adding their "ChatIds" to a list
@@ -332,6 +355,7 @@ class _ChatsState extends State<Chats> {
   //   ///Once the query completes and list is ready
   // }
 
+
   // Widget recentMatches(User user) {
   //   return PhysicalModel(
   //     color: Colors.white,
@@ -387,131 +411,198 @@ class _ChatsState extends State<Chats> {
   //   );
   // }
 
+
   Widget ChatBox(int index) {
     ///grab the index where current userid resides in the myChats list. That means under "members" of the "Chats" node in firebase
     int usrIndex = myChats[index].user2.indexOf(currentUserId);
 
+
     /// determine the index position of the second user in relation to the current user index
     int secondUserIndex = usrIndex == 0 ? 1 : 0;
 
+
     ///using the above index we grab the second user id from the list
     String secondUser =
-        myChats[index].user2.elementAt(secondUserIndex).toString();
+    myChats[index].user2.elementAt(secondUserIndex).toString();
+
 
     ///calling the method to fetch name and image of the second user
-    SecondUserInfo(FirebaseDatabase(
+
+
+
+
+
+
+    return FutureBuilder<List<ChatModel.Chat>>(
+        future: SecondUserInfo(FirebaseDatabase(
             databaseURL:
-                "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
-        .reference()
-        .child("Users/$secondUser"));
-
-    return Dismissible(
-      key: Key(myChats[index].name.toString()),
-      direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
-        setState(() {
-          myChats.removeAt(index);
-        });
-      },
-      background: Container(
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-
-        /// In order to match the height with the card
-        color: Colors.red,
-        child: Icon(Icons.delete),
-      ),
-      child: Card(
-        elevation: 5,
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        color: Theme.of(context).colorScheme.surface,
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: secondUsers.isNotEmpty
-                      ? Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(secondUsers[index].image)),
-                          ),
-                        )
-                      : Container(),
-                ),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            secondUsers.isNotEmpty
-                                ? secondUsers[index].name
-                                : "",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            height: SizeConfig.safeBlockVertical * 1,
-                          ),
-                          _chatIDList.length != 0
-                              ? Opacity(
-                                  opacity:
-                                      _chatIDList[index] == chaId ? 1.0 : 0.64,
-                                  child: Text(
-                                    _chatIDList[index] == chaId
-                                        ? last
-                                        : myChats[index].lastMessage.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black54, fontSize: 12),
+            "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+            .reference()
+            .child("Users/$secondUser")),
+        builder: (context, AsyncSnapshot<List<ChatModel.Chat>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+            var indexedInfo;
+            if(snapshot.data != null && snapshot.data.length > 0)
+              indexedInfo = snapshot.data.elementAt(index);
+            return  Dismissible(
+                    key: Key(myChats[index].name.toString()),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      setState(() {
+                        myChats.removeAt(index);
+                      });
+                    },
+                    background: Container(
+                      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                      /// In order to match the height with the card
+                      color: Colors.red,
+                      child: Icon(Icons.delete),
+                    ),
+                    child: Card(
+                      elevation: 5,
+                      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .surface,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          child: Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: indexedInfo != null
+                                    ? Container(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(indexedInfo.image)),
                                   ),
                                 )
-                              : Container(),
-                        ],
-                      ),
-                      Positioned(
-                        right: 8,
-                        child: Text(
-                          "Yesterday",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 11,
+                                    : Container(),
+                              ),
+                              Expanded(
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          indexedInfo != null
+                                              ?  indexedInfo.name
+                                              : "",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: SizeConfig.safeBlockVertical * 1,
+                                        ),
+                                        _chatIDList.length != 0
+                                            ? Opacity(
+                                          opacity:
+                                          _chatIDList[index] == chaId ? 1.0 : 0.64,
+                                          child: Text(
+                                            _chatIDList[index] == chaId
+                                                ? last
+                                                : myChats[index].lastMessage.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black54, fontSize: 12),
+                                          ),
+                                        )
+                                            : Container(),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      right: 8,
+                                      child: Text(
+                                        "Yesterday",
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
+                          onTap: () {
+                            widget.onNav(
+                                _chatIDList[index],
+                                myChats[index].user2.elementAt(1).toString(),
+                                myChats[index].image.toString(),
+                                myChats[index].name.toString());
+                          },
                         ),
                       ),
+                    ),
+                  );
+          } else {
+            return shimmercardWidget();}});
+  }
+
+
+  Widget shimmercardWidget(){
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      color: Theme
+          .of(context)
+          .colorScheme
+          .surface,
+      child: Material(
+        color: Colors.transparent,
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomWidget.circular(height: 50.0, width: 50.0),
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      CustomWidget.rectangular(height: 10, width: MediaQuery.of(context).size.width*0.3),
+                      SizedBox(
+                        height: SizeConfig.safeBlockVertical * 1,
+                      ),
+                      CustomWidget.rectangular(height: 10, width:MediaQuery.of(context).size.width*0.3),
                     ],
                   ),
-                ),
-              ],
+                  Positioned(
+                    right: 8,
+                    child: CustomWidget.rectangular(height: 10, width:MediaQuery.of(context).size.width* 0.1),
+                  ),
+                ],
+              ),
             ),
-            onTap: () {
-              widget.onNav(
-                  _chatIDList[index],
-                  myChats[index].user2.elementAt(1).toString(),
-                  myChats[index].image.toString(),
-                  myChats[index].name.toString());
-            },
-          ),
+          ],
         ),
       ),
     );
   }
 
+
   Widget ChatBoxforStream(ChatModel.Chat chat) {
     int index = myChats.indexOf(chat);
     //return Container(color: Colors.red,);
+
 
     return Card(
       elevation: 5,
@@ -561,7 +652,7 @@ class _ChatsState extends State<Chats> {
                           child: Text(
                             chat.lastMessage.toString(),
                             style:
-                                TextStyle(color: Colors.black54, fontSize: 12),
+                            TextStyle(color: Colors.black54, fontSize: 12),
                           ),
                         ),
                       ],
@@ -590,9 +681,11 @@ class _ChatsState extends State<Chats> {
     );
   }
 
+
   @override
   void initState() {
     super.initState();
+
 
     _streamSubscription = getData().listen((data) {
       if (!mounted) return;
@@ -600,6 +693,7 @@ class _ChatsState extends State<Chats> {
         ids = data;
       });
     });
+
 
     _streamSubscription.onData((data) {
       print("ddd");
@@ -612,6 +706,7 @@ class _ChatsState extends State<Chats> {
     });
   }
 
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -619,6 +714,7 @@ class _ChatsState extends State<Chats> {
     _streamSubscription1?.cancel();
     super.dispose();
   }
+
 
   // Stream<List<ChatModel.Chat>> getData() async* {
   //   var usersChatsStream = FirebaseDatabase(
@@ -646,7 +742,7 @@ class _ChatsState extends State<Chats> {
   //
   //           ///option 1
   //           //  Map<Object, Object> obj = (await FirebaseDatabase(databaseURL: "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/").reference().child("Chats/$chatID").once()).value;
-  //           // thisChat = ChatModel.Chat.fromJson(obj);
+  //           // thisChat = ChatModel.Chat.fromJson(oj);
   //           ///option 11
   //           //  getInfo(chatID).listen((event) {
   //           //   _chats =  event;
@@ -706,6 +802,7 @@ class _ChatsState extends State<Chats> {
   //   }
   // }
 
+
   // Stream<List<ChatModel.Chat>> getInfo(String chatID) async* {
   //   ChatModel.Chat thisChat;
   //   final List<ChatModel.Chat> foundChats = [];
@@ -727,11 +824,12 @@ class _ChatsState extends State<Chats> {
   Stream<List<ChatModel.Chat>> getInfo(List<String> li) async* {
     final List<ChatModel.Chat> foundChats = [];
 
+
     for (var i in li) {
       ChatModel.Chat thisChat;
       FirebaseDatabase(
-              databaseURL:
-                  "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+          databaseURL:
+          "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
           .reference()
           .child("Chats/$i")
           .once()
@@ -739,8 +837,10 @@ class _ChatsState extends State<Chats> {
         thisChat = ChatModel.Chat.fromJson(event.value);
         foundChats.add(thisChat);
 
+
         //foundChats.add(thisChat);
       });
+
 
       // for (var chatInfo in chatInfoStream) {
       //     thisChat = ChatModel.Chat.fromJson(chatInfo.snapshot.value);
@@ -748,9 +848,10 @@ class _ChatsState extends State<Chats> {
       //     foundChats.add(thisChat);
       //   }
 
+
       FirebaseDatabase(
-              databaseURL:
-                  "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+          databaseURL:
+          "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
           .reference()
           .child("Chats/$i")
           .onChildChanged
@@ -762,27 +863,33 @@ class _ChatsState extends State<Chats> {
           });
         }
 
+
         //thisChat = ChatModel.Chat.fromJson(event.snapshot.value);
       });
+
 
       yield foundChats;
     }
   }
 
+
   Stream<List<String>> getData() async* {
     var usersChatsStream = FirebaseDatabase(
-            databaseURL:
-                "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+        databaseURL:
+        "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
         .reference()
         .child('UserChats/$currentUserId')
         .onValue;
 
+
     List<ChatModel.Chat> foundChats = [];
     List<ChatModel.Chat> _chats = [];
+
 
     await for (var userChatSnapshot in usersChatsStream) {
       foundChats.clear();
       _chatIDList.clear();
+
 
       ///Keep track of chatID
       Map dictionary = userChatSnapshot.snapshot.value;
@@ -791,6 +898,7 @@ class _ChatsState extends State<Chats> {
           String chatID;
           if (dictItem.key != null) {
             chatID = dictItem.value;
+
 
             ///option 1
             //  Map<Object, Object> obj = (await FirebaseDatabase(databaseURL: "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/").reference().child("Chats/$chatID").once()).value;
@@ -813,6 +921,7 @@ class _ChatsState extends State<Chats> {
             //
             // });
 
+
             // FirebaseDatabase(
             // databaseURL:
             // "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
@@ -825,6 +934,7 @@ class _ChatsState extends State<Chats> {
             //   _chats = List.from(foundChats),
             //
             // });
+
 
             /// Option 1V Synchronous
             // var chatInfoStream = FirebaseDatabase(
@@ -841,6 +951,7 @@ class _ChatsState extends State<Chats> {
             // }
             // yield foundChats;
 
+
           } else {
             chatID = "";
           }
@@ -853,6 +964,7 @@ class _ChatsState extends State<Chats> {
       yield _chatIDList;
     }
   }
+
 
   @override
   void didUpdateWidget(Chats oldWidget) {
@@ -874,12 +986,14 @@ class _ChatsState extends State<Chats> {
     //   });
   }
 
+
   ///
   /// DatabaseReference points to Users node of the DB
   /// fetching second users info
   ///
-  void SecondUserInfo(DatabaseReference databaseReference) async {
+  Future<List<ChatModel.Chat>> SecondUserInfo(DatabaseReference databaseReference) async {
     ChatModel.Chat secondUser;
+    secondUsers.clear();
     DataSnapshot snapshot = await databaseReference.once();
     if (snapshot.value != null) {
       /// Since name & image is stored as a map in the DB we assign the values to a map and then iterate to access the JSON object map
@@ -892,5 +1006,7 @@ class _ChatsState extends State<Chats> {
         secondUsers.add(secondUser);
       }
     }
+    return secondUsers;
   }
 }
+
