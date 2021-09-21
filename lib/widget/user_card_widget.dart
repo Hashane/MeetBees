@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
@@ -69,16 +70,27 @@ class _UserCardWidgetState extends State<UserCardWidget> {
       ),
       child: Container(
         width: size.width * 0.99,
-        height: size.height * 0.58,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-            image: NetworkImage(widget.photoAssetPaths[visiblePhotoIndex]),
-            fit: BoxFit.cover,
-          ),
-        ),
+        height: size.height * 0.60,
         child: Stack(
           children: [
+            CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: widget.photoAssetPaths[visiblePhotoIndex],
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) =>
+                  Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
             new Positioned.fill(
               left: size.width / 2.2,
               child: new Material(

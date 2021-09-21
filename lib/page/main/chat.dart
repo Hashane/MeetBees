@@ -14,6 +14,7 @@ import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/page_routes/scale_page_route.dart';
 import 'package:meet_ceylon/widget/custom_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 import '../test.dart';
@@ -297,9 +298,14 @@ class _ChatsState extends State<Chats> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: Image.network(
-                    users[index].imageUris[0],
+                  child: CachedNetworkImage(
                     fit: BoxFit.cover,
+                    imageUrl:  users[index].imageUris[0],
+                    placeholder: (context, url) =>
+                       Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
               ),
@@ -505,8 +511,9 @@ class _ChatsState extends State<Chats> {
                                     shape: BoxShape.circle,
                                     image: new DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: NetworkImage(indexedInfo.image)),
-                                  ),
+                                        image: CachedNetworkImageProvider(
+                                          users[index].imageUris[0],
+                                        )))
                                 )
                                     : Container(),
                               ),
