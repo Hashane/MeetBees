@@ -48,12 +48,14 @@ class _HomeState extends State<Home> {
 
     ///initializing stream and fetching users
     fetchUsers();
+    print("init State");
   }
 
   @override
   void dispose() {
     ///cancelling StreamSubscription on dispose
     _messSubs.cancel();
+    print("dispose State");
     super.dispose();
   }
 
@@ -118,7 +120,9 @@ class _HomeState extends State<Home> {
   /// Mapping that JSON object map to custom User model
   /// At the end changing the state to update the users list.
   fetchUsers() {
+    print("fetch called");
     _messSubs = Database.readItems().listen((event) {
+      users.clear();
       event.docs.forEach((element) {
         Map<String, dynamic> obj = element.data();
         users.add(User.fromJson(obj));
