@@ -453,6 +453,7 @@ class _ChatsState extends State<Chats> {
     String secondUser =
     myChats[index].user2.elementAt(secondUserIndex).toString();
 
+    print("second" + secondUser);
 
     ///calling the method to fetch name and image of the second user
 
@@ -512,7 +513,7 @@ class _ChatsState extends State<Chats> {
                                     image: new DecorationImage(
                                         fit: BoxFit.cover,
                                         image: CachedNetworkImageProvider(
-                                          users[index].imageUris[0],
+                                          indexedInfo.image,
                                         )))
                                 )
                                     : Container(),

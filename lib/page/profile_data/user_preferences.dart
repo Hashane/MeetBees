@@ -246,7 +246,7 @@ class _UserPreferencesState extends State<UserPreferences> {
                             //Saving in new collection
                             await Database.addItem(
                               uid: firebaseUser.uid,
-                              name: firebaseUser.displayName,
+                              name: widget.userInfoMap['name'],
                               age: age,
                               birthday: widget.userInfoMap['birthday'],
                               gender: widget.userInfoMap['gender'],

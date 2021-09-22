@@ -232,19 +232,23 @@ class _EnableLocationState extends State<EnableLocation> {
                         child: ElevatedButton(
                           child: Text("Continue"),
                           onPressed: () async {
+                            if(latitude != "" && longtitude != ""){
+                              final Map<String, String> latLong = {
+                                "lat":  latitude,
+                                "long": longtitude,
+                                "country": _country,
+                                "city": _city,
+                              };
 
-                            final Map<String, String> latLong = {
-                              "lat":  latitude,
-                              "long": longtitude,
-                              "country": _country,
-                              "city": _city,
-                            };
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => new UserPreferences(photoList: widget.photoList ,userInfoMap: widget.userInfoMap, latLong: latLong)),
+                              );
+                            }else
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Please Pick your Location.")));
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => new UserPreferences(photoList: widget.photoList ,userInfoMap: widget.userInfoMap, latLong: latLong)),
-                            );
                           },
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
