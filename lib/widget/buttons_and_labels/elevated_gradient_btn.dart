@@ -49,7 +49,7 @@ class ElevatedGradientButton extends StatelessWidget {
           child: InkWell(
             child: Center(
                 child: child),
-            onTap: () {},
+            onTap: () { onPressed();},
           ),
         ),
       ),

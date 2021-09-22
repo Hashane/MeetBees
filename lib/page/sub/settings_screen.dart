@@ -1,9 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/page/authenticate/login.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/elevated_dark_btn.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/elevated_gradient_btn.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 
 class SettingsScreen extends StatelessWidget {
+  ///logging out user
+  final firebaseAuth.FirebaseAuth _firebaseAuth =
+      firebaseAuth.FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -130,8 +137,11 @@ class SettingsScreen extends StatelessWidget {
                 height: SizeConfig.safeBlockVertical * 5,
               ),
               ElevatedGradientButton(
-                child: Text("Test"),
-                width: SizeConfig.safeBlockHorizontal * 80,
+                child: Text("Log out"),
+                onPressed: () {
+                  _signOut();
+                },
+                width: SizeConfig.safeBlockHorizontal * 90,
               ),
             ],
           ),
@@ -139,4 +149,9 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
+  ///Sign out function
+  _signOut() async {
+    await _firebaseAuth.signOut();
+  }
+
 }
