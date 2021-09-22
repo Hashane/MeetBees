@@ -23,7 +23,6 @@ class ElevatedGradientButton extends StatelessWidget {
     return ClipRRect(
         borderRadius: BorderRadius.circular(12.0),
       child: Container(
-        margin: EdgeInsets.all(12),
         width: width,
         height: SizeConfig.safeBlockVertical * 5,
         decoration: BoxDecoration(

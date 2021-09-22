@@ -16,7 +16,7 @@ class _FlamesState extends State<Flames> {
   void initState() {
     Timer timer;
     timer = Timer.periodic(Duration(milliseconds: 300), (_) {
-     //print('Percent Update');
+      //print('Percent Update');
       if (this.mounted) {
         setState(() {
           percent -= 1;
@@ -51,34 +51,32 @@ class _FlamesState extends State<Flames> {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              height: SizeConfig.safeBlockVertical * 5,
-            ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                child: LinearProgressIndicator(
-                  value: percent / 100,
-                  minHeight: 10,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
-                  backgroundColor: Color(0xffD6D6D6),
-                ),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    child: LinearProgressIndicator(
+                      value: percent / 100,
+                      minHeight: 8,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+                      backgroundColor: Color(0xffD6D6D6),
+                    ),
+                  ),
+                  Text(
+                    "(" + percent.toString() + " minutes remaining)",
+                    style: TextStyle(fontSize: 12.0, color: Colors.black38),
+                  ),
+                ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                "(" + percent.toString() + " minutes remaining)",
-                style: TextStyle(fontSize: 12.0, color: Colors.black38),
-              ),
-            ),
-            SizedBox(
-              height: SizeConfig.safeBlockVertical * 5,
-            ),
+            // Align(
+            //   alignment: Alignment.bottomRight,
+            //   child:
+            // ),
             Center(
               child: Container(
                 width: SizeConfig.safeBlockHorizontal * 80,
@@ -95,41 +93,48 @@ class _FlamesState extends State<Flames> {
                       Colors.deepOrange,
                     ],
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 7), // changes position of shadow
+                    ),
+                  ],
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
                     Text(
                       "Use flames to get more matches",
-                      style: TextStyle(
-                          color: Colors.white, fontStyle: FontStyle.normal),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .apply(color: Colors.black),
                     ),
-                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
                     Icon(
                       Icons.local_fire_department,
                       color: Colors.white,
                       size: 40.0,
                     ),
-                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
                     Text(
                       "5",
-                      style: TextStyle(
-                          color: Colors.white, fontStyle: FontStyle.normal),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .apply(color: Colors.black),
                     ),
-                    SizedBox(height: SizeConfig.safeBlockVertical * 1),
                     Text(
                       "Remaining",
-                      style: TextStyle(
-                          color: Colors.white, fontStyle: FontStyle.normal),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .apply(color: Colors.black45),
                     ),
                   ],
                 ),
               ),
-            ),
-            SizedBox(
-              height: SizeConfig.safeBlockVertical * 1,
             ),
             premiumPlansContentCustom(context),
           ],
@@ -145,8 +150,8 @@ class _FlamesState extends State<Flames> {
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(height: SizeConfig.safeBlockVertical * 5),
             Text(
               'Buy more',
               style: TextStyle(
@@ -156,44 +161,117 @@ class _FlamesState extends State<Flames> {
               ),
             ),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 110,
-                    height: 130,
-                    decoration: new BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.deepOrange),
-                      borderRadius: BorderRadius.circular(10),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              ///2 flames package
+              SizedBox(
+                width: 110,
+                height: 130,
+                child: Card(
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                      color: Colors.deepOrangeAccent.shade100,
+                      width: 1.0,
                     ),
                   ),
-                  Container(
-                    width: 110,
-                    height: 130,
-                    decoration: new BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.deepOrange),
-                      borderRadius: BorderRadius.circular(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                      Text(
+                        "2 Flames",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .apply(color: Colors.black),
+                      ),
+                      SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                      Icon(
+                        Icons.local_fire_department,
+                        color: Colors.deepOrangeAccent,
+                        size: 40.0,
+                      ),
+                      SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                      Text(
+                        "\$ 5.45",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .apply(color: Colors.black),
+                      ),
+                      SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                    ],
+                  ),
+                ),
+              ),
+
+              ///5 flames package
+              SizedBox(
+                width: 110,
+                height: 130,
+                child: Card(
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                      color: Colors.deepOrangeAccent.shade100,
+                      width: 1.0,
                     ),
-                    child: ClipRect(
-                      child: Banner(
-                        message: "Save 50%",
-                        location: BannerLocation.topEnd,
-                        color: Colors.red,
-                        child: Container(
-                          child: Center(
-                            child: Text("premium"),
+                  ),
+                  child: ClipRect(
+                    child: Banner(
+                      message: "Save 50%",
+                      location: BannerLocation.topEnd,
+                      color: Colors.deepOrangeAccent.withOpacity(0.6),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                          Text(
+                            "5 Flames",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .apply(color: Colors.black),
                           ),
-                        ),
+                          SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                          Icon(
+                            Icons.local_fire_department,
+                            color: Colors.deepOrangeAccent,
+                            size: 40.0,
+                          ),
+                          SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                          Text(
+                            "\$ 10.90",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                .apply(color: Colors.black),
+                          ),
+                          SizedBox(height: SizeConfig.safeBlockVertical * 1),
+                        ],
                       ),
                     ),
                   ),
-                ]),
+                ),
+              ),
+            ]),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
             ElevatedGradientButton(
-              child: Text("Flame it"),
+              child: Text(
+                "Flame it !",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .apply(color: Colors.black, fontSizeDelta: 2),
+              ),
               width: SizeConfig.safeBlockHorizontal * 80,
-              onPressed: () {print("asasa");},
+              onPressed: () {
+                print("asasa");
+              },
             ),
           ],
         ),
