@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fUser;
+import 'package:meet_ceylon/model/user.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection("SL");
+final String userUid = fUser.FirebaseAuth.instance.currentUser.uid;
 
 class Database {
-  static String userUid;
-
   static Future<void> addItem({
     String uid,
     String name,
@@ -26,22 +27,20 @@ class Database {
     int boosts,
     DateTime lastSignIn,
     DateTime signUpDate,
-}) async {
-    DocumentReference documentReferencer =
-    _mainCollection.doc(uid);
-
+  }) async {
+    DocumentReference documentReferencer = _mainCollection.doc(uid);
 
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
       "age": age,
-      "birthday" : birthday,
+      "birthday": birthday,
       "gender": gender,
       "preferred_gender": preferredGender,
       "interests": interests,
       "email": email,
       "phone": phone,
       "image_uris": imageUris,
-      "geolocation": GeoPoint(lat,long),
+      "geolocation": GeoPoint(lat, long),
       "country": country,
       "city": city,
       "isProUser": isProUser,
@@ -63,7 +62,7 @@ class Database {
     String docId,
   }) async {
     DocumentReference documentReferencer =
-    _mainCollection.doc(userUid).collection('items').doc(docId);
+        _mainCollection.doc(userUid).collection('items').doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
       "title": title,
@@ -81,9 +80,10 @@ class Database {
 
     return usersCollection.snapshots();
   }
+
   static Stream<QuerySnapshot> fetchUsers() {
     CollectionReference usersCollection = _mainCollection;
-    final Query filtered=  usersCollection.where("isProUser", isEqualTo: true);
+    final Query filtered = usersCollection.where("isProUser", isEqualTo: true);
     return filtered.snapshots();
     // return usersCollection.snapshots();
   }
@@ -92,11 +92,20 @@ class Database {
     String docId,
   }) async {
     DocumentReference documentReferencer =
-    _mainCollection.doc(userUid).collection('items').doc(docId);
+        _mainCollection.doc(userUid).collection('items').doc(docId);
 
     await documentReferencer
         .delete()
         .whenComplete(() => print('Note item deleted from the database'))
         .catchError((e) => print(e));
+  }
+
+  static Future<User> getUserInfo() async {
+    DocumentReference documentReferencer = _mainCollection.doc(userUid);
+    User _user;
+    await documentReferencer.get().then((document) {
+      _user = User.fromJson(document.data());
+    }).catchError((e) => print(e));
+    return _user;
   }
 }

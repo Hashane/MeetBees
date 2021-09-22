@@ -278,6 +278,7 @@ class _ChatsState extends State<Chats> {
     return new Container(
       height: SizeConfig.safeBlockVertical * 10,
       child: new ListView.builder(
+        padding: EdgeInsets.all(6),
         scrollDirection: Axis.horizontal,
         itemCount: users.length,
         itemBuilder: (context, index) {
@@ -291,24 +292,40 @@ class _ChatsState extends State<Chats> {
 
 
               ///Initiating a new chat using uid
-              child: Card(
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl:  users[index].imageUris[0],
-                    placeholder: (context, url) =>
-                       Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+              child: CachedNetworkImage(
+                imageUrl: users[index].imageUris[0],
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
                   ),
                 ),
+                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
+
+              //
+              // Card(
+              //   clipBehavior: Clip.antiAlias,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(10.0),
+              //   ),
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(10.0),
+              //     child: CachedNetworkImage(
+              //       fit: BoxFit.cover,
+              //       imageUrl:  users[index].imageUris[0],
+              //       placeholder: (context, url) =>
+              //          Center(
+              //             child: CircularProgressIndicator(),
+              //           ),
+              //       errorWidget: (context, url, error) => Icon(Icons.error),
+              //     ),
+              //   ),
+              // ),
             ),
           );
         },
