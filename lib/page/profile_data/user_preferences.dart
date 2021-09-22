@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/data/preferences.dart';
 import 'package:meet_ceylon/page/main/home.dart';
+import 'package:meet_ceylon/page/main/main_screen.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/position_feedback_provider.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:meet_ceylon/model/preference.dart';
+
+import '../custom_theme.dart';
 
 class UserPreferences extends StatefulWidget {
   // Declare a field that holds photoList user selected
@@ -265,34 +268,14 @@ class _UserPreferencesState extends State<UserPreferences> {
 
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
+                                  MyAppTheme _myAppTheme = new MyAppTheme(isDark: false);
                               //returning builder for Home()
-                              return Builder(
-                                builder: (BuildContext context) =>
-                                    ChangeNotifierProvider(
-                                  create: (context) =>
-                                      FeedbackPositionProvider(),
+                              return ChangeNotifierProvider(  //passing the provider
+                                  create: (context) => FeedbackPositionProvider(),
                                   child: MaterialApp(
-                                    title: 'Tinder Swiping',
-                                    theme: ThemeData(
-                                      // scaffoldBackgroundColor: const Color(0x1F000000),
-                                      bottomSheetTheme: BottomSheetThemeData(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20.0),
-                                                topRight:
-                                                    Radius.circular(20.0)),
-                                          ),
-                                          backgroundColor:
-                                              Colors.black.withOpacity(0.5)),
-
-                                      primarySwatch: Colors.deepOrange,
-                                      visualDensity:
-                                          VisualDensity.adaptivePlatformDensity,
-                                    ),
-                                    home: Home(),
-                                  ),
-                                ),
-                              );
+                                      title: 'Meet Ceylon',
+                                      theme: _myAppTheme.themeData,
+                                      home: MainScreen()));
                             }));
                           },
                           style: ButtonStyle(

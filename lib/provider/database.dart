@@ -37,7 +37,7 @@ class Database {
       "birthday" : birthday,
       "gender": gender,
       "preferred_gender": preferredGender,
-
+      "interests": interests,
       "email": email,
       "phone": phone,
       "image_uris": imageUris,
