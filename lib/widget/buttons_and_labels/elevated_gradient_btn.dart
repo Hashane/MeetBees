@@ -28,7 +28,7 @@ class ElevatedGradientButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0)
         ),
       ),
-      onPressed: () {},
+      onPressed: () { onPressed();},
       child: Ink(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),

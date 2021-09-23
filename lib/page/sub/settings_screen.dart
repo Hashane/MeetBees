@@ -7,18 +7,14 @@ import 'package:meet_ceylon/widget/buttons_and_labels/elevated_gradient_btn.dart
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
 
 class SettingsScreen extends StatelessWidget {
-  ///logging out user
-  final firebaseAuth.FirebaseAuth _firebaseAuth =
-      firebaseAuth.FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Settings",style: Theme.of(context).textTheme.headline4),
-        backgroundColor:  Theme.of(context).colorScheme.surface,
+        title: Text("Settings", style: Theme.of(context).textTheme.headline4),
+        backgroundColor: Theme.of(context).colorScheme.surface,
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.secondary,
         ),
@@ -124,22 +120,38 @@ class SettingsScreen extends StatelessWidget {
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 2,
               ),
-              ElevatedDarkButton(child: Text("Community guidelines"),width: SizeConfig.safeBlockHorizontal * 60,),
+              ElevatedDarkButton(
+                child: Text("Community guidelines"),
+                width: SizeConfig.safeBlockHorizontal * 60,
+              ),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 1,
               ),
-              ElevatedDarkButton(child: Text("Terms of services"),width: SizeConfig.safeBlockHorizontal * 60,),
+              ElevatedDarkButton(
+                child: Text("Terms of services"),
+                width: SizeConfig.safeBlockHorizontal * 60,
+              ),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 1,
               ),
-              ElevatedDarkButton(child: Text("Privacy policy"),width: SizeConfig.safeBlockHorizontal * 60,),
+              ElevatedDarkButton(
+                child: Text("Privacy policy"),
+                width: SizeConfig.safeBlockHorizontal * 60,
+              ),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 5,
               ),
               ElevatedGradientButton(
-                child: Text("Log out"),
+                child: Text(
+                  "Log out",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .apply(color: Colors.black, fontSizeDelta: 2),
+                ),
                 onPressed: () {
-                  _signOut();
+                  FirebaseAuth.instance.signOut();
+                  // _signOut();
                 },
                 width: SizeConfig.safeBlockHorizontal * 90,
               ),
@@ -149,9 +161,4 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-  ///Sign out function
-  _signOut() async {
-    await _firebaseAuth.signOut();
-  }
-
 }

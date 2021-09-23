@@ -4,7 +4,7 @@ import 'package:meet_ceylon/model/user.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection("SL");
-final String userUid = fUser.FirebaseAuth.instance.currentUser.uid;
+
 
 class Database {
   static Future<void> addItem({
@@ -62,7 +62,7 @@ class Database {
     String docId,
   }) async {
     DocumentReference documentReferencer =
-        _mainCollection.doc(userUid).collection('items').doc(docId);
+        _mainCollection.doc(fUser.FirebaseAuth.instance.currentUser.uid).collection('items').doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
       "title": title,
@@ -92,7 +92,7 @@ class Database {
     String docId,
   }) async {
     DocumentReference documentReferencer =
-        _mainCollection.doc(userUid).collection('items').doc(docId);
+        _mainCollection.doc(fUser.FirebaseAuth.instance.currentUser.uid).collection('items').doc(docId);
 
     await documentReferencer
         .delete()
@@ -101,7 +101,8 @@ class Database {
   }
 
   static Future<User> getUserInfo() async {
-    DocumentReference documentReferencer = _mainCollection.doc(userUid);
+    // print(fUser.FirebaseAuth.instance.currentUser.uid);
+    DocumentReference documentReferencer = _mainCollection.doc(fUser.FirebaseAuth.instance.currentUser.uid);
     User _user;
     await documentReferencer.get().then((document) {
       _user = User.fromJson(document.data());
