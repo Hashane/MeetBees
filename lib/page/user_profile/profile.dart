@@ -58,45 +58,44 @@ class _UserProfileState extends State<UserProfile> {
 
   Widget profileLayout(User userData){
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Center(
           child: userCard(userData),
         ),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         Text(
             toBeginningOfSentenceCase(userData.name) +
                 ", " +
                 calBday(userData.birthday.toString()),
             style: Theme.of(context).textTheme.bodyText1.copyWith(
                 fontWeight: FontWeight.normal, fontSize: 15)),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         ElevatedDarkButton(
           child: Text("Edit my profile"),
           width: SizeConfig.safeBlockHorizontal * 70,
           onPressed: onEditPressed,
         ),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         Text('Active packages',
             style: Theme.of(context).textTheme.bodyText1.copyWith(
                 fontWeight: FontWeight.normal, fontSize: 15)),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 1,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 1,
+        // ),
         ActivePlanCard(context),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.,
             children: [
               ActivePerksCards(
                   icon: Icon(
@@ -141,31 +140,31 @@ class _UserProfileState extends State<UserProfile> {
   Widget shimmerProfileLayout(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Center(
           child: shimmerUserCard(),
         ),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         CustomWidget.rectangular(height: 10, width: MediaQuery.of(context).size.width*0.3),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         CustomWidget.rectangular(width: SizeConfig.safeBlockHorizontal * 70,),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         CustomWidget.rectangular(height: 10, width: MediaQuery.of(context).size.width*0.3),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 1,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 1,
+        // ),
         CustomWidget.rectangular( width: SizeConfig.safeBlockHorizontal * 70,
           height: SizeConfig.safeBlockVertical * 10,),
-        SizedBox(
-          height: SizeConfig.safeBlockVertical * 2,
-        ),
+        // SizedBox(
+        //   height: SizeConfig.safeBlockVertical * 2,
+        // ),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,7 +236,7 @@ Widget ActivePlanCard(BuildContext context) {
       ),
       color: Theme.of(context).colorScheme.surface,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
             child: Container(
