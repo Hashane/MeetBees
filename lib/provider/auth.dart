@@ -43,11 +43,11 @@ class Auth{
     // Trigger the sign-in flow
 
     //final accessToken = await FacebookAuth.instance.login(permissions:['email','user_birthday']);
-    final AccessToken accessToken = await FacebookAuth.instance.login();
+    final accessToken = await FacebookAuth.instance.login();
 
     // Create a credential from the access token
     final FacebookAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(accessToken.token);
+    FacebookAuthProvider.credential(accessToken.accessToken.token);
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
