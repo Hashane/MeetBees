@@ -20,6 +20,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  User userData;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -48,7 +49,7 @@ class _UserProfileState extends State<UserProfile> {
                 // show loading while waiting for real data
                 return shimmerProfileLayout();
               }
-              User userData = snapshot.data;
+              userData = snapshot.data;
               return profileLayout(userData);
 
             }),
@@ -220,7 +221,7 @@ class _UserProfileState extends State<UserProfile> {
   ///Navigating to Edit profile
   void onEditPressed() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EditProfile()));
+        context, MaterialPageRoute(builder: (context) => EditProfile(userData)));
   }
 
 }

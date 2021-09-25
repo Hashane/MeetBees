@@ -4,23 +4,28 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/elevated_dark_btn.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/elevated_gradient_btn.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/regular_white_btn.dart';
-import 'package:path/path.dart' as p;
 import 'dart:io';
 import 'dart:ui';
 
+import '../../model/user.dart';
+
 class EditProfile extends StatefulWidget {
+  User userData;
+
   @override
   _EditProfileState createState() => _EditProfileState();
+
+  EditProfile(this.userData);
 }
 
 class _EditProfileState extends State<EditProfile> {
   ///image picker related
-  PickedFile _imageFile1;
-  PickedFile _imageFile2;
-  PickedFile _imageFile3;
-  PickedFile _imageFile4;
-  PickedFile _imageFile5;
-  PickedFile _imageFile6;
+  XFile _imageFile1;
+  XFile _imageFile2;
+  XFile _imageFile3;
+  XFile _imageFile4;
+  XFile _imageFile5;
+  XFile _imageFile6;
 
   final ImagePicker _picker = ImagePicker();
   int _gestureIndex = 0;
@@ -29,7 +34,7 @@ class _EditProfileState extends State<EditProfile> {
 
   Future _getImage(int index) async {
     try {
-      final pickedImage = await _picker.getImage(source: ImageSource.gallery);
+      final XFile pickedImage = await _picker.pickImage(source: ImageSource.gallery);
       setState(() {
         if (_gestureIndex == 1) {
           _imageFile1 = pickedImage;
@@ -89,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
                         _gestureIndex = 1;
                       });
                       //Invokes _getImage function only if the _imageFile is null.
-                      if (_imageFile1 == null) _getImage(_gestureIndex);
+                      if (_imageFile1 == null  &&  widget.userData.imageUris[0] == null) _getImage(_gestureIndex);
                     },
                     child: Card(
                       ///This is the empty thumbnail container for the images
@@ -97,9 +102,10 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       elevation: 8,
                       //Parses int value to detect which image to remove when tapped on remove icon
-                      child: _imageFile1 != null
-                          ? imageArea(_imageFile1, 1)
-                          : plusIcon(context),
+                      child: widget.userData.imageUris[0] == null ?
+                      _imageFile1 != null
+                          ? imageArea(_imageFile1,widget.userData.imageUris[0], 1)
+                          : plusIcon(context) :  imageArea(_imageFile3,widget.userData.imageUris[0], 1) ,
 
                       ///context is used to access theme colors
                     ),
@@ -119,9 +125,10 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       elevation: 8,
                       //Parses int value to detect which image to remove when tapped on remove icon
-                      child: _imageFile2 != null
-                          ? imageArea(_imageFile2, 2)
-                          : plusIcon(context),
+                      child: widget.userData.imageUris[1] == null ?
+                      _imageFile2 != null
+                          ? imageArea(_imageFile2,widget.userData.imageUris[1], 2)
+                          : plusIcon(context) :  imageArea(_imageFile2,widget.userData.imageUris[1], 2) ,
                     ),
                   ),
                   GestureDetector(
@@ -140,9 +147,10 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       elevation: 8,
                       //Parses int value to detect which image to remove when tapped on remove icon
-                      child: _imageFile3 != null
-                          ? imageArea(_imageFile3, 3)
-                          : plusIcon(context),
+                      child: widget.userData.imageUris[2] == null ?
+                      _imageFile3 != null
+                          ? imageArea(_imageFile3,widget.userData.imageUris[2], 3)
+                          : plusIcon(context) :  imageArea(_imageFile3,widget.userData.imageUris[2], 3) ,
                     ),
                   ),
                   GestureDetector(
@@ -162,9 +170,10 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       elevation: 8,
                       //Parses int value to detect which image to remove when tapped on remove icon
-                      child: _imageFile4 != null
-                          ? imageArea(_imageFile4, 4)
-                          : plusIcon(context),
+                      child: widget.userData.imageUris[2] == null ?
+                      _imageFile4 != null
+                          ? imageArea(_imageFile4,widget.userData.imageUris[2], 4)
+                          : plusIcon(context) :  imageArea(_imageFile4,widget.userData.imageUris[2], 4) ,
                     ),
                   ),
                   GestureDetector(
@@ -185,9 +194,13 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       elevation: 8,
                       //Parses int value to detect which image to remove when tapped on remove icon
-                      child: _imageFile5 != null
-                          ? imageArea(_imageFile5, 5)
-                          : plusIcon(context),
+                      // child: _imageFile5 != null
+                      //     ? imageArea(_imageFile5,widget.userData.imageUris[4], 5)
+                      //     : plusIcon(context),
+                      child: widget.userData.imageUris[2] == null ?
+                      _imageFile5 != null
+                          ? imageArea(_imageFile5,widget.userData.imageUris[2], 5)
+                          : plusIcon(context) :  imageArea(_imageFile5,widget.userData.imageUris[2], 5) ,
                     ),
                   ),
                   GestureDetector(
@@ -209,9 +222,10 @@ class _EditProfileState extends State<EditProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       elevation: 8,
                       //Parses int value to detect which image to remove when tapped on remove icon
-                      child: _imageFile6 != null
-                          ? imageArea(_imageFile6, 6)
-                          : plusIcon(context),
+                      child: widget.userData.imageUris[2] == null ?
+                      _imageFile6 != null
+                          ? imageArea(_imageFile6,widget.userData.imageUris[2], 6)
+                          : plusIcon(context) :  imageArea(_imageFile6,widget.userData.imageUris[2], 6) ,
                     ),
                   ),
                 ],
@@ -283,16 +297,23 @@ class _EditProfileState extends State<EditProfile> {
   /// * It displays image and the remove icon.
   /// * onTap on remove icon, it first removes the exact item from the _photoList
   /// * then using _gestureIndex it determines which "Image" value to be set as null
-  Widget imageArea(PickedFile _imageFile, int _removeAtIndex) {
+  Widget imageArea(XFile _imageFile,String url, int _removeAtIndex) {
     return Stack(
       children: [
         Positioned.fill(
           child: ClipRRect(
             ///using ClipRRect to fit the images to the container with rounded corners
             borderRadius: BorderRadius.circular(20.0),
-            child: Image.file(
+            child: url != null ? Image.network(url,fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+                ) : Image.file(
               File(_imageFile.path),
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
+              height: double.infinity,
+              width: double.infinity,
+              alignment: Alignment.center,
             ),
           ),
         ),
@@ -302,21 +323,28 @@ class _EditProfileState extends State<EditProfile> {
           child: GestureDetector(
             onTap: () {
               setState(() {
-                print("Removed: ${_imageFile.path.toString()}");
-                _photoList.remove(_imageFile.path.toString());
-                if (_removeAtIndex == 1) {
-                  _imageFile1 = null;
-                } else if (_removeAtIndex == 2) {
-                  _imageFile2 = null;
-                } else if (_removeAtIndex == 3) {
-                  _imageFile3 = null;
-                } else if (_removeAtIndex == 4) {
-                  _imageFile4 = null;
-                } else if (_removeAtIndex == 5) {
-                  _imageFile5 = null;
-                } else if (_removeAtIndex == 6) {
-                  _imageFile6 = null;
+                if(_imageFile != null) {
+                  print("Removed: ${_imageFile.path.toString()}");
+                  _photoList.remove(_imageFile.path.toString());
+                  if (_removeAtIndex == 1) {
+                    _imageFile1 = null;
+                  } else if (_removeAtIndex == 2) {
+                    _imageFile2 = null;
+                  } else if (_removeAtIndex == 3) {
+                    _imageFile3 = null;
+                  } else if (_removeAtIndex == 4) {
+                    _imageFile4 = null;
+                  } else if (_removeAtIndex == 5) {
+                    _imageFile5 = null;
+                  } else if (_removeAtIndex == 6) {
+                    _imageFile6 = null;
+                  }
+                }else{
+                  setState(() {
+                    widget.userData.imageUris[_removeAtIndex - 1] = null;
+                  });
                 }
+
               });
             },
             child: Icon(

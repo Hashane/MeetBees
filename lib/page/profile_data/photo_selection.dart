@@ -419,7 +419,10 @@ class _PhotoSelectionState extends State<PhotoSelection> {
         Positioned.fill(
           child: Image.file(
             File(_imageFile.path),
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
           ),
         ),
         Positioned(
