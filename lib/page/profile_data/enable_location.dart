@@ -26,9 +26,6 @@ class _EnableLocationState extends State<EnableLocation> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _determinePosition().then((position) {
-      userLocation = position;
-    });
   }
 
   final dateController = TextEditingController();
