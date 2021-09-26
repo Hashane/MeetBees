@@ -5,7 +5,8 @@ import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meet_ceylon/widget/alert_dialog_widget.dart';
 import 'dart:developer' as developer;
-import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class EnableLocation extends StatefulWidget {
 
@@ -20,19 +21,28 @@ class EnableLocation extends StatefulWidget {
 }
 
 class _EnableLocationState extends State<EnableLocation> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _determinePosition().then((position) {
+      userLocation = position;
+    });
+  }
+
   final dateController = TextEditingController();
+
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  final GeocodingPlatform _geocodingPlatform = GeocodingPlatform.instance;
+
+  Position userLocation;
 
   //location
   String latitude = "";
   String longtitude = "";
   String _country = "";
   String _city = "";
-
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _getLocation() async {
     try {
@@ -45,12 +55,15 @@ class _EnableLocationState extends State<EnableLocation> {
       });
 
       // From coordinates
-      final coordinates = new Coordinates(position.latitude, position.longitude);
-      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-      var first = addresses.first;
-      _country = first.countryName;
-      _city = first.adminArea;
-      print("${first.featureName} : ${first.addressLine} : ${first.countryName} ");
+     // final coordinates = new Coordinates(position.latitude, position.longitude);
+      List<Placemark> placemarks = await _geocodingPlatform.placemarkFromCoordinates(position.latitude, position.longitude);
+      // var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      // List<Placemark> placemark = await  geolocator .placemarkFromCoordinates(52.2165157, 6.9437819);
+      var first = placemarks.first;
+      // List<Placemark> placemark = await _geolocatorPlatform. .placemarkFromAddress("Gronausestraat 710, Enschede");
+      _country = first.country;
+      _city = first.administrativeArea;
+      print("${first.name} : ${first.locality} : ${first.country} ");
 
     }catch(e){
       print(e.toString());
@@ -88,7 +101,7 @@ class _EnableLocationState extends State<EnableLocation> {
     LocationPermission permission;
 
     // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
@@ -96,9 +109,9 @@ class _EnableLocationState extends State<EnableLocation> {
       return Future.error('Location services are disabled.');
     }
 
-    permission = await Geolocator.checkPermission();
+    permission = await _geolocatorPlatform.checkPermission();
     if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+      permission = await _geolocatorPlatform.requestPermission();
       if (permission == LocationPermission.denied) {
         // Permissions are denied, next time you could try
         // requesting permissions again (this is also where
@@ -118,7 +131,7 @@ class _EnableLocationState extends State<EnableLocation> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    return await _geolocatorPlatform.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   }
 
   @override
