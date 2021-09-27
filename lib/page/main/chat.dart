@@ -488,9 +488,8 @@ class _ChatsState extends State<Chats> {
         builder: (context, AsyncSnapshot<List<ChatModel.Chat>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             var indexedInfo;
-            if(snapshot.data != null && snapshot.data.length != 0)
-              indexedInfo = snapshot.data.elementAt(index);
-            return  Dismissible(
+            // if(snapshot.data != null && snapshot.data.length != 0)
+              return (snapshot.data.length > index) ?  Dismissible(
                     key: Key(myChats[index].name.toString()),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
@@ -521,8 +520,9 @@ class _ChatsState extends State<Chats> {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
-                                child: indexedInfo != null
-                                    ? Container(
+                                child:
+                                //indexedInfo != null
+                                 Container(
                                   width: 50.0,
                                   height: 50.0,
                                   decoration: new BoxDecoration(
@@ -530,10 +530,10 @@ class _ChatsState extends State<Chats> {
                                     image: new DecorationImage(
                                         fit: BoxFit.cover,
                                         image: CachedNetworkImageProvider(
-                                          indexedInfo.image,
+                                          snapshot.data.elementAt(index).image,
                                         )))
                                 )
-                                    : Container(),
+
                               ),
                               Expanded(
                                 child: Stack(
@@ -542,9 +542,10 @@ class _ChatsState extends State<Chats> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
-                                          indexedInfo != null
-                                              ?  indexedInfo.name
-                                              : "",
+                                          // indexedInfo != null
+                                          //     ?  indexedInfo.name
+                                          //     : "",
+                                        snapshot.data.elementAt(index).name.toString(),
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -594,7 +595,7 @@ class _ChatsState extends State<Chats> {
                         ),
                       ),
                     ),
-                  );
+                  ) :  shimmercardWidget();
           } else {
             return shimmercardWidget();}});
   }
