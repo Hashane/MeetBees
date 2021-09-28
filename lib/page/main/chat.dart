@@ -275,13 +275,13 @@ class _ChatsState extends State<Chats> {
     String secondUser =
     myChats[index].user2.elementAt(secondUserIndex).toString();
 
-    print("second" + secondUser);
+    print("second " + secondUser);
 
     ///calling the method to fetch name and image of the second user
 
 
-    return FutureBuilder<List<ChatModel.Chat>>(
-        future: SecondUserInfo(FirebaseDatabase(
+    return StreamBuilder<List<ChatModel.Chat>>(
+        stream: SecondUserInfo(FirebaseDatabase(
             databaseURL:
             "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
             .reference()
@@ -290,7 +290,7 @@ class _ChatsState extends State<Chats> {
           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             var indexedInfo;
             // if(snapshot.data != null && snapshot.data.length != 0)
-              return (snapshot.data.length > index) ?  Dismissible(
+              return  Dismissible(
                     key: Key(myChats[index].name.toString()),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
@@ -331,7 +331,7 @@ class _ChatsState extends State<Chats> {
                                     image: new DecorationImage(
                                         fit: BoxFit.cover,
                                         image: CachedNetworkImageProvider(
-                                          snapshot.data.elementAt(index).image,
+                                          snapshot.data.length > index ? snapshot.data?.elementAt(index).image : "https://i.stack.imgur.com/NiBMY.png?s=420&g=1",
                                         )))
                                 )
 
@@ -346,7 +346,7 @@ class _ChatsState extends State<Chats> {
                                           // indexedInfo != null
                                           //     ?  indexedInfo.name
                                           //     : "",
-                                        snapshot.data.elementAt(index).name.toString(),
+                                          snapshot.data.length > index ? snapshot.data?.elementAt(index).name.toString():"hash",
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -396,7 +396,7 @@ class _ChatsState extends State<Chats> {
                         ),
                       ),
                     ),
-                  ) :  shimmercardWidget();
+                  );
           } else {
             return shimmercardWidget();}});
   }
@@ -537,6 +537,7 @@ class _ChatsState extends State<Chats> {
 
     ///reading 'UserChats' node
     _streamSubscription = getData().listen((data) {
+      print("FUCKERRRRR");
       if (!mounted) return;
       setState(() {
         ids = data;
@@ -595,16 +596,24 @@ class _ChatsState extends State<Chats> {
           "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
           .reference()
           .child("Chats/$i")
-          .onChildChanged
+          .onValue
           .listen((event) {
         if (mounted) {
           setState(() {
-            last = event.snapshot.value; ///the last message itself recently updated
-            chaId = i; ///used to indicate which last message was updated among all the other user chats
+            if(event.snapshot.value != null) {
+              last = event.snapshot.value["lastSentMessage"];
+
+              ///the last message itself recently updated
+              chaId = i;
+
+              ///used to indicate which last message was updated among all the other user chats
+            }
           });
         }
       });
 
+      print("INSIDE....");
+      print("INSIDE.... " + foundChats.toString());
       yield foundChats;
     }
   }
@@ -643,7 +652,7 @@ class _ChatsState extends State<Chats> {
 
         }
       }
-      print(_chatIDList);
+
       yield _chatIDList;
     }
   }
@@ -653,7 +662,8 @@ class _ChatsState extends State<Chats> {
   /// DatabaseReference points to Users node of the DB
   /// fetching second users info
   ///
-  Future<List<ChatModel.Chat>> SecondUserInfo(DatabaseReference databaseReference) async {
+  Stream<List<ChatModel.Chat>> SecondUserInfo(DatabaseReference databaseReference) async* {
+    print("Secondingggg");
     ChatModel.Chat secondUser;
     secondUsers.clear();
     DataSnapshot snapshot = await databaseReference.once();
@@ -668,7 +678,7 @@ class _ChatsState extends State<Chats> {
         secondUsers.add(secondUser);
       }
     }
-    return secondUsers;
+    yield secondUsers;
   }
 }
 
