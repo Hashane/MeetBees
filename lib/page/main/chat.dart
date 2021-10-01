@@ -366,6 +366,10 @@ class _ChatsState extends State<Chats> {
                                                 : myChats[index].lastMessage.toString(),
                                             style: TextStyle(
                                                 color: Colors.black54, fontSize: 12),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            softWrap: false,
+                                            // style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                           ),
                                         )
                                             : Container(),

@@ -128,6 +128,8 @@ class ChatInputField extends StatelessWidget {
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                     Expanded(
                       child: TextField(
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
                         controller: _messageController,
                         decoration: InputDecoration(
                           hintText: "Type message",

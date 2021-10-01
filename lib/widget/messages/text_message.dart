@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
+import 'package:meet_ceylon/provider/size_configurations.dart';
 
 import '../../constants.dart';
 
@@ -14,6 +15,7 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
       // color: MediaQuery.of(context).platformBrightness == Brightness.dark
       //     ? Colors.white
@@ -22,6 +24,7 @@ class TextMessage extends StatelessWidget {
         horizontal: kDefaultPadding * 0.75,
         vertical: kDefaultPadding / 1,
       ),
+      width: SizeConfig.safeBlockHorizontal * 75,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryVariant.withOpacity(message.isSender ? 1 : 0.2),
         borderRadius: BorderRadius.circular(10),
