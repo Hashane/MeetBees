@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:meet_ceylon/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/widget/messages/body_widget.dart';
@@ -26,15 +27,14 @@ class MessagesScreen extends StatelessWidget {
           //BackButton(),
           CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.primaryVariant,
-            backgroundImage:NetworkImage(
-                "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+            backgroundImage:CachedNetworkImageProvider(thumbUri),
           ),
           SizedBox(width: kDefaultPadding * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hashane",
+                name,
                 style: Theme.of(context).textTheme.headline4,
               ),
               Text(
