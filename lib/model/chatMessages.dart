@@ -37,7 +37,7 @@ class ChatMessage {
   ///Transform the JSON you receive from the Realtime Database, into a Message
   ChatMessage.fromJson(Map<dynamic, dynamic> json, this.uID, this.u2ID, this.time, this.chatID, this.thumb, this.name, this.date)
       : text = json['message'] as String,
-        messageType = ChatMessageType.text,
+        messageType = json['message_type'] == "text" ? ChatMessageType.text : ChatMessageType.image,
         messageStatus =  MessageStatus.viewed,
         isSender = json['sent_by']  == currentUserId ? true : false;
 
@@ -84,6 +84,7 @@ class ChatMessage {
 
   Map<dynamic, dynamic> toChatMessagesJson() => <dynamic, dynamic>{
     'message': text,
+    "message_type": messageType == ChatMessageType.text ? "text" : "image" ,
     "message_date" : date.toString(),
     "message_time": time,
     "sent_by": isSender ? uID : u2ID,

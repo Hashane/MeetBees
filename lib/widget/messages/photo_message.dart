@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
@@ -8,7 +9,7 @@ class PhotoMessage extends StatelessWidget {
     this.image,
   }) : super(key: key);
 
-  final PhotoMessage image;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,20 @@ class PhotoMessage extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network("https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+              child: CachedNetworkImage(
+                imageUrl: image,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: MediaQuery.of(context).size.width * 10,
+                  height: MediaQuery.of(context).size.height * 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
             ),
           ],
         ),

@@ -33,6 +33,13 @@
         </activity>
         <!--end Facebook -->
 
+        <!-- start Image cropper -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!-- end Image cropper -->
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

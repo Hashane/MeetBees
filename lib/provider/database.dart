@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fUser;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:meet_ceylon/model/user.dart';
+import 'dart:io';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection("SL");
@@ -108,5 +110,14 @@ class Database {
       _user = User.fromJson(document.data());
     }).catchError((e) => print(e));
     return _user;
+  }
+
+  static UploadTask uploadTask(Reference ref, File imageFile){
+     try{
+        return ref.putFile(imageFile);
+        //final ref =  FirebaseStorage.instance.ref(destination);
+     } on FirebaseException catch(e){
+       return null;
+     }
   }
 }

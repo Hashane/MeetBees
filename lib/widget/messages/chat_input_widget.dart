@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
+import 'package:meet_ceylon/page/sub/photo_upload.dart';
 
 import 'package:meet_ceylon/provider/message_dao.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
@@ -117,6 +118,7 @@ class ChatInputField extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
+                    InkWell(child:
                     Icon(
                       Icons.camera_alt_outlined,
                       color: Theme.of(context)
@@ -125,6 +127,10 @@ class ChatInputField extends StatelessWidget {
                           .color
                           .withOpacity(0.64),
                     ),
+                      onTap:() {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "saas",chatId: chatID,)));
+                      },
+                      ),
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 1),
                     Expanded(
                       child: TextField(

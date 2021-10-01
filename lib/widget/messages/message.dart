@@ -25,7 +25,7 @@ class Message extends StatelessWidget {
         case ChatMessageType.text:
           return TextMessage(message: message);
         case ChatMessageType.image:
-          return PhotoMessage(image: photo_message);
+          return PhotoMessage(image: message.text);
         default:
           return SizedBox();
       }
