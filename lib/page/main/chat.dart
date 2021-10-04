@@ -281,11 +281,7 @@ class _ChatsState extends State<Chats> {
 
 
     return StreamBuilder<List<ChatModel.Chat>>(
-        stream: SecondUserInfo(FirebaseDatabase(
-            databaseURL:
-            "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
-            .reference()
-            .child("Users/$secondUser")),
+        stream: SecondUserInfo(_ref.child("Users/$secondUser")),
         builder: (context, AsyncSnapshot<List<ChatModel.Chat>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             var indexedInfo;
@@ -579,10 +575,7 @@ class _ChatsState extends State<Chats> {
 
     for (var i in li) {
       ChatModel.Chat thisChat;
-      FirebaseDatabase(
-          databaseURL:
-          "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
-          .reference()
+          _ref
           .child("Chats/$i")
           .once()
           .then((event) {
@@ -592,10 +585,7 @@ class _ChatsState extends State<Chats> {
       });
 
 
-      FirebaseDatabase(
-          databaseURL:
-          "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
-          .reference()
+           _ref
           .child("Chats/$i")
           .onValue
           .listen((event) {
@@ -624,12 +614,7 @@ class _ChatsState extends State<Chats> {
   /// then adding those chat ids into a list
   ///
   Stream<List<String>> getData() async* {
-    var usersChatsStream = FirebaseDatabase(
-        databaseURL:
-        "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
-        .reference()
-        .child('UserChats/$currentUserId')
-        .onValue;
+    var usersChatsStream = _ref.child('UserChats/$currentUserId').onValue;
 
 
     List<ChatModel.Chat> foundChats = [];
