@@ -47,7 +47,7 @@ class MessageDao {
 
       ///Also updating the last message
       _ref.child("Chats").child(_chatID).update({
-        'lastSentMessage': message.messageType == ChatMessageType.text ? message.text : "mbImg",
+        'lastSentMessage': message.messageType == ChatMessageType.text ? message.text : "Image",
       });
     });
     print("Pushed to Existing");

@@ -259,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Text(
-                  percentage,
+                  percentage + "%",
                   style: TextStyle(color: Colors.white),
                 ),
               ],
