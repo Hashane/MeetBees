@@ -74,7 +74,7 @@ class ImageDialog extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               image: DecorationImage(
-                  image: imageProvider, fit: BoxFit.cover),
+                  image: imageProvider, fit: BoxFit.fill),
             ),
           ),
           placeholder: (context, url) => Center(child: CircularProgressIndicator()),
