@@ -236,7 +236,7 @@ class _ChatsState extends State<Chats> {
             child: InkWell(
               onTap: () {
                 widget.onNav(null, users[index].uid.trim(),
-                    users[index].imageUris[0], users[index].name);
+                    users[index].imageUris[0], users[index].name,false,null);
               },
 
               ///Initiating a new chat using uid
@@ -388,7 +388,7 @@ class _ChatsState extends State<Chats> {
                           ),
                           onTap: () {
                             widget.onNav(_chatIDList[index], secondUser.toString(),
-                                snapshot.data.elementAt(index).image.toString(), snapshot.data.elementAt(index).name.toString());
+                                snapshot.data.elementAt(index).image.toString(), snapshot.data.elementAt(index).name.toString(), snapshot.data.elementAt(index).isActive,snapshot.data.elementAt(index).lastOnline);
                           },
                         ),
                       ),
@@ -577,7 +577,7 @@ class _ChatsState extends State<Chats> {
           .child("Chats/$i")
           .once()
           .then((event) {
-        thisChat = ChatModel.Chat.fromJson(event.value);
+        thisChat = ChatModel.Chat.fromJson(event.value,null,null);
         foundChats.add(thisChat);
 
       });
@@ -653,14 +653,12 @@ class _ChatsState extends State<Chats> {
       /// Since name & image is stored as a map in the DB we assign the values to a map and then iterate to access the JSON object map
       Map dictionary = snapshot.value;
       if (dictionary != null) {
-        for (var dictItem in dictionary.entries) {
           ///Json object is transformed to the chat model
-          secondUser = ChatModel.Chat.fromUsers(dictItem.value, null, null);
-        }
+          secondUser = ChatModel.Chat.fromUsers(dictionary, null, null);
         secondUsers.add(secondUser);
       }
     }
-    if(secondUsers.length >= myChats.length)
+    //if(secondUsers.length >= myChats.length)
       yield secondUsers;
 
   }

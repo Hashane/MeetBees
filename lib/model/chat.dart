@@ -3,19 +3,20 @@ import 'dart:convert';
 class Chat {
   final String name, lastMessage, image;
   final List<dynamic> user2;
-  //final bool isActive;
+  final bool isActive;
+  final String lastOnline;
 
   Chat({
     this.name = '',
     this.lastMessage = '',
     this.image = '',
     this.user2,
-    //this.time = '',
-   // this.isActive = false,
+    this.lastOnline = '',
+    this.isActive = false,
   });
 
   ///Transform the JSON you receive from the Realtime Database, into a Message
-  Chat.fromJson(Map<Object, Object> json)
+  Chat.fromJson(Map<Object, Object> json,this.isActive,this.lastOnline)
       : name = json['name'],
         lastMessage = json['lastSentMessage'],
         image = json['thumb'],
@@ -24,7 +25,9 @@ class Chat {
   ///Used for fetching second user's info
   Chat.fromUsers(Map<Object, Object> json, this.lastMessage, this.user2)
       : name = json["name"],
-        image = json['thumb'];
+        image = json['thumb'],
+        isActive = json['isActive'] == "1" ? true : false,
+        lastOnline = json['lastOnline'];
 
 // factory Chat.fromUsers(MapEntry<dynamic, dynamic> data){
 //   return Chat(

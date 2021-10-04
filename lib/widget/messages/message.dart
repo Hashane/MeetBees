@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
 import 'package:meet_ceylon/widget/messages/photo_message.dart';
@@ -11,12 +12,11 @@ import '../../constants.dart';
 class Message extends StatelessWidget {
   const Message({
     Key key,
-    @required this.message,
-    this.photo_message,
+    @required this.message, this.thumb,
   }) : super(key: key);
 
   final ChatMessage message;
-  final PhotoMessage photo_message;
+  final String thumb;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,7 @@ class Message extends StatelessWidget {
             CircleAvatar(
               radius: 12,
               backgroundColor: Theme.of(context).colorScheme.primaryVariant,
-              backgroundImage: NetworkImage(
-                  "https://i.stack.imgur.com/NiBMY.png?s=420&g=1"),
+              backgroundImage: CachedNetworkImageProvider(thumb),
             ),
             SizedBox(width: kDefaultPadding / 2),
           ],

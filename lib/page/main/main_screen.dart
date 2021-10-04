@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/sub/filters_screen.dart';
 import 'package:meet_ceylon/page/sub/message_screen.dart';
@@ -16,8 +18,20 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   int _selectedIndex = 0;
+
+  ///Ref to Firebase DB
+  final DatabaseReference _ref = FirebaseDatabase(
+          databaseURL:
+              "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+      .reference();
+
+  ///Current user id
+  final String currentUserId = FirebaseAuth.instance.currentUser.uid;
+
+  ///For Extracting time from DateTime
+  final DateTime now = DateTime.now();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -117,7 +131,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   ///Chat Screen
-  void _nav2(String id, String user2id, String thumbUri, String name) {
+  void _nav2(String id, String user2id, String thumbUri, String name,
+      bool isActive, String lastOnline) {
     Navigator.push(
         context,
         ScaleRoute(
@@ -126,6 +141,8 @@ class _MainScreenState extends State<MainScreen> {
           user2id: user2id,
           thumbUri: thumbUri,
           name: name,
+          isActive: isActive,
+          lastOnline: lastOnline,
         )));
   }
 
@@ -163,5 +180,23 @@ class _MainScreenState extends State<MainScreen> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed){
+      _ref.child("Users/$currentUserId").update({"isActive": "1"});}
+    else{
+      _ref.child("Users/$currentUserId").update({"isActive": "0",});
+      _ref.child("Users/$currentUserId").update({"lastOnline": now.toString(),});
+    }
   }
 }

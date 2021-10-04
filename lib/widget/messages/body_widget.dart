@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
                 ListView.builder(
               itemCount: chatList.length,
               itemBuilder: (context, index) =>
-                  Message(message: chatList[index]),
+                  Message(message: chatList[index],thumb: widget.thumbUri),
             ),
           ),
         ),

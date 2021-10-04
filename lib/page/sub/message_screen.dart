@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:intl/intl.dart';
 import 'package:meet_ceylon/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:meet_ceylon/provider/time_ago.dart';
 import 'package:meet_ceylon/widget/messages/body_widget.dart';
 
 
 class MessagesScreen extends StatelessWidget {
-  final String chatID, user2id, thumbUri,name;
+  final String chatID, user2id, thumbUri,name,lastOnline;
+  final bool isActive;
 
-  const MessagesScreen({Key key, this.chatID, this.user2id, this.thumbUri, this.name}) : super(key: key);
+  const MessagesScreen({Key key, this.chatID, this.user2id, this.thumbUri, this.name,this.isActive, this.lastOnline}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,16 @@ class MessagesScreen extends StatelessWidget {
 
   ///Builds the App bar
   AppBar buildAppBar(BuildContext context) {
+    String lastOnlineAgo = '';
+    DateTime now = DateTime.now();
+    ///Extracting time from datetime
+    if(lastOnline != null) {
+      lastOnlineAgo =   TimeAgo.displayTimeAgoFromTimestamp(lastOnline);
+      // DateTime.now().difference(DateTime.parse(lastOnline))
+      // final fifteenAgo = new DateTime.now().subtract(new Duration(minutes: 15));
+      //
+      // print(timeago.format(fifteenAgo));
+    }
     return AppBar(
       // automaticallyImplyLeading: false,
       title: Row(
@@ -33,14 +46,22 @@ class MessagesScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                name,
-                style: Theme.of(context).textTheme.headline4,
+              Row(
+                children: <Widget>[
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  SizedBox(width: kDefaultPadding * 0.35),
+                  isActive ?  Icon(Icons.circle,color: Colors.green,size: 12,):Container(),
+                ],
               ),
+              isActive ? Container() :
+              lastOnline != null ?
               Text(
-                "Active 3m ago",
+                lastOnlineAgo,
                 style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 12),
-              )
+              ):Container(),
             ],
           )
         ],

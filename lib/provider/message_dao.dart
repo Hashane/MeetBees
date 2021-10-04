@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
 import 'package:meet_ceylon/model/message.dart';
 import 'package:meet_ceylon/model/chat.dart' as ChatModel;
@@ -15,6 +16,9 @@ import 'package:meet_ceylon/model/chat.dart' as ChatModel;
 class MessageDao {
   final String currentUserId = FirebaseAuth.instance.currentUser.uid;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  ///Extracting time from DateTime
+  DateTime now = DateTime.now();
 
   final DatabaseReference _ref = FirebaseDatabase(
           databaseURL:
@@ -214,7 +218,6 @@ Map<Object, Object>_chatList;
         .reference()
         .child("Users/$currentUserId"));
 
-
     //Todo Need to change the hardcoded Collection name
     final CollectionReference _mainCollection = _firestore.collection("SL");
 
@@ -225,8 +228,10 @@ Map<Object, Object>_chatList;
         Map<String, String> _userInfoMap = {
           "name": value.get("name"),
           "thumb": value.get("image_uris")[0],
+          "isActive" : "0",
+          "lastOnline": now.toString(),
         };
-        _ref.child("Users").child(message.uID).push().set(_userInfoMap);
+        _ref.child("Users").child(message.uID).set(_userInfoMap);
       });
     }
 
@@ -236,8 +241,10 @@ Map<Object, Object>_chatList;
       Map<String, String> _userInfoMap = {
         "name": value.get("name"),
         "thumb": value.get("image_uris")[0],
+        "isActive" : "0",
+        "lastOnline": now.toString(),
       };
-      _ref.child("Users").child(message.u2ID).push().set(_userInfoMap);
+      _ref.child("Users").child(message.u2ID).set(_userInfoMap);
     });
 
     print("done");
