@@ -391,11 +391,8 @@ class _ChatsState extends State<Chats> {
                             ],
                           ),
                           onTap: () {
-                            widget.onNav(
-                                _chatIDList[index],
-                                myChats[index].user2.elementAt(1).toString(),
-                                myChats[index].image.toString(),
-                                myChats[index].name.toString());
+                            widget.onNav(_chatIDList[index], secondUser.toString(),
+                                snapshot.data.elementAt(index).image.toString(), snapshot.data.elementAt(index).name.toString());
                           },
                         ),
                       ),
