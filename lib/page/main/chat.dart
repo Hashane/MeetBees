@@ -327,7 +327,7 @@ class _ChatsState extends State<Chats> {
                                     image: new DecorationImage(
                                         fit: BoxFit.cover,
                                         image: CachedNetworkImageProvider(
-                                          snapshot.data.length > index ? snapshot.data?.elementAt(index).image : "https://i.stack.imgur.com/NiBMY.png?s=420&g=1",
+                                          snapshot.data.length > index ? snapshot.data.elementAt(index).image : "https://i.stack.imgur.com/NiBMY.png?s=420&g=1",
                                         )))
                                 )
 
@@ -342,7 +342,7 @@ class _ChatsState extends State<Chats> {
                                           // indexedInfo != null
                                           //     ?  indexedInfo.name
                                           //     : "",
-                                          snapshot.data.length > index ? snapshot.data?.elementAt(index).name.toString():"hash",
+                                          snapshot.data.length > index ? snapshot.data.elementAt(index).name.toString():"hash",
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
@@ -534,7 +534,6 @@ class _ChatsState extends State<Chats> {
 
     ///reading 'UserChats' node
     _streamSubscription = getData().listen((data) {
-      print("FUCKERRRRR");
       if (!mounted) return;
       setState(() {
         ids = data;
@@ -543,7 +542,6 @@ class _ChatsState extends State<Chats> {
 
     ///When the stream spits out data the second stream is invoked to actively listen to 'Chats' node
     _streamSubscription.onData((data) {
-      print("ddd");
       _streamSubscription1 = getInfo(data).listen((data) {
         if (!mounted) return;
         setState(() {
@@ -603,8 +601,6 @@ class _ChatsState extends State<Chats> {
         }
       });
 
-      print("INSIDE....");
-      print("INSIDE.... " + foundChats.toString());
       yield foundChats;
     }
   }
@@ -649,7 +645,7 @@ class _ChatsState extends State<Chats> {
   /// fetching second users info
   ///
   Stream<List<ChatModel.Chat>> SecondUserInfo(DatabaseReference databaseReference) async* {
-    print("Secondingggg");
+
     ChatModel.Chat secondUser;
     secondUsers.clear();
     DataSnapshot snapshot = await databaseReference.once();
@@ -664,7 +660,9 @@ class _ChatsState extends State<Chats> {
         secondUsers.add(secondUser);
       }
     }
-    yield secondUsers;
+    if(secondUsers.length >= myChats.length)
+      yield secondUsers;
+
   }
 }
 
