@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:intl/intl.dart';
 import 'package:meet_ceylon/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/provider/time_ago.dart';

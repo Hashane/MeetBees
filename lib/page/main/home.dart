@@ -357,9 +357,9 @@ class _HomeState extends State<Home> {
                     setState(() {
                       _visible = !_visible;
                     });
-                    //_premiumPlansBottomSheetModal(context);
-                    _matchedBottomSheetModal(context);
-                    //_userBottomSheetModal(context, user);
+                   // _premiumPlansBottomSheetModal(context);
+                   // _matchedBottomSheetModal(context);
+                    _userBottomSheetModal(context, user);
                   },
                   child: Icon(Icons.more_horiz_sharp,
                       size: 50.0, color: Colors.black45),

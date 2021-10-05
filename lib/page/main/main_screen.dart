@@ -193,8 +193,9 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.resumed){
-      _ref.child("Users/$currentUserId").update({"isActive": "1"});}
-    else{
+      _ref.child("Users/$currentUserId").update({"isActive": "1"});
+      _ref.child("Users/$currentUserId").update({"lastOnline": now.toString(),});
+    } else{
       _ref.child("Users/$currentUserId").update({"isActive": "0",});
       _ref.child("Users/$currentUserId").update({"lastOnline": now.toString(),});
     }
