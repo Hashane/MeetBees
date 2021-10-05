@@ -357,9 +357,9 @@ class _HomeState extends State<Home> {
                     setState(() {
                       _visible = !_visible;
                     });
-                   // _premiumPlansBottomSheetModal(context);
+                    _premiumPlansBottomSheetModal(context);
                    // _matchedBottomSheetModal(context);
-                    _userBottomSheetModal(context, user);
+                    //_userBottomSheetModal(context, user);
                   },
                   child: Icon(Icons.more_horiz_sharp,
                       size: 50.0, color: Colors.black45),
@@ -774,6 +774,7 @@ class _HomeState extends State<Home> {
   ///Bottom Sheet widget to display Premium Plans
   Widget _premiumPlansBottomSheetModal(context) {
     Future<void> future = showModalBottomSheet(
+        useRootNavigator: true,
         isDismissible: true,
         isScrollControlled: false,
         context: context,
