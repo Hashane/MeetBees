@@ -1,6 +1,4 @@
-
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart' as usr;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,76 +6,61 @@ import 'package:meet_ceylon/model/chat.dart' as ChatModel;
 import 'package:meet_ceylon/model/user.dart';
 import 'package:meet_ceylon/provider/database.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
-import 'package:meet_ceylon/widget/page_routes/scale_page_route.dart';
 import 'package:meet_ceylon/widget/custom_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../test.dart';
-
 
 class Chats extends StatefulWidget {
   final Function onNav;
 
-
   const Chats({Key key, this.onNav}) : super(key: key);
-
 
   @override
   _ChatsState createState() => _ChatsState();
 }
 
-
 class _ChatsState extends State<Chats> {
   StreamSubscription _streamSubscription;
   StreamSubscription _streamSubscription1;
-
 
   Widget kBackBtn = Icon(
     Icons.arrow_back_ios,
     size: 40.0,
   );
 
-
   ///stream subscription
   final List<User> users = [];
-
 
   var lastMessageSet, membersValSet;
   List<ChatModel.Chat> myChats = [];
   List<ChatModel.Chat> secondUsers = [];
-
 
   ///test
   List<String> ids = [];
   String last = "";
   String chaId = "";
 
-
   ///Realtime updates from chat
   final DatabaseReference _ref = FirebaseDatabase(
-      databaseURL:
-      "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
+          databaseURL:
+              "https://meet-ceylon-5ec4a.europe-west1.firebasedatabase.app/")
       .reference();
-
 
   ///To track all the chats the user has started
   List<String> _chatIDList = [];
 
-
   ///Current user id
   final String currentUserId = usr.FirebaseAuth.instance.currentUser.uid;
-
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    ///This part is cruicial when the data deleted from backend
+    ///This part is crucial when the data deleted from backend
     ///When data is changed the listener fetches any remaining chats from the list
-    ///When that data is yeilded previously it was only captured in the initState but then the UI won't be updated
+    ///When that data is yielded previously it was only captured in the initState but then the UI won't be updated
     _streamSubscription.onData((data) {
-
       ///This is when all the chats are deleted to set the list empty and update the ui
-      if(data.length == 0){
+      if (data.length == 0) {
         setState(() {
           myChats.clear();
         });
@@ -102,8 +85,6 @@ class _ChatsState extends State<Chats> {
         ),
         elevation: 0,
       ),
-
-
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Padding(
@@ -161,12 +142,6 @@ class _ChatsState extends State<Chats> {
                       fontStyle: FontStyle.normal),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(context, ScaleRoute(page: Screen2()));
-                },
-                child: Text('Go to next screen'),
-              ),
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 3,
               ),
@@ -175,14 +150,11 @@ class _ChatsState extends State<Chats> {
               StreamBuilder(
                   stream: Database.readItems(),
                   builder: (context, snapshot) {
-                    itemCount:
-                    users.length;
                     users.clear();
                     if (snapshot.hasData && users.isEmpty) {
                       snapshot.data.docs.forEach((element) {
                         Map<String, dynamic> obj = element.data();
                         users.add(User.fromJson(obj));
-
                       });
                     }
                     return matchedUserCarousel();
@@ -207,21 +179,21 @@ class _ChatsState extends State<Chats> {
                 myChats.length.toString(),
                 style: TextStyle(color: Colors.red),
               ),
+
+              ///Chat boxes
               ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: myChats.length,
                   itemBuilder: (context, index) {
-                    return ChatBox(index);
+                    return chatBox(index);
                   }),
             ],
           ),
         ),
       ),
-      //bottomNavigationBar: showModalBottomSheet();
     );
   }
-
 
   Widget matchedUserCarousel() {
     return new Container(
@@ -236,7 +208,7 @@ class _ChatsState extends State<Chats> {
             child: InkWell(
               onTap: () {
                 widget.onNav(null, users[index].uid.trim(),
-                    users[index].imageUris[0], users[index].name,false,null);
+                    users[index].imageUris[0], users[index].name, false, null);
               },
 
               ///Initiating a new chat using uid
@@ -251,7 +223,8 @@ class _ChatsState extends State<Chats> {
                         image: imageProvider, fit: BoxFit.cover),
                   ),
                 ),
-                placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
@@ -261,155 +234,161 @@ class _ChatsState extends State<Chats> {
     );
   }
 
-
-  Widget ChatBox(int index) {
+  Widget chatBox(int index) {
     ///grab the index where current userid resides in the myChats list. That means under "members" of the "Chats" node in firebase
     int usrIndex = myChats[index].user2.indexOf(currentUserId);
-
 
     /// determine the index position of the second user in relation to the current user index
     int secondUserIndex = usrIndex == 0 ? 1 : 0;
 
-
     ///using the above index we grab the second user id from the list
     String secondUser =
-    myChats[index].user2.elementAt(secondUserIndex).toString();
-
-    print("second " + secondUser);
+        myChats[index].user2.elementAt(secondUserIndex).toString();
 
     ///calling the method to fetch name and image of the second user
 
-
     return StreamBuilder<List<ChatModel.Chat>>(
-        stream: SecondUserInfo(_ref.child("Users/$secondUser")),
+        stream: secondUserInfo(_ref.child("Users/$secondUser")),
         builder: (context, AsyncSnapshot<List<ChatModel.Chat>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-            var indexedInfo;
-            // if(snapshot.data != null && snapshot.data.length != 0)
-              return  Dismissible(
-                    key: Key(myChats[index].name.toString()),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      setState(() {
-                        myChats.removeAt(index);
-                      });
-                    },
-                    background: Container(
-                      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                      /// In order to match the height with the card
-                      color: Colors.red,
-                      child: Icon(Icons.delete),
-                    ),
-                    child: Card(
-                      elevation: 5,
-                      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      color: Theme
-                          .of(context)
-                          .colorScheme
-                          .surface,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child:
-                                //indexedInfo != null
-                                 Container(
-                                  width: 50.0,
-                                  height: 50.0,
-                                  decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: CachedNetworkImageProvider(
-                                          snapshot.data.length > index ? snapshot.data.elementAt(index).image : "https://i.stack.imgur.com/NiBMY.png?s=420&g=1",
-                                        )))
-                                )
-
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            return Dismissible(
+              key: Key(myChats[index].name.toString()),
+              direction: DismissDirection.endToStart,
+              onDismissed: (direction) {
+                setState(() {
+                  myChats.removeAt(index);
+                });
+              },
+              background: Container(
+                margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                /// In order to match the height with the card
+                color: Colors.red,
+                child: Icon(Icons.delete),
+              ),
+              child: Card(
+                elevation: 5,
+                margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                color: Theme.of(context).colorScheme.surface,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child:
+                          Container(
+                            width: 50.0,
+                            height: 50.0,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider(
+                                  snapshot.data.length > index
+                                      ? snapshot.data.elementAt(index).image
+                                      : "https://i.stack.imgur.com/NiBMY.png?s=420&g=1",
+                                ),
                               ),
-                              Expanded(
-                                child: Stack(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          // indexedInfo != null
-                                          //     ?  indexedInfo.name
-                                          //     : "",
-                                          snapshot.data.length > index ? snapshot.data.elementAt(index).name.toString():"hash",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: SizeConfig.safeBlockVertical * 1,
-                                        ),
-                                        _chatIDList.length != 0
-                                            ? Opacity(
-                                          opacity:
-                                          _chatIDList[index] == chaId ? 1.0 : 0.64,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    // indexedInfo != null
+                                    //     ?  indexedInfo.name
+                                    //     : "",
+                                    snapshot.data.length > index
+                                        ? snapshot.data
+                                            .elementAt(index)
+                                            .name
+                                            .toString()
+                                        : "hash",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.safeBlockVertical * 1,
+                                  ),
+                                  _chatIDList.length != 0
+                                      ? Opacity(
+                                          opacity: _chatIDList[index] == chaId
+                                              ? 1.0
+                                              : 0.64,
                                           child: Text(
                                             _chatIDList[index] == chaId
                                                 ? last
-                                                : myChats[index].lastMessage.toString(),
+                                                : myChats[index]
+                                                    .lastMessage
+                                                    .toString(),
                                             style: TextStyle(
-                                                color: Colors.black54, fontSize: 12),
+                                                color: Colors.black54,
+                                                fontSize: 12),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             softWrap: false,
                                             // style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                           ),
                                         )
-                                            : Container(),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      right: 8,
-                                      child: Text(
-                                        "Yesterday",
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 11,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                      : Container(),
+                                ],
+                              ),
+                              Positioned(
+                                right: 8,
+                                child: Text(
+                                  "Yesterday",
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          onTap: () {
-                            widget.onNav(_chatIDList[index], secondUser.toString(),
-                                snapshot.data.elementAt(index).image.toString(), snapshot.data.elementAt(index).name.toString(), snapshot.data.elementAt(index).isActive,snapshot.data.elementAt(index).lastOnline);
-                          },
                         ),
-                      ),
+                      ],
                     ),
-                  );
+                    onTap: () {
+                      widget.onNav(
+                          _chatIDList[index],
+                          secondUser.toString(),
+                          snapshot.data.elementAt(index).image.toString(),
+                          snapshot.data.elementAt(index).name.toString(),
+                          snapshot.data.elementAt(index).isActive,
+                          snapshot.data.elementAt(index).lastOnline);
+                    },
+                  ),
+                ),
+              ),
+            );
           } else {
-            return shimmercardWidget();}});
+            return shimmerCardWidget();
+          }
+        });
   }
 
-
-  Widget shimmercardWidget(){
+  ///
+  /// Shimmer Effect while chat boxes are loading
+  Widget shimmerCardWidget() {
     return Card(
       elevation: 5,
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      color: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      color: Theme.of(context).colorScheme.surface,
       child: Material(
         color: Colors.transparent,
         child: Row(
@@ -424,16 +403,22 @@ class _ChatsState extends State<Chats> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      CustomWidget.rectangular(height: 10, width: MediaQuery.of(context).size.width*0.3),
+                      CustomWidget.rectangular(
+                          height: 10,
+                          width: MediaQuery.of(context).size.width * 0.3),
                       SizedBox(
                         height: SizeConfig.safeBlockVertical * 1,
                       ),
-                      CustomWidget.rectangular(height: 10, width:MediaQuery.of(context).size.width*0.3),
+                      CustomWidget.rectangular(
+                          height: 10,
+                          width: MediaQuery.of(context).size.width * 0.3),
                     ],
                   ),
                   Positioned(
                     right: 8,
-                    child: CustomWidget.rectangular(height: 10, width:MediaQuery.of(context).size.width* 0.1),
+                    child: CustomWidget.rectangular(
+                        height: 10,
+                        width: MediaQuery.of(context).size.width * 0.1),
                   ),
                 ],
               ),
@@ -444,89 +429,95 @@ class _ChatsState extends State<Chats> {
     );
   }
 
+  ///
+  /// Looping the chat id list to get the Chat related information
+  /// such as lastSentMessage & thumb to indicate inside each users inbox
+  ///
+  /// Actively listening to "Chats" node to listen to any realtime updates
+  /// in order to update the chat box UI with the lastSentMessage
+  ///
+  Stream<List<ChatModel.Chat>> getInfo(List<String> li) async* {
+    final List<ChatModel.Chat> foundChats = [];
 
-  Widget ChatBoxforStream(ChatModel.Chat chat) {
-    int index = myChats.indexOf(chat);
-    //return Container(color: Colors.red,);
+    for (var i in li) {
 
+      ChatModel.Chat thisChat;
+      _ref.child("Chats/$i").once().then((event) {
+        thisChat = ChatModel.Chat.fromJson(event.value, null, null);
+        foundChats.add(thisChat);
+      });
 
-    return Card(
-      elevation: 5,
-      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      color: Theme.of(context).colorScheme.surface,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-                child: Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(chat.image.toString()),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          chat.name.toString(),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        SizedBox(
-                          height: SizeConfig.safeBlockVertical * 1,
-                        ),
-                        Opacity(
-                          opacity: 0.64,
-                          child: Text(
-                            chat.lastMessage.toString(),
-                            style:
-                            TextStyle(color: Colors.black54, fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      right: 8,
-                      child: Text(
-                        "Yesterday",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          onTap: () {
-            widget.onNav(_chatIDList[index], chat.user2.elementAt(1).toString(),
-                chat.image.toString(), chat.name.toString());
-          },
-        ),
-      ),
-    );
+      _ref.child("Chats/$i").onValue.listen((event) {
+        if (mounted) {
+          setState(() {
+            if (event.snapshot.value != null) {
+
+              ///the last message itself recently updated
+              last = event.snapshot.value["lastSentMessage"];
+
+              ///used to indicate which last message was updated among all the other user chats
+              chaId = i;
+
+            }
+          });
+        }
+      });
+
+      yield foundChats;
+    }
   }
 
+  ///
+  /// Fetching all the chat ids under a particular userId
+  /// then adding those chat ids into a list
+  ///
+  Stream<List<String>> getData() async* {
+
+    List<ChatModel.Chat> foundChats = [];
+    var usersChatsStream = _ref.child('UserChats/$currentUserId').onValue;
+
+    await for (var userChatSnapshot in usersChatsStream) {
+      foundChats.clear();
+      _chatIDList.clear();
+
+      ///Keep track of chatID
+      Map dictionary = userChatSnapshot.snapshot.value;
+      if (dictionary != null) {
+        for (var dictItem in dictionary.entries) {
+          String chatID;
+          if (dictItem.key != null) {
+            chatID = dictItem.value;
+          } else {
+            chatID = "";
+          }
+          _chatIDList.add(chatID);
+        }
+      }
+      yield _chatIDList;
+    }
+  }
+
+  ///
+  /// DatabaseReference points to Users node of the DB
+  /// fetching second users info
+  ///
+  Stream<List<ChatModel.Chat>> secondUserInfo(
+      DatabaseReference databaseReference) async* {
+    ChatModel.Chat secondUser;
+    secondUsers.clear();
+    DataSnapshot snapshot = await databaseReference.once();
+    if (snapshot.value != null) {
+      /// Since name & image is stored as a map in the DB we assign the values to a map and then iterate to access the JSON object map
+      Map dictionary = snapshot.value;
+      if (dictionary != null) {
+        ///Json object is transformed to the chat model
+        secondUser = ChatModel.Chat.fromUsers(dictionary, null, null);
+        secondUsers.add(secondUser);
+      }
+    }
+    //if(secondUsers.length >= myChats.length)
+    yield secondUsers;
+  }
 
   @override
   void initState() {
@@ -551,7 +542,6 @@ class _ChatsState extends State<Chats> {
     });
   }
 
-
   @override
   void dispose() {
     // TODO: implement dispose
@@ -559,108 +549,4 @@ class _ChatsState extends State<Chats> {
     _streamSubscription1?.cancel();
     super.dispose();
   }
-
-  ///
-  /// Looping the chat id list to get the Chat related information
-  /// such as lastSentMessage & thumb to indicate inside each users inbox
-  ///
-  /// Actively listening to "Chats" node to listen to any realtime updates
-  /// in order to update the chat box UI with the lastSentMessage
-  ///
-  Stream<List<ChatModel.Chat>> getInfo(List<String> li) async* {
-    final List<ChatModel.Chat> foundChats = [];
-
-
-    for (var i in li) {
-      ChatModel.Chat thisChat;
-          _ref
-          .child("Chats/$i")
-          .once()
-          .then((event) {
-        thisChat = ChatModel.Chat.fromJson(event.value,null,null);
-        foundChats.add(thisChat);
-
-      });
-
-
-           _ref
-          .child("Chats/$i")
-          .onValue
-          .listen((event) {
-        if (mounted) {
-          setState(() {
-            if(event.snapshot.value != null) {
-              last = event.snapshot.value["lastSentMessage"];
-
-              ///the last message itself recently updated
-              chaId = i;
-
-              ///used to indicate which last message was updated among all the other user chats
-            }
-          });
-        }
-      });
-
-      yield foundChats;
-    }
-  }
-
-  ///
-  /// Fetching all the chat ids under a particular userid
-  /// then adding those chat ids into a list
-  ///
-  Stream<List<String>> getData() async* {
-    var usersChatsStream = _ref.child('UserChats/$currentUserId').onValue;
-
-
-    List<ChatModel.Chat> foundChats = [];
-
-    await for (var userChatSnapshot in usersChatsStream) {
-      foundChats.clear();
-      _chatIDList.clear();
-
-
-      ///Keep track of chatID
-      Map dictionary = userChatSnapshot.snapshot.value;
-      if (dictionary != null) {
-        for (var dictItem in dictionary.entries) {
-          String chatID;
-          if (dictItem.key != null) {
-            chatID = dictItem.value;
-          } else {
-            chatID = "";
-          }
-          _chatIDList.add(chatID);
-
-        }
-      }
-
-      yield _chatIDList;
-    }
-  }
-
-
-  ///
-  /// DatabaseReference points to Users node of the DB
-  /// fetching second users info
-  ///
-  Stream<List<ChatModel.Chat>> SecondUserInfo(DatabaseReference databaseReference) async* {
-
-    ChatModel.Chat secondUser;
-    secondUsers.clear();
-    DataSnapshot snapshot = await databaseReference.once();
-    if (snapshot.value != null) {
-      /// Since name & image is stored as a map in the DB we assign the values to a map and then iterate to access the JSON object map
-      Map dictionary = snapshot.value;
-      if (dictionary != null) {
-          ///Json object is transformed to the chat model
-          secondUser = ChatModel.Chat.fromUsers(dictionary, null, null);
-        secondUsers.add(secondUser);
-      }
-    }
-    //if(secondUsers.length >= myChats.length)
-      yield secondUsers;
-
-  }
 }
-
