@@ -20,24 +20,30 @@ class TextMessage extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: SizeConfig.safeBlockHorizontal * 65,
         ),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: kDefaultPadding * 0.75,
-            vertical: kDefaultPadding / 1,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context)
-                .colorScheme
-                .primaryVariant
-                .withOpacity(message.isSender ? 1 : 0.2),
+        child: Card(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Text(
-            message.text,
-            style: TextStyle(
-              color: message.isSender
-                  ? Colors.white
-                  : Theme.of(context).textTheme.bodyText1.color,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: kDefaultPadding * 0.75,
+              vertical: kDefaultPadding / 1,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context)
+                  .colorScheme
+                  .primaryVariant
+                  .withOpacity(message.isSender ? 1 : 0.2),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              message.text,
+              style: TextStyle(
+                color: message.isSender
+                    ? Colors.white
+                    : Theme.of(context).textTheme.bodyText1.color,
+              ),
             ),
           ),
         ),
