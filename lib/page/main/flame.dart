@@ -149,7 +149,7 @@ class _FlamesState extends State<Flames> {
       alignment: Alignment.topCenter,
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
@@ -161,7 +161,7 @@ class _FlamesState extends State<Flames> {
               ),
             ),
             SizedBox(height: SizeConfig.safeBlockVertical * 2),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               ///2 flames package
               SizedBox(
                 width: 110,
