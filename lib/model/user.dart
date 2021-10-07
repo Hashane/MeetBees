@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 class User {
   final String uid;
   final String name;
-  final int age;
   final String birthday;
   final String gender;
   final String preferred_gender;
@@ -27,7 +26,6 @@ class User {
   User({
     @required this.uid,
     this.name,
-    this.age,
     this.birthday,
     this.gender,
     this.preferred_gender,
@@ -45,11 +43,15 @@ class User {
     isSwipedOf = false,
   });
 
+
+  int get age {
+    return DateTime.now().year  - DateTime.parse(birthday).year;
+  }
+
   //Serializing JSON(Map JSON objects from firestore to custom User model)
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         uid = json['uid'],
-        age = json['age'],
         birthday = json['birthday'],
         gender = json['gender'],
         preferred_gender = json['preferred_gender'],

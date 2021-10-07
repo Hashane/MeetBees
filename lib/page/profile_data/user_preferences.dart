@@ -227,11 +227,6 @@ class _UserPreferencesState extends State<UserPreferences> {
                           child: Text("Continue"),
                           onPressed: () async {
 
-                            //user info
-                            DateTime dateTimeCreatedAt = DateTime.parse(widget.userInfoMap['birthday']);
-                            DateTime dateTimeNow = DateTime.now();
-                            final age = (dateTimeNow.difference(dateTimeCreatedAt).inDays/365).floor();
-
                             //position related data
                             final country = widget.latLong['country'].trim().toLowerCase();
                             final city = widget.latLong['city'].trim().toLowerCase();
@@ -247,7 +242,6 @@ class _UserPreferencesState extends State<UserPreferences> {
                             await Database.addItem(
                               uid: firebaseUser.uid,
                               name: widget.userInfoMap['name'],
-                              age: age,
                               birthday: widget.userInfoMap['birthday'],
                               gender: widget.userInfoMap['gender'],
                               preferredGender: widget.userInfoMap['gender'] == 'male' ? 'female': 'male',
