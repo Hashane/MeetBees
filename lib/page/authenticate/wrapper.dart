@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/authenticate/secondary_user_wrapper.dart';
-import 'package:meet_ceylon/provider/auth.dart';
+import 'package:meet_ceylon/services/auth.dart';
 import 'package:meet_ceylon/widget/loading_widget.dart';
 
 import 'login.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/profile_data/photo_selection.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 
 class PersonalInfo extends StatefulWidget {
   @override

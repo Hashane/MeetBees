@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/gender.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 import 'package:meet_ceylon/widget/active_perks_card_widget.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/gradient_label.dart';
 import 'package:meet_ceylon/widget/radio_btn_tiles_widget.dart';

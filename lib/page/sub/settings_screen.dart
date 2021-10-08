@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/authenticate/login.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/elevated_dark_btn.dart';
 import 'package:meet_ceylon/widget/buttons_and_labels/elevated_gradient_btn.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;

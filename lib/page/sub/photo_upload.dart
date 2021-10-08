@@ -9,9 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:intl/intl.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
-import 'package:meet_ceylon/provider/message_dao.dart';
+import 'package:meet_ceylon/services/message_dao.dart';
 import 'package:path/path.dart' as p;
-import 'package:meet_ceylon/provider/database.dart';
+import 'package:meet_ceylon/services/database.dart';
 
 class MyHomePage extends StatefulWidget {
   final String title;

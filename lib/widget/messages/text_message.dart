@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 
 import '../../constants.dart';
 

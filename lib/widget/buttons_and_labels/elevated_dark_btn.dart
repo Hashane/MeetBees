@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 
 class ElevatedDarkButton extends StatelessWidget {
   final Widget child;

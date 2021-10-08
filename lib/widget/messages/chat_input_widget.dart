@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:meet_ceylon/model/chatMessages.dart';
 import 'package:meet_ceylon/page/sub/photo_upload.dart';
 
-import 'package:meet_ceylon/provider/message_dao.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/message_dao.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 
 import 'message.dart';
 

@@ -4,8 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/model/chat.dart' as ChatModel;
 import 'package:meet_ceylon/model/user.dart';
-import 'package:meet_ceylon/provider/database.dart';
-import 'package:meet_ceylon/provider/size_configurations.dart';
+import 'package:meet_ceylon/services/database.dart';
+import 'package:meet_ceylon/services/size_configurations.dart';
 import 'package:meet_ceylon/widget/custom_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -175,11 +175,6 @@ class _ChatsState extends State<Chats> {
               SizedBox(
                 height: SizeConfig.safeBlockVertical * 3,
               ),
-              Text(
-                myChats.length.toString(),
-                style: TextStyle(color: Colors.red),
-              ),
-
               ///Chat boxes
               ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
