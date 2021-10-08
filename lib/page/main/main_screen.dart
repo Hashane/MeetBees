@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/sub/filters_screen.dart';
 import 'package:meet_ceylon/page/sub/message_screen.dart';
+import 'package:meet_ceylon/widget/ripple_animation/ripple_animation.dart';
 import 'package:meet_ceylon/page/sub/settings_screen.dart';
 import 'package:meet_ceylon/page/main/chat.dart';
 import 'package:meet_ceylon/page/main/flame.dart';

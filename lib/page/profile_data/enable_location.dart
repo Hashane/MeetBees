@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meet_ceylon/page/profile_data/photo_selection.dart';
 import 'package:meet_ceylon/page/profile_data/user_preferences.dart';
+import 'package:meet_ceylon/widget/ripple_animation/ripple_animation.dart';
 import 'package:meet_ceylon/provider/size_configurations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meet_ceylon/widget/alert_dialog_widget.dart';
@@ -205,13 +206,7 @@ class _EnableLocationState extends State<EnableLocation> {
                         _getLocation(); latitude != null ? print(' $latitude , $longtitude') : print("no location");
                         developer.log(latitude.toString(), name: 'my.app.category');
                       },
-                      child: Container(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.asset("assets/images/logo.png",
-                              width: 150.0, height: 150.0),
-                        ),
-                      ),
+                      child: RipplesAnimation(),
                     ),
                   ),
                 ),
