@@ -27,9 +27,13 @@ class _BodyState extends State<Body> {
   ///To track all the chats the user has started
   List<String> _chatIDList = [];
   String _chatID = "";
+  ScrollController _myController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    // here we set the timer to call the event
+    Timer(Duration(milliseconds: 100), () => _myController.jumpTo(_myController.position.maxScrollExtent));
+
     return Column(
       children: [
         Expanded(
@@ -53,6 +57,7 @@ class _BodyState extends State<Body> {
                 //     }),
 
                 ListView.builder(
+                  controller: _myController,
               itemCount: chatList.length,
               itemBuilder: (context, index) =>
                   Message(message: chatList[index],thumb: widget.thumbUri),
