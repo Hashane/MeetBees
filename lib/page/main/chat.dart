@@ -33,6 +33,7 @@ class _ChatsState extends State<Chats> {
   var lastMessageSet, membersValSet;
   List<ChatModel.Chat> myChats = [];
   List<ChatModel.Chat> secondUsers = [];
+  Set<ChatModel.Chat> secondUses = {};
 
   ///test
   List<String> ids = [];
@@ -496,22 +497,27 @@ class _ChatsState extends State<Chats> {
   /// DatabaseReference points to Users node of the DB
   /// fetching second users info
   ///
-  Stream<List<ChatModel.Chat>> secondUserInfo(
-      DatabaseReference databaseReference) async* {
+  Stream<List<ChatModel.Chat>> secondUserInfo(DatabaseReference databaseReference) async* {
     ChatModel.Chat secondUser;
-    secondUsers.clear();
+    secondUses.clear();
     DataSnapshot snapshot = await databaseReference.once();
     if (snapshot.value != null) {
+
       /// Since name & image is stored as a map in the DB we assign the values to a map and then iterate to access the JSON object map
       Map dictionary = snapshot.value;
       if (dictionary != null) {
         ///Json object is transformed to the chat model
         secondUser = ChatModel.Chat.fromUsers(dictionary, null, null);
-        secondUsers.add(secondUser);
+        if (secondUses.every((item) => item.name != secondUser.name)) {
+          secondUses.add(secondUser);
+        }
+
+
       }
     }
+    print(secondUses.first.name);
     //if(secondUsers.length >= myChats.length)
-    yield secondUsers;
+    yield secondUses.toList();
   }
 
   @override
