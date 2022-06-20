@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>meet_ceylon</string>
+	<string>meet_bees</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,10 +34,21 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>673845527111528</string>
+      </array>
+      </dict>
+    </array>
 	<key>FacebookAppID</key>
-	<string>1218576808545675</string>
+	<string>673845527111528</string>
+	<key>FacebookClientToken</key>
+    <string>72c8586e11686d6eda16383793aa663c</string>
 	<key>FacebookDisplayName</key>
-	<string>Meet Ceylon</string>
+	<string>Meet Bees</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
